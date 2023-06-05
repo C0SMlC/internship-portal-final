@@ -4,7 +4,10 @@
 ## Clone the repository:
 
 Use the following command to clone the repository to your local machine:
-git clone <repository-url>
+=> git clone https://github.com/C0SMlC/internship-portal-final.git
+
+## Change Branch
+=> git checkout parallel-branch
   
 ## Make changes
 
@@ -14,10 +17,10 @@ Make the desired changes to the code files using your preferred code editor.
 ## Commit and push changes:
 
 Stage the changes you made by using the following command in the root of the repository:
-git add .
+=> git add .
   
 Commit the changes with a descriptive commit message:
-git commit -m "Your commit message"
+=> git commit -m "Your commit message"
   
 Push the changes to the newly created branch on GitHub:
-git push origin parallel-branch
+=> git push origin parallel-branch
