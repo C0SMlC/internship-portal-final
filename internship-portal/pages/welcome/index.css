@@ -1,0 +1,30 @@
+.internWelcome{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 120px;
+}
+.internWelcome>div>p{
+    font-size: 1.7rem;
+    color: #1b3061;
+    text-align: center;
+    text-decoration: underline;
+    font-weight: bold;
+}
+.loginBtn{
+    position: absolute;
+    right: 50px;
+}
+
+@media only screen and (max-width: 600px) {
+    .internWelcome{
+        flex-direction: column;        justify-content: space-evenly;
+        height: 180px;
+    }
+    .loginBtn{
+        position: initial;
+    }
+    .announcement{
+        padding: 5px;
+    }
+}

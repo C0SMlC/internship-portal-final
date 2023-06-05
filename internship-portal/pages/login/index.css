@@ -1,0 +1,87 @@
+.first {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.second {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.outerGrid {
+  height: 100vh;
+  width: 100%;
+  background: linear-gradient(
+    252.44deg,
+    #c850c0 0.42%,
+    rgba(144, 83, 199, 0.94) 47.92%,
+    rgba(65, 88, 208, 0.96) 99.48%,
+    rgba(65, 88, 208, 0.96) 99.49%
+  );
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.imageContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  height: 50%;
+  width: 80%;
+}
+.signInText {
+  text-align: center;
+  width: 80%;
+}
+.signIn {
+  width: 200px;
+  margin-top: 15px;
+}
+.image1 {
+  height: 120px;
+  width: 110px;
+}
+
+.image2 {
+  height: 110px;
+  width: 110px;
+}
+.Main {
+  background-color: white;
+  height: 60%;
+  width: 90%;
+  display: flex;
+  border-radius: 15px;
+}
+.pceTitle {
+  font-weight: bold;
+  font-size: 1.8rem;
+}
+.mailDesc {
+  color: red;
+  font-size: 0.8rem;
+}
+@media only screen and (max-width: 600px) {
+  .first {
+    display: none;
+    background-color: black;
+  }
+  .pceTitle {
+    font-size: 1.2rem;
+  }
+  .mailDesc {
+    font-size: 0.6rem;
+  }
+  .image1 {
+    height: 90px;
+    width: 80px;
+  }
+
+  .image2 {
+    height: 80px;
+    width: 80px;
+  }
+}
