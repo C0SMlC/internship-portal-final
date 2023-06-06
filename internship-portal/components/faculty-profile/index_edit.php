@@ -1,3 +1,8 @@
+<?php
+require 'connect.php';
+$update = update_data($con);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -59,7 +64,7 @@
                     <p class="mb-0">Full Name</p>
                   </div>
                   <div class="col-sm-9">
-                    <p class="text-muted mb-0">Johnatan Smith</p>
+                    <p class="text-muted mb-0"> <?php echo $update['fac_name']; ?></p>
                   </div>
                 </div>
                 <hr />
@@ -68,7 +73,7 @@
                     <p class="mb-0">Email</p>
                   </div>
                   <div class="col-sm-9">
-                    <p class="text-muted mb-0">example@example.com</p>
+                    <p class="text-muted mb-0"><?php echo $update['fac_email']; ?></p>
                   </div>
                 </div>
                 <hr />
@@ -77,7 +82,7 @@
                     <p class="mb-0">Age</p>
                   </div>
                   <div class="col-sm-9">
-                    <p class="text-muted mb-0">20</p>
+                    <p class="text-muted mb-0"><?php echo $update['fac_age']; ?></p>
                   </div>
                 </div>
                 <hr />
@@ -86,7 +91,7 @@
                     <p class="mb-0">Mobile</p>
                   </div>
                   <div class="col-sm-9">
-                    <p class="text-muted mb-0">(098) 765-4321</p>
+                    <p class="text-muted mb-0"><?php echo $update['fac_mobile']; ?></p>
                   </div>
                 </div>
                 <hr />
@@ -95,7 +100,7 @@
                     <p class="mb-0">Address</p>
                   </div>
                   <div class="col-sm-9">
-                    <p class="text-muted mb-0">Bay Area, San Francisco, CA</p>
+                    <p class="text-muted mb-0"><?php echo $update['fac_address']; ?></p>
                   </div>
                 </div>
               </div>
@@ -189,7 +194,7 @@
         <h5 class="card-title">Edit Profile</h5>
       </div>
       <div class="card-body form-card-body">
-        <form  action = "connect.php" method = "post">
+        <form action = "connect.php" method = "post">
           <div class="mb-3">
             <label for="fullName" class="form-label">Full Name</label>
             <input
