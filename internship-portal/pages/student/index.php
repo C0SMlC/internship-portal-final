@@ -4,7 +4,7 @@ $style = "./styles/global.css";
 $favicon = "../../assets/favicon.ico";
 include_once("../../components/head.php");
 ?>
-<!-- <?php
+ <?php
 // require './auth.php'; -->
 // if (!isset($_SESSION['login_id'])) {
 //     $location = "../login/index.php";
@@ -52,18 +52,8 @@ include_once("../../components/head.php");
     include_once("../../components/student-profile/index.php");
     ?>
 </div>
-
-<!-- <div class="gj"></div>
+<div class="gj"></div>
 <style>
-.gj{
-height:5rem;
-width:5rem;
-background-color: #999;
-z-index:5000;
-cursor: pointer;
-
-}
-
 .cv{
     height:100vh;
     width:100vw;
@@ -71,19 +61,13 @@ cursor: pointer;
     position: absolute;
     top:0;
 }
-
-</style> -->
+</style> 
 <script>
 const gj = document.querySelector('.gj')
-
 gj.addEventListener('click',()=>{
    gj.classList.add('cv');
 
 })
-
 </script>
-
-   <!-- <script  src="script.js"></> -->
 </body>
-
 </html>

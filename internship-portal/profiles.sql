@@ -1,3 +1,5 @@
+USE `internship_portal`;
+
 -- phpMyAdmin SQL Dump
 -- version 5.2.0
 -- https://www.phpmyadmin.net/
@@ -20,7 +22,7 @@ SET time_zone = "+00:00";
 --
 -- Database: `internship_portal`
 --
-CREATE DATABASE IF NOT EXISTS `internship_portal` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
+CREATE DATABASE IF NOT EXISTS `internship_portal` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 USE `internship_portal`;
 
 -- --------------------------------------------------------
@@ -41,14 +43,14 @@ CREATE TABLE IF NOT EXISTS `faculty_panel` (
   UNIQUE KEY `fac_email` (`fac_email`),
   KEY `fac_name` (`fac_name`),
   KEY `fac_mobile` (`fac_mobile`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `student`
--
--
+--
+
 DROP TABLE IF EXISTS `student`;
 CREATE TABLE IF NOT EXISTS `student` (
   `s_id` int NOT NULL AUTO_INCREMENT,
@@ -61,7 +63,7 @@ CREATE TABLE IF NOT EXISTS `student` (
   UNIQUE KEY `s_email` (`s_email`),
   KEY `s_name` (`s_name`),
   KEY `s_mobile` (`s_mobile`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -81,7 +83,7 @@ CREATE TABLE IF NOT EXISTS `tpo` (
   UNIQUE KEY `t_email` (`t_email`),
   KEY `t_name` (`t_name`),
   KEY `t_mobile` (`t_mobile`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

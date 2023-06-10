@@ -1,7 +1,18 @@
 <?php
+$dbhost = "localhost";
+$dbuser = "root";
+$dbpassword = "";
+$dbname = "internship_portal";
+
+if (!$con = mysqli_connect($dbhost, $dbuser, $dbpassword, $dbname)) {
+    die("Failed to connect");
+}
+?>
+<?php
 require 'connect.php';
 $update = update_data($con);
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -189,68 +200,73 @@ $update = update_data($con);
     </section>
 
     <!-- Edit Profile Form -->
-    <div class="edit-profile-form card d-none" id="editProfileForm">
-      <div class="card-header">
-        <h5 class="card-title">Edit Profile</h5>
+
+<div class="edit-profile-form card d-none" id="editProfileForm">
+  <div class="card-header">
+    <h5 class="card-title">Edit Profile</h5>
+  </div>
+  <div class="card-body form-card-body">
+    <form action="connect.php" method="post">
+      <div class="mb-3">
+        <label for="fullName" class="form-label">Full Name</label>
+        <input
+          type="text"
+          class="form-control"
+          id="fullName"
+          name="fullName"
+          value="<?php echo isset($update['fac_name']) ? $update['fac_name'] : ''; ?>"
+          required
+        />
       </div>
-      <div class="card-body form-card-body">
-        <form action = "connect.php" method = "post">
-          <div class="mb-3">
-            <label for="fullName" class="form-label">Full Name</label>
-            <input
-              type="text"
-              class="form-control"
-              id="fullName"
-              name="fullName"
-              required
-            />
-          </div>
-          <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
-            <input
-              type="email"
-              class="form-control"
-              id="email"
-              name="email"
-              required
-            />
-          </div>
-          <div class="mb-3">
-            <label for="age" class="form-label">Age</label>
-            <input
-              type="number"
-              class="form-control"
-              id="age"
-              name="age"
-              required
-            />
-          </div>
-          <div class="mb-3">
-            <label for="mobile" class="form-label">Mobile</label>
-            <input
-              type="tel"
-              class="form-control"
-              id="mobile"
-              name="mobile"
-              required
-            />
-          </div>
-          <div class="mb-3">
-            <label for="address" class="form-label">Address</label>
-            <textarea
-              class="form-control"
-              id="address"
-              name="address"
-              required
-            ></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary">Save</button>
-          <button type="button" class="btn btn-secondary" onclick="closeForm()">
-            Cancel
-          </button>
-        </form>
+      <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input
+          type="email"
+          class="form-control"
+          id="email"
+          name="email"
+          value="<?php echo isset($update['fac_email']) ? $update['fac_email'] : ''; ?>"
+          required
+        />
       </div>
-    </div>
+      <div class="mb-3">
+        <label for="age" class="form-label">Age</label>
+        <input
+          type="number"
+          class="form-control"
+          id="age"
+          name="age"
+          value="<?php echo isset($update['fac_age']) ? $update['fac_age'] : ''; ?>"
+          required
+        />
+      </div>
+      <div class="mb-3">
+        <label for="mobile" class="form-label">Mobile</label>
+        <input
+          type="tel"
+          class="form-control"
+          id="mobile"
+          name="mobile"
+          value="<?php echo isset($update['fac_mobile']) ? $update['fac_mobile'] : ''; ?>"
+          required
+        />
+      </div>
+      <div class="mb-3">
+        <label for="address" class="form-label">Address</label>
+        <textarea
+          class="form-control"
+          id="address"
+          name="address"
+          required
+        ><?php echo isset($update['fac_address']) ? $update['fac_address'] : ''; ?></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Save</button>
+      <button type="button" class="btn btn-secondary" onclick="closeForm()">
+        Cancel
+      </button>
+    </form>
+  </div>
+</div>
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
   </body>
