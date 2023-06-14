@@ -173,7 +173,7 @@ $profileImageUrl='demo.png'
 
     <!-- Edit Profile Form -->
  <div class="edit-profile-form card d-none" id="editProfileForm">
-      <div class="card-header">
+      <div class="card-header mt-5 mb-5">
         <h5 class="card-title">Edit Profile</h5>
       </div>
       <div class="card-body">
@@ -199,11 +199,11 @@ $profileImageUrl='demo.png'
             <input type="text" class="form-control" id="address" name="address" value="<?php echo $update['fac_address']; ?>" required>
           </div>
           <button type="submit" class="btn btn-primary">Save</button>
+          <button  class="btn btn-primary" id="closeForm" onclick="closeForm(event)">Cancel</button>
+
         </form>
       </div>
     </div>
-
-
 </div>
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
@@ -258,9 +258,14 @@ function openForm() {
   document.getElementById('editProfileForm').classList.remove('d-none');
 }
 
-function closeForm() {
+function closeForm(event) {
+  event.preventDefault(); // Prevent form submission
+
+
   document.getElementById('editProfileForm').classList.add('d-none');
+  return false;
 }
+
 </script>
 
 <style>
@@ -419,4 +424,11 @@ body {
   color: #fafafa;
 }
 
+.card-title, .form-label{
+  color: #fafafa;
+}
+
+.form-control{
+  width:450px;
+}
 </style>
