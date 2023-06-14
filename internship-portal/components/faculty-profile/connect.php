@@ -1,16 +1,5 @@
 <?php
-$dbhost = "localhost";
-$dbuser = "root";
-$dbpassword = "";
-$dbname = "internship_portal";
 
-if (!$con = mysqli_connect($dbhost, $dbuser, $dbpassword, $dbname)) {
-    die("Failed to connect");
-}
-?>
-
-<?php
-session_start();
 $dbhost = "localhost";
 $dbuser = "root";
 $dbpassword = "";
@@ -41,6 +30,18 @@ function update_data($con) {
   );
 }
 
+function update_existing_data($con, $fullName, $email, $age, $mobile, $address) {
+  // Update the data in the database
+  $query = "UPDATE faculty_panel SET fac_name = '$fullName', fac_email = '$email', fac_age = '$age', fac_mobile = '$mobile', fac_address = '$address' WHERE fac_id = 15"; // Replace 'faculty_panel' with the actual table name and adjust the condition as needed
+  $result = mysqli_query($con, $query);
+
+  if ($result) {
+    return true; // Return true if the update was successful
+  } else {
+    return false; // Return false if the update failed
+  }
+}
+
 // Check if $_POST data is available before calling update_data function
 if ($_SERVER['REQUEST_METHOD'] == "POST" && !empty($_POST['fullName']) && !empty($_POST['email']) && !empty($_POST['age']) && !empty($_POST['mobile']) && !empty($_POST['address'])) {
     $fullName = $_POST['fullName'];
@@ -54,3 +55,5 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && !empty($_POST['fullName']) && !empty
 
 $update = update_data($con);
 ?>
+
+

@@ -177,30 +177,26 @@ $profileImageUrl='demo.png'
         <h5 class="card-title">Edit Profile</h5>
       </div>
       <div class="card-body">
-        <?php if (isset($_SESSION['message'])): ?>
-          <div class="alert alert-info"><?php echo $_SESSION['message']; ?></div>
-          <?php unset($_SESSION['message']); ?>
-        <?php endif; ?>
-        <form action="" method="post">
+        <form  method="post" action="update_profile.php">
           <div class="mb-3">
             <label for="fullName" class="form-label">Full Name</label>
-            <input type="text" class="form-control" id="fullName" name="fullName" value="<?php echo $facultyData['fac_name']; ?>" required>
+            <input type="text" class="form-control" id="fullName" name="fullName" value=" <?php echo $update['fac_name']; ?>" required>
           </div>
           <div class="mb-3">
             <label for="email" class="form-label">Email</label>
-            <input type="email" class="form-control" id="email" name="email" value="<?php echo $facultyData['fac_email']; ?>" required>
+            <input type="email" class="form-control" id="email" name="email" value=" <?php echo $update['fac_email']; ?>" required>
           </div>
           <div class="mb-3">
             <label for="age" class="form-label">Age</label>
-            <input type="number" class="form-control" id="age" name="age" value="<?php echo $facultyData['fac_age']; ?>" required>
+            <input type="number" class="form-control" id="age" name="age" value= "<?php echo $update['fac_age']; ?>" required>
           </div>
           <div class="mb-3">
             <label for="mobile" class="form-label">Mobile</label>
-            <input type="text" class="form-control" id="mobile" name="mobile" value="<?php echo $facultyData['fac_mobile']; ?>" required>
+            <input type="text" class="form-control" id="mobile" name="mobile" value="<?php echo $update['fac_mobile']; ?>" required>
           </div>
           <div class="mb-3">
             <label for="address" class="form-label">Address</label>
-            <input type="text" class="form-control" id="address" name="address" value="<?php echo $facultyData['fac_address']; ?>" required>
+            <input type="text" class="form-control" id="address" name="address" value="<?php echo $update['fac_address']; ?>" required>
           </div>
           <button type="submit" class="btn btn-primary">Save</button>
         </form>
