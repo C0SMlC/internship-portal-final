@@ -1,4 +1,6 @@
 <?php
+require 'connect.php';
+$update = update_data($con);
 $profileImageUrl = "demo.png";
 ?>
     <div class="main-container">
@@ -33,7 +35,7 @@ $profileImageUrl = "demo.png";
                     class="rounded-circle img-fluid"
                     style="width: 150px"
                   />
-                  <h5 class="my-3">John Smith</h5>
+                  <h5 class="my-3"><?php echo $update['s_name']; ?></h5>
                   <p class="text-muted mb-1">Upload Image</p>
                 </div>
               </div>
@@ -45,7 +47,7 @@ $profileImageUrl = "demo.png";
                       <p class="mb-0">Full Name</p>
                     </div>
                     <div class="col-sm-9">
-                      <p class="text-muted mb-0">Johnatan Smith</p>
+                      <p class="text-muted mb-0"><?php echo $update['s_name']; ?></p>
                     </div>
                   </div>
                   <hr />
@@ -54,7 +56,7 @@ $profileImageUrl = "demo.png";
                       <p class="mb-0">Email</p>
                     </div>
                     <div class="col-sm-9">
-                      <p class="text-muted mb-0">example@example.com</p>
+                      <p class="text-muted mb-0"><?php echo $update['s_email']; ?></p>
                     </div>
                   </div>
                   <hr />
@@ -63,7 +65,7 @@ $profileImageUrl = "demo.png";
                       <p class="mb-0">Age</p>
                     </div>
                     <div class="col-sm-9">
-                      <p class="text-muted mb-0">20</p>
+                      <p class="text-muted mb-0"><?php echo $update['s_age']; ?></p>
                     </div>
                   </div>
                   <hr />
@@ -72,7 +74,7 @@ $profileImageUrl = "demo.png";
                       <p class="mb-0">Mobile</p>
                     </div>
                     <div class="col-sm-9">
-                      <p class="text-muted mb-0">(098) 765-4321</p>
+                      <p class="text-muted mb-0"><?php echo $update['s_mobile']; ?></p>
                     </div>
                   </div>
                   <hr />
@@ -81,7 +83,7 @@ $profileImageUrl = "demo.png";
                       <p class="mb-0">Address</p>
                     </div>
                     <div class="col-sm-9">
-                      <p class="text-muted mb-0">Bay Area, San Francisco, CA</p>
+                      <p class="text-muted mb-0"><?php echo $update['s_address']; ?></p>
                     </div>
                   </div>
                 </div>
@@ -186,7 +188,7 @@ $profileImageUrl = "demo.png";
           <h5 class="card-title">Edit Profile</h5>
         </div>
         <div class="card-body form-card-body">
-          <form>
+          <form method = "post" action = "update_profile.php">
             <div class="mb-3">
               <label for="fullName" class="form-label">Full Name</label>
               <input
@@ -194,6 +196,7 @@ $profileImageUrl = "demo.png";
                 class="form-control"
                 id="fullName"
                 name="fullName"
+                value = "<?php echo $update['s_name']; ?>"
                 required
               />
             </div>
@@ -204,6 +207,7 @@ $profileImageUrl = "demo.png";
                 class="form-control"
                 id="email"
                 name="email"
+                value="<?php echo $update['s_email']; ?>"
                 required
               />
             </div>
@@ -214,6 +218,7 @@ $profileImageUrl = "demo.png";
                 class="form-control"
                 id="age"
                 name="age"
+                value="<?php echo $update['s_age']; ?>"
                 required
               />
             </div>
@@ -224,6 +229,7 @@ $profileImageUrl = "demo.png";
                 class="form-control"
                 id="mobile"
                 name="mobile"
+                value = "<?php echo $update['s_mobile']; ?>"
                 required
               />
             </div>
@@ -233,6 +239,7 @@ $profileImageUrl = "demo.png";
                 class="form-control"
                 id="address"
                 name="address"
+                value = "<?php echo $update['s_address']; ?>"
                 required
               ></textarea>
             </div>
@@ -322,7 +329,7 @@ body {
   height: 100%;
   position: relative;
   font-size: 100%;
-  background-color: #;
+  background-color: #eee;
 }
 
 .main-container {
