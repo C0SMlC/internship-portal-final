@@ -5,7 +5,7 @@ $favicon = "../../assets/favicon.ico";
 include_once("../../components/head.php");
 
 //pagination part
-//connect db here
+// connect db here
 // include "../../connect/connect.php";
 // if (isset($_GET["page"])) {
 //     $page = $_GET["page"];

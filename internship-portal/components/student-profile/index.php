@@ -241,7 +241,7 @@ $profileImageUrl = "demo.png";
                 name="address"
                 value = "<?php echo $update['s_address']; ?>"
                 required
-              ></textarea>
+              ><?php echo $update['s_address']; ?></textarea>
             </div>
             <button type="submit" class="btn btn-primary">Save</button>
             <button
