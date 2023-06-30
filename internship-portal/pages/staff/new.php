@@ -3,6 +3,35 @@ $title = "Dashboard";
 $style = "./styles/global.css";
 $favicon = "../../assets/favicon.ico";
 include_once("../../components/head.php");
+require "../../connect/connect.php";
+
+if ($_SERVER['REQUEST_METHOD'] == "POST" && !empty($_POST['announcement_title']) && !empty($_POST['description']) && !empty($_POST['skills_required']) && !empty($_POST['location']) && !empty($_POST['start_date']) && !empty($_POST['duration']) && !empty($_POST['branch']) && !empty($_POST['work_type']) && !empty($_POST['stipend_type']) && !empty($_POST['work_location']) && !empty($_POST['perks'])) {
+    $announcement_title = $_POST['announcement_title'];
+    $description = $_POST['description'];
+    $skills_required = $_POST['skills_required'];
+    $location = $_POST['location'];
+    $start_date = $_POST['start_date'];
+    $duration = $_POST['duration'];
+    $branch = $_POST['branch'];
+    $work_type = $_POST['work_type'];
+    $stipend_type = $_POST['stipend_type'];
+    $stipend = $_POST['stipend'];
+    $work_location = $_POST['work_location'];
+    $perks = $_POST['perks'];
+
+    $query = "insert into new_annoucement(announcement_title,description, skills_required, location, start_date, duration, branch, work_type, stipend_type, stipend, work_location, perks ) values('$announcement_title', ' $description', '$skills_required', '$location', '$start_date', '$duration', '$branch', '$work_type', '$stipend_type', '$stipend', '$work_location', '$perks') ";
+    if(mysqli_query($db_connection, $query))
+    {
+        return true;
+        die;
+    }else{
+        echo "error". mysqli_error($db_connection);
+    }
+  
+
+}
+else{echo "empty";
+}
 ?>
 
 <!-- Auth -->
@@ -24,7 +53,7 @@ include_once("../../components/head.php");
                     <br>
                     <br>
 
-                    <input type="text" class="form-control" spellcheck="false" required autocomplete="off" name="Title"
+                    <input type="text" class="form-control" spellcheck="false" required autocomplete="off" name="announcement_title"
                         id="Title" placeholder="e.g. ABC pvt. ltd. hiring interns for XYZ fields....">
                 </div>
                 <br>
@@ -39,7 +68,7 @@ include_once("../../components/head.php");
                     <br>
 
                     <textarea class="form-control" id="Description" rows="10"
-                        placeholder="Description Of Announcement"></textarea>
+                        placeholder="Description Of Announcement" name = "description"></textarea>
                 </div>
                 <div class="mb-3">
                     <label for="skills" class="form-label">
@@ -50,20 +79,20 @@ include_once("../../components/head.php");
                     </label>
                     <br>
                     <textarea class="form-control" id="skills" rows="2"
-                        placeholder="e.g. AutoCAD, JAVA, Web development, PCB Designing, etc..."></textarea>
+                        placeholder="e.g. AutoCAD, JAVA, Web development, PCB Designing, etc..." name = "skills_required"></textarea>
                 </div>
                 <div class="col-12">
                     <strong for="Location" class="form-label">Location</strong>
                     <br>
 
                     <input type="text" class="form-control" spellcheck="false" required autocomplete="off"
-                        name="Location" id="Location" placeholder="e.g. Raigad,Panvel">
+                        name="location" id="Location" placeholder="e.g. Raigad,Panvel">
                 </div>
                 <br>
 
                 <div class="col-12">
                     <strong for="startDate" class="form-label">Start Date</strong>
-                    <input id="startDate" class="form-control" type="date" />
+                    <input id="startDate" class="form-control" type="date" name = "start_date" />
 
                 </div>
                 <br>
@@ -73,7 +102,7 @@ include_once("../../components/head.php");
                     <br>
 
                     <input type="text" class="form-control" spellcheck="false" required autocomplete="off"
-                        name="Duration" id="Duration" placeholder="Number (In Months)">
+                        name="duration" id="Duration" placeholder="Number (In Months)">
                 </div>
                 <br>
 
@@ -83,7 +112,7 @@ include_once("../../components/head.php");
                     <br>
 
                     <label class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="ECS" value="ECS" />
+                        <input class="form-check-input" type="radio" name="branch" value="ECS" />
                         <span class="form-check-label">ECS</span>
                     </label>
                     <label class="form-check form-check-inline">
@@ -91,23 +120,23 @@ include_once("../../components/head.php");
                         <span class="form-check-label">EXTC</span>
                     </label>
                     <label class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="CS" value="CS" />
+                        <input class="form-check-input" type="radio" name="branch" value="CS" />
                         <span class="form-check-label">CS</span>
                     </label>
                     <label class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="IT" value="IT" />
+                        <input class="form-check-input" type="radio" name="branch" value="IT" />
                         <span class="form-check-label">IT</span>
                     </label>
                     <label class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="MECH" value="MECH" />
+                        <input class="form-check-input" type="radio" name="branch" value="MECH" />
                         <span class="form-check-label">MECH</span>
                     </label>
                     <label class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="AUTO" value="AUTO" />
+                        <input class="form-check-input" type="radio" name="branch" value="AUTO" />
                         <span class="form-check-label">AUTO</span>
                     </label>
                     <label class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="All" value="All" />
+                        <input class="form-check-input" type="radio" name="branch" value="All" />
                         <span class="form-check-label">All Branches</span>
                     </label>
 
@@ -118,11 +147,11 @@ include_once("../../components/head.php");
                     <br>
 
                     <label class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="WorkType" value="Paid" />
+                        <input class="form-check-input" type="radio" name="work_type" value="Paid" />
                         <span class="form-check-label"> Paid </span>
                     </label>
                     <label class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="WorkType" value="UnPaid" />
+                        <input class="form-check-input" type="radio" name="work_type" value="UnPaid" />
                         <span class="form-check-label"> Unpaid </span>
                     </label>
                 </div>
@@ -132,15 +161,15 @@ include_once("../../components/head.php");
                     <br>
 
                     <label class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="StipendType" value="Paid" />
+                        <input class="form-check-input" type="radio" name="stipend_type" value="Paid" />
                         <span class="form-check-label"> Lumpsum (After Internship Duration)</span>
                     </label>
                     <label class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="StipendType" value="UnPaid" />
+                        <input class="form-check-input" type="radio" name="stipend_type" value="UnPaid" />
                         <span class="form-check-label"> Monthly </span>
                     </label>
                     <label class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="StipendType" value="UnPaid" />
+                        <input class="form-check-input" type="radio" name="stipend_type" value="UnPaid" />
                         <span class="form-check-label"> Unpaid </span>
                     </label>
                 </div>
@@ -150,7 +179,7 @@ include_once("../../components/head.php");
                     <br>
 
                     <input type="text" class="form-control" spellcheck="false" required autocomplete="off"
-                        name="Stipend" id="Stipend" placeholder="(In Rupees)">
+                        name="stipend" id="Stipend" placeholder="(In Rupees)">
                 </div>
                 <div class="form-group">
                     <label><strong>Work Location :</strong></label>
@@ -158,15 +187,15 @@ include_once("../../components/head.php");
                     <br>
 
                     <label class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="Location" value="WFH" />
+                        <input class="form-check-input" type="radio" name="work_location" value="WFH" />
                         <span class="form-check-label"> Work From Home</span>
                     </label>
                     <label class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="Location" value="Hybrid" />
+                        <input class="form-check-input" type="radio" name="work_location" value="Hybrid" />
                         <span class="form-check-label"> Hybrid </span>
                     </label>
                     <label class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="Location" value="OnSite" />
+                        <input class="form-check-input" type="radio" name="work_location" value="OnSite" />
                         <span class="form-check-label"> On-site </span>
                     </label>
                 </div>
@@ -174,7 +203,7 @@ include_once("../../components/head.php");
                     <strong for="Perks" class="form-label">Perks</strong>
                     <br>
 
-                    <input type="text" class="form-control" spellcheck="false" required autocomplete="off" name="Perks"
+                    <input type="text" class="form-control" spellcheck="false" required autocomplete="off" name="perks"
                         id="Perks" placeholder="e.g. Certificate, Letter Of Recommendation, Flexible timings, etc...">
                 </div>
                 <br>
