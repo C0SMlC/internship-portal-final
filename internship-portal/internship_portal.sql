@@ -40,14 +40,14 @@ CREATE TABLE `admin` (
 -- Table structure for table `faculty`
 --
 
-CREATE TABLE `faculty` (
-  `F_ID` varchar(12) NOT NULL,
-  `F_Name` char(250) NOT NULL,
-  `F_Gender` char(10) NOT NULL,
-  `F_Age` int(100) NOT NULL,
-  `F_Phone_Number` int(10) NOT NULL,
-  `F_Email` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+-- CREATE TABLE `faculty` ( //remove comment later
+--   `F_ID` varchar(12) NOT NULL,
+--   `F_Name` char(250) NOT NULL,
+--   `F_Gender` char(10) NOT NULL,
+--   `F_Age` int(100) NOT NULL,
+--   `F_Phone_Number` int(10) NOT NULL,
+--   `F_Email` varchar(100) NOT NULL
+-- ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -71,15 +71,15 @@ CREATE TABLE `internship_details` (
 -- Table structure for table `student`
 --
 
-CREATE TABLE `student` (
-  `S_ID` varchar(20) NOT NULL,
-  `S_Name` char(250) DEFAULT NULL,
-  `S_Gender` char(10) DEFAULT NULL,
-  `S_Age` int(10) DEFAULT NULL,
-  `S_Ph_No` int(10) DEFAULT NULL,
-  `S_Email` varchar(250) DEFAULT NULL,
-  `S_Resume` varchar(500) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+-- CREATE TABLE `student` (  // remove comment afterwards
+--   `S_ID` varchar(20) NOT NULL,
+--   `S_Name` char(250) DEFAULT NULL,
+--   `S_Gender` char(10) DEFAULT NULL,
+--   `S_Age` int(10) DEFAULT NULL,
+--   `S_Ph_No` int(10) DEFAULT NULL,
+--   `S_Email` varchar(250) DEFAULT NULL,
+--   `S_Resume` varchar(500) DEFAULT NULL
+-- ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -109,8 +109,8 @@ ALTER TABLE `admin`
 --
 -- Indexes for table `faculty`
 --
-ALTER TABLE `faculty`
-  ADD PRIMARY KEY (`F_ID`);
+-- ALTER TABLE `faculty` //remove comment later
+--   ADD PRIMARY KEY (`F_ID`);
 
 --
 -- Indexes for table `internship_details`
@@ -121,9 +121,9 @@ ALTER TABLE `internship_details`
 --
 -- Indexes for table `student`
 --
-ALTER TABLE `student`
-  ADD PRIMARY KEY (`S_ID`);
-COMMIT;
+-- ALTER TABLE `student` //remove comment later
+--   ADD PRIMARY KEY (`S_ID`);
+-- COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

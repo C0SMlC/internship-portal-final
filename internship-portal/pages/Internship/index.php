@@ -3,6 +3,45 @@ $title = "Dashboard";
 $style = "./index.css";
 $favicon = "../../assets/favicon.ico";
 include_once("../../components/head.php");
+require "../../connect/connect.php";
+
+
+if(isset($_GET['id'])) {
+    // Retrieve the ID from the URL
+    $id = $_GET['id'];
+
+    // Query to fetch the specific announcement based on the ID
+    $query = "SELECT * FROM new_annoucement WHERE announcement_id = '$id'";
+    $result = mysqli_query($db_connection, $query);
+
+    // Check if a row is found
+    if(mysqli_num_rows($result) > 0) {
+        $row = mysqli_fetch_assoc($result);
+
+        // Extract the information from the row
+        $announcement_title = $row["announcement_title"];
+        $description = $row["description"];
+        $duration = $row["duration"];
+        $start_date = $row["start_date"];
+        $skills_required = $row["skills_required"];
+        $branch = $row["branch"];
+        $location = $row["location"];
+        $work_type = $row["work_type"];
+        $work_location = $row["work_location"];
+        $stipend_type = $row["stipend_type"];
+        $stipend = $row["stipend"];
+        $perks = $row["perks"];
+    } else {
+        // No announcement found with the specified ID, handle accordingly
+        echo "Announcement not found.";
+        exit;
+    }
+} else {
+    // ID parameter not present in the URL, handle accordingly
+    echo "Invalid request.";
+    exit;
+}
+
 ?>
 
 <body>
@@ -34,21 +73,10 @@ include_once("../../components/head.php");
         <div class="bg-light p-5 rounded">
 
 
-            <p class="h3 ">SportsKeeda is now hiring interns for content writing.</p>
+            <p class="h3 "><?php echo $announcement_title; ?></p>
             <br>
             <p class="lead">
-                Sportskeeda is looking for editing interns to join its team. They will start with the designation of
-                'Junior Editor Intern' and get promoted to 'Editor' after three months of theoretical and on-the-job
-                training.
-
-                We're looking for applicants who can commit to working with us for 6-7 hours a day for at least 6
-                months. You will be part of the team that edits and publishes highly engaging sports content from
-                writers across the world. We operate in an extremely competitive environment where quality and being
-                first to market are paramount.
-
-                Sportskeeda is home to engaging and premium sports content. It is one of the largest sports content
-                platforms in the world, connecting journalists, pundits, and experts with millions of sports readers
-                every day. Working here is a great way to further your journalistic career in sports.
+            <?php echo $description; ?>
             </p>
             <br>
             <div>
@@ -57,7 +85,7 @@ include_once("../../components/head.php");
                 </p>
                 <p class="lead">
                     <small>
-                        3 Months
+                    <?php echo $duration; ?>
                     </small>
                 </p>
             </div>
@@ -69,7 +97,7 @@ include_once("../../components/head.php");
                 <p class="lead">
 
                     <small>
-                        11/10/2022
+                    <?php echo $start_date; ?>
                     </small>
 
                 </p>
@@ -82,11 +110,7 @@ include_once("../../components/head.php");
                 <p class="lead">
                     <small>
 
-                        Content Writing,
-                        Copywriting,
-                        English Proficiency (Spoken),
-                        English Proficiency (Written),
-                        Proofreading.
+                    <?php echo $skills_required; ?>
                     </small>
                 </p>
             </div>
@@ -97,7 +121,7 @@ include_once("../../components/head.php");
                 </p>
                 <p class="lead">
                     <small>
-                        All Branches
+                    <?php echo $branch; ?>
                     </small>
                 </p>
             </div>
@@ -108,7 +132,8 @@ include_once("../../components/head.php");
                 </p>
                 <p class="lead">
                     <small>
-                        Raigad,Panvel.
+                    <?php echo $location; ?>
+                        
                     </small>
                 </p>
             </div>
@@ -120,7 +145,7 @@ include_once("../../components/head.php");
                 </p>
                 <p class="lead">
                     <small>
-                        Paid
+                    <?php echo $work_type; ?>
                     </small>
                 </p>
             </div>
@@ -131,7 +156,7 @@ include_once("../../components/head.php");
                 </p>
                 <p class="lead">
                     <small>
-                        On-site
+                    <?php echo $work_location; ?>
                     </small>
                 </p>
             </div>
@@ -142,7 +167,7 @@ include_once("../../components/head.php");
                 </p>
                 <p class="lead">
                     <small>
-                        Monthly
+                    <?php echo $stipend_type; ?>
                     </small>
                 </p>
             </div>
@@ -156,7 +181,7 @@ include_once("../../components/head.php");
                 <p class="lead">
                     &#x20b9;
                     <strong>
-                        5000-10000
+                    <?php echo $stipend; ?>
                     </strong>
                     <strong>/ Month</strong>
 
@@ -170,16 +195,14 @@ include_once("../../components/head.php");
                 <p class="lead text-muted">
                     <small>
                         <b>
-                            Certificate,
-                            Letter of recommendation,
-                            free snacks
+                        <?php echo $perks; ?>
                         </b>
                     </small>
                 </p>
             </div>
             <br>
             <div class="col d-flex align-items-center justify-content-center">
-                <a href="../staff/edit.php" class="btn btn-warning btn-lg col col-lg-2 col-md-4 col-sm-6 d-flex align-items-center justify-content-evenly" role="button" aria-disabled="true">
+                <a href="../staff/edit.php?id=<?php echo $id; ?>" class="btn btn-warning btn-lg col col-lg-2 col-md-4 col-sm-6 d-flex align-items-center justify-content-evenly" role="button" aria-disabled="true">
                     <div>
                         Edit
                     </div>
@@ -200,8 +223,8 @@ include_once("../../components/head.php");
                     </svg>
                 </a>
             </div>
-            <br>
-            <div class="col d-flex align-items-center justify-content-center">
+            <!-- <br> -->
+            <!-- <div class="col d-flex align-items-center justify-content-center">
                 <button href="../student/apply.php" class="btn btn-warning btn-lg col col-lg-3 col-md-4 col-sm-6 d-flex align-items-center justify-content-evenly" disabled role="button" aria-disabled="true">
                     <div>
                         Apply Now
@@ -211,15 +234,15 @@ include_once("../../components/head.php");
                         <path fill-rule="evenodd" d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0v-5z" />
                     </svg>
                 </button>
-            </div>
-            <br>
-            <div class="col d-flex align-items-center justify-content-center">
+            </div> -->
+            <!-- <br> -->
+            <!-- <div class="col d-flex align-items-center justify-content-center">
                 <button disabled class="btn btn-secondary btn-lg col col-lg-3 col-md-4 col-sm-6 d-flex align-items-center justify-content-evenly" role="button" aria-disabled="true">
                     <div>
                         Applied
                     </div>
                 </button>
-            </div>
+            </div> -->
         </div>
     </div>
 

@@ -3,20 +3,27 @@ $title = "Dashboard";
 $style = "./styles/global.css";
 $favicon = "../../assets/favicon.ico";
 include_once("../../components/head.php");
+require "../../connect/connect.php";
 
 //pagination part
-// connect db here
-// include "../../connect/connect.php";
-// if (isset($_GET["page"])) {
-//     $page = $_GET["page"];
-// } else {
-//     $page = 1;
-// }
-// $per_page_record = 10; // limit
-// $start_from = ($page - 1) * $per_page_record;
-// // $data_search = "SELECT * FROM userregisdata LIMIT $start_from, $per_page_record";//db query here
-// $data_search = "";
-// $query = mysqli_query($conn, $data_search);
+
+if (isset($_GET["page"])) {
+    $page = $_GET["page"];
+} else {
+    $page = 1;
+}
+$per_page_record = 10; // limit
+$start_from = ($page - 1) * $per_page_record;
+if(isset($_GET['search'])){
+    $search = $_GET['search'];
+    $data_search = "Select announcement_id, announcement_title, published_on from new_annoucement where announcement_id = '$search' OR announcement_title LIKE '%$search%' LIMIT $start_from, $per_page_record ";
+
+}else{
+    $data_search = "Select announcement_id, announcement_title, published_on from new_annoucement LIMIT $start_from, $per_page_record";
+}
+$query = mysqli_query($db_connection, $data_search);
+
+  
 ?>
 
 
@@ -29,9 +36,9 @@ include_once("../../components/head.php");
     <div class="container my-2 greet">
         <p>Previous Announcements</p>
         <!-- Search Button -->
-        <form class="row g-3">
+        <form class="row g-3" method = "GET">
                     <div class="col-auto">
-                        <input class="form-control" id="search" placeholder="ID or Company Name">
+                        <input class="form-control" id="search" placeholder="ID or Company Name" name = 'search'>
                     </div>
                     <div class="col-auto">
                         <button type="submit" class="btn btn-primary mb-3">Search</button>
@@ -54,14 +61,22 @@ include_once("../../components/head.php");
                 </tr>
             </thead>
             <tbody>
+                <?php
+                while($row = mysqli_fetch_assoc($query)) {
+                    $announcement_id = $row["announcement_id"];
+                    $announcement_title = $row["announcement_title"];
+                    $published_on = $row["published_on"];
+                ?>
                 <tr class="table-light">
                     <th class="pt-3 text-center text-danger" scope="row">
-                        14
+                        <?php 
+                        echo $row['announcement_id'];
+                        ?>
                     </th>
                     <td class="py-3 text-center ">
                         <div class="d-flex justify-content-center align-items-center">
 
-                            <a href="../Internship/" class="btn btn-primary" role="button">
+                            <a href="../Internship/index.php?id=<?php echo $announcement_id; ?>" class="btn btn-primary" role="button">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
                                     <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
                                     <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
@@ -71,10 +86,14 @@ include_once("../../components/head.php");
 
                     </td>
                     <td class="pt-3 ">
-                        Mark Industries pvt. ltd
+                    <?php 
+                        echo $row['announcement_title'];
+                    ?>
                     </td>
                     <td class="pt-3 text-center">
-                        18/10/2022
+                    <?php 
+                        echo $row['published_on'];
+                    ?>
                     </td>
                     <th class="pt-3 text-center text-success">
                         Active
@@ -117,8 +136,11 @@ include_once("../../components/head.php");
                         </div>
 
                     </td>
-
+                <?php 
+                }
+                ?>
                 </tr>
+               
 
             </tbody>
         </table>
