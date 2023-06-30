@@ -156,8 +156,7 @@ if (isset($_GET["page"])) {
                 ?>
                 <li class="page-item <?php //if ($page == $total_pages) echo "disabled" 
                                         ?>">
-                    <a class="page-link" href="previous.php?page=<?php //if ($page < $total_pages) echo $page + 1; 
-                                                                    ?>">Next</a>
+                    <a class="page-link" href="previous.php?page=<?php //if ($page < $total_pages) echo $page + 1;  ?>">Next</a>
                 </li>
             </ul>
         </nav>
