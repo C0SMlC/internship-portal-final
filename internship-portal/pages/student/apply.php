@@ -4,10 +4,9 @@ $style = "./styles/global.css";
 $favicon = "../../assets/favicon.ico";
 include_once("../../components/head.php");
 ?>
-<?php
-require './auth.php';
-?>
-
+//<?php
+//require './auth.php';
+//?>
 <body>
     <?php
     include_once("../../components/navbar/index.php");
@@ -17,12 +16,9 @@ require './auth.php';
     </div>
     <div class="container my-3" id="content">
         <div class="container my-3 text-justify" id="content">
-            
             <div class="bg-light p-5 rounded">
                 <form class="row g-3" action="<?php echo htmlentities($_SERVER['PHP_SELF']) ?>" method="POST">
-
                     <div class="col-12">
-
                         <strong for="userName" class="form-label">Student Full Name</strong>
                         <input type="text" class="form-control" spellcheck="false" required autocomplete="off" name="userName" id="userName" placeholder="John Richard Doe">
                     </div>
@@ -52,8 +48,6 @@ require './auth.php';
                         </div>
 
                     </div>
-
-
                     <div class="container text-center">
                         <div class="row mx-auto">
                             <div class="col mt-3">
@@ -65,11 +59,5 @@ require './auth.php';
                 </form>
             </div>
         </div>
-
-
-
-
-
 </body>
-
 </html>
