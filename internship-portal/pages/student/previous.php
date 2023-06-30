@@ -93,7 +93,7 @@ mysqli_close($connection);
                             <?php if ($application['Status'] == 'Approved'): ?>
                                 <span class="status-approved">Approved</span>
                             <?php elseif ($application['Status'] == 'Rejected'): ?>
-                                <span class="status-rejected">Reject</span>
+                                <span class="status-rejected">Rejected</span>
                             <?php else: ?>
                                 <?php echo $application['Status']; ?>
                             <?php endif; ?>
