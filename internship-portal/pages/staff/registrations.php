@@ -36,7 +36,7 @@ include_once("../../components/head.php");
                     <th scope="col">ID</th>
                     <th scope="col">Applicant Name</th>
                     <th scope="col">Resume</th>
-
+                    <th scope="col">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -50,6 +50,10 @@ include_once("../../components/head.php");
                     <td class="pt-3 text-center">
                         <a href="#" target="_blank">Link</a>
                     </td>
+                    <td class="text-center">
+                        <button class="btn btn-success">Approve</button>
+                        <button class="btn btn-danger">Reject</button>
+                    </td>
                 </tr>
                 <tr class="table-light">
                     <th class="pt-3 text-center" scope="row">
@@ -61,8 +65,11 @@ include_once("../../components/head.php");
                     <td class="pt-3 text-center">
                         <a href="#" target="_blank">Link</a>
                     </td>
+                    <td class="text-center">
+                        <button class="btn btn-success">Approve</button>
+                        <button class="btn btn-danger">Reject</button>
+                    </td>
                 </tr>
-
                 <tr class="table-light">
                     <th class="pt-3 text-center" scope="row">
                         13
@@ -73,8 +80,11 @@ include_once("../../components/head.php");
                     <td class="pt-3 text-center">
                         <a href="#" target="_blank">Link</a>
                     </td>
+                    <td class="text-center">
+                        <button class="btn btn-success">Approve</button>
+                        <button class="btn btn-danger">Reject</button>
+                    </td>
                 </tr>
-
                 <tr class="table-light">
                     <th class="pt-3 text-center" scope="row">
                         13
@@ -85,8 +95,11 @@ include_once("../../components/head.php");
                     <td class="pt-3 text-center">
                         <a href="#" target="_blank">Link</a>
                     </td>
+                    <td class="text-center">
+                        <button class="btn btn-success">Approve</button>
+                        <button class="btn btn-danger">Reject</button>
+                    </td>
                 </tr>
-
                 <tr class="table-light">
                     <th class="pt-3 text-center" scope="row">
                         13
@@ -97,9 +110,11 @@ include_once("../../components/head.php");
                     <td class="pt-3 text-center">
                         <a href="#" target="_blank">Link</a>
                     </td>
+                    <td class="text-center">
+                        <button class="btn btn-success">Approve</button>
+                        <button class="btn btn-danger">Reject</button>
+                    </td>
                 </tr>
-
-
             </tbody>
         </table>
         <br>
@@ -135,7 +150,7 @@ include_once("../../components/head.php");
                         $pagLink = "<li class='page-item active'><a class='page-link'  href='previous.php?page=$i'>" . $i . "</a></li>";
                     } else {
                         $pagLink = "<li class='page-item'><a class='page-link'  href='previous.php?page=$i'>" . $i . "</a></li>";
-                    };
+                    }
                     echo $pagLink;
                 }
                 ?>

@@ -19,7 +19,7 @@ include_once("../../components/head.php");
 // $query = mysqli_query($conn, $data_search);
 ?>
 <?php
-require './auth.php';
+// require './auth.php';
 ?>
 
 <head>

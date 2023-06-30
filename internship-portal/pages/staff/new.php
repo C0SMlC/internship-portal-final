@@ -87,6 +87,10 @@ include_once("../../components/head.php");
                         <span class="form-check-label">ECS</span>
                     </label>
                     <label class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="EXTX" value="EXTC" />
+                        <span class="form-check-label">EXTC</span>
+                    </label>
+                    <label class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" name="CS" value="CS" />
                         <span class="form-check-label">CS</span>
                     </label>
