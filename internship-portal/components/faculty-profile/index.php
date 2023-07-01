@@ -99,7 +99,7 @@ $profileImageUrl='demo.png'
           <!-- Dashboard -->
           <div class="col-lg-8">
             <div class="d-flex align-items-center justify-content-between mb-5">
-              <h2>Internship Details</h2>
+              <h2>Previous Internship Details</h2>
               <a href="./new.php" type="button" class="btn btn-primary">Publish</a>
             </div>
 
