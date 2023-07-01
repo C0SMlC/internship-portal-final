@@ -7,24 +7,24 @@ require "../../connect/connect.php";
 
 //pagination part
 
-if (isset($_GET["page"])) {
-    $page = $_GET["page"];
-} else {
-    $page = 1;
-}
-$per_page_record = 10; // limit
-$start_from = ($page - 1) * $per_page_record;
-if(isset($_GET['search'])){
-    $search = $_GET['search'];
-    $data_search = "Select announcement_id, announcement_title, published_on from new_annoucement where announcement_id = '$search' OR announcement_title LIKE '%$search%' LIMIT $start_from, $per_page_record ";
+// if (isset($_GET["page"])) {
+//     $page = $_GET["page"];
+// } else {
+//     $page = 1;
+// }
+// $per_page_record = 10; // limit
+// $start_from = ($page - 1) * $per_page_record;
+// if(isset($_GET['search'])){
+//     $search = $_GET['search'];
+//     $data_search = "Select announcement_id, announcement_title, published_on from new_annoucement where announcement_id = '$search' OR announcement_title LIKE '%$search%' LIMIT $start_from, $per_page_record ";
 
-}else{
-    $data_search = "Select announcement_id, announcement_title, published_on from new_annoucement LIMIT $start_from, $per_page_record";
-}
-$query = mysqli_query($db_connection, $data_search);
+// }else{
+//     $data_search = "Select announcement_id, announcement_title, published_on from new_annoucement LIMIT $start_from, $per_page_record";
+// }
+// $query = mysqli_query($db_connection, $data_search);
 
   
-?>
+// ?>
 
 
 <!-- Auth -->

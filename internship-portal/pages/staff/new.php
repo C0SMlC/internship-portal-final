@@ -30,8 +30,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && !empty($_POST['announcement_title'])
   
 
 }
-else{echo "empty";
-}
+// else{echo "empty";
+// }
 ?>
 
 <!-- Auth -->
@@ -107,40 +107,40 @@ else{echo "empty";
                 <br>
 
                 <div class="form-group">
-                    <label><strong>Branch :</strong></label>
-                    <br>
-                    <br>
+    <label><strong>Branch :</strong></label>
+    <br>
+    <br>
 
-                    <label class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="branch" value="ECS" />
-                        <span class="form-check-label">ECS</span>
-                    </label>
-                    <label class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="EXTX" value="EXTC" />
-                        <span class="form-check-label">EXTC</span>
-                    </label>
-                    <label class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="branch" value="CS" />
-                        <span class="form-check-label">CS</span>
-                    </label>
-                    <label class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="branch" value="IT" />
-                        <span class="form-check-label">IT</span>
-                    </label>
-                    <label class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="branch" value="MECH" />
-                        <span class="form-check-label">MECH</span>
-                    </label>
-                    <label class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="branch" value="AUTO" />
-                        <span class="form-check-label">AUTO</span>
-                    </label>
-                    <label class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="branch" value="All" />
-                        <span class="form-check-label">All Branches</span>
-                    </label>
+    <label class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" name="branch[]" value="ECS" />
+        <span class="form-check-label">ECS</span>
+    </label>
+    <label class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" name="branch[]" value="EXTC" />
+        <span class="form-check-label">EXTC</span>
+    </label>
+    <label class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" name="branch[]" value="CS" />
+        <span class="form-check-label">CS</span>
+    </label>
+    <label class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" name="branch[]" value="IT" />
+        <span class="form-check-label">IT</span>
+    </label>
+    <label class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" name="branch[]" value="MECH" />
+        <span class="form-check-label">MECH</span>
+    </label>
+    <label class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" name="branch[]" value="AUTO" />
+        <span class="form-check-label">AUTO</span>
+    </label>
+    <label class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" name="branch[]" value="All" />
+        <span class="form-check-label">All Branches</span>
+    </label>
+          </div>
 
-                </div>
                 <div class="form-group">
                     <label><strong>Work type :</strong></label>
                     <br>
