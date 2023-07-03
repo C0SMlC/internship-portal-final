@@ -54,7 +54,6 @@ require "../../connect/connect.php";
                     <th scope="col">Title</th>
                     <th scope="col">Published On</th>
                     <th scope="col">Status</th>
-                    <th scope="col">Operation</th>
                     <th scope="col">Registrations</th>
                     <th scope="col">Download</th>
 
