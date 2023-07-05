@@ -40,7 +40,7 @@ if (isset($_GET["page"])) {
                 </tr>
             </thead>
             <tbody>
-                <tr class="table-light">
+                <tr class="table-light" data-applicant-id="1">
                     <th class="pt-3 text-center" scope="row">
                         13
                     </th>
@@ -55,7 +55,7 @@ if (isset($_GET["page"])) {
                         <button class="btn btn-danger">Reject</button>
                     </td>
                 </tr>
-                <tr class="table-light">
+                <tr class="table-light" data-applicant-id="2">
                     <th class="pt-3 text-center" scope="row">
                         13
                     </th>
@@ -70,7 +70,7 @@ if (isset($_GET["page"])) {
                         <button class="btn btn-danger">Reject</button>
                     </td>
                 </tr>
-                <tr class="table-light">
+                <tr class="table-light" data-applicant-id="3">
                     <th class="pt-3 text-center" scope="row">
                         13
                     </th>
@@ -85,7 +85,7 @@ if (isset($_GET["page"])) {
                         <button class="btn btn-danger">Reject</button>
                     </td>
                 </tr>
-                <tr class="table-light">
+                <tr class="table-light" data-applicant-id="4">
                     <th class="pt-3 text-center" scope="row">
                         13
                     </th>
@@ -100,7 +100,7 @@ if (isset($_GET["page"])) {
                         <button class="btn btn-danger">Reject</button>
                     </td>
                 </tr>
-                <tr class="table-light">
+                <tr class="table-light" data-applicant-id="5">
                     <th class="pt-3 text-center" scope="row">
                         13
                     </th>
@@ -161,6 +161,45 @@ if (isset($_GET["page"])) {
             </ul>
         </nav>
     </div>
+
+    <script>
+    // Get all the "Approve" buttons
+    const approveButtons = document.querySelectorAll('.btn-success');
+    const rejectedButtons = document.querySelectorAll('.btn-danger');
+
+    // Add event listeners to each "Approve" button
+    approveButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            // Get the parent table row
+            const tableRow = this.closest('tr');
+
+            // Change the status to "Approved"
+            const statusCell = tableRow.querySelector('td:nth-child(4)');
+            statusCell.textContent = 'Approved';
+            statusCell.style.color = 'green';
+            // Hide the "Reject" button
+            const rejectButton = tableRow.querySelector('.btn-danger');
+            rejectButton.style.display = 'none';
+        });
+    });
+
+        rejectedButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            // Get the parent table row
+            const tableRow = this.closest('tr');
+
+            // Change the status to "Approved"
+            const statusCell = tableRow.querySelector('td:nth-child(4)');
+            statusCell.textContent = 'Rejected';
+            statusCell.style.color = 'red';
+
+            // Hide the "Reject" button
+            const approveButton = tableRow.querySelector('.btn-success');
+            approveButton.style.display = 'none';
+        });
+    });
+</script>
+
 </body>
 
 </html>
