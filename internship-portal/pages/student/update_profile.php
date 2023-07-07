@@ -1,18 +1,34 @@
 <?php
-require '../../components/student-profile/connect.php';
+require 'C:\xampp\htdocs\internship-portal-final\internship-portal\connect\connect.php';
 
-// Check if $_POST data is available before calling update_data function
-if (update_existing_data($con, $fullName, $email, $age, $mobile, $address)) {
-    echo "Data updated successfully.";
-    echo "<a onclick=\"goToHomeScreen()\" style=\"cursor: pointer; color: blue;\">Go back to Home Screen</a>";
-} else {
-    echo "Failed to update data.";
-}
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $fullName = $_POST['fullName'] ?? '';
+    $email = $_POST['email'] ?? '';
+    $age = $_POST['age'] ?? '';
+    $mobile = $_POST['mobile'] ?? '';
+    $address = $_POST['address'] ?? '';
 
-echo "<script>
-    function goToHomeScreen() {
-        window.location.href = 'http://localhost/internship-portal-final/internship-portal/pages/student'; // Replace with your home screen URL
+    if (update_existing_data($db_connection, $fullName, $email, $age, $mobile, $address)) {
+        // Redirect to the desired URL after the data update
+        header('Location: http://localhost/internship-portal-final/internship-portal/pages/student/');
+        exit();
+    } else {
+        echo "Failed to update data.";
     }
-</script>";
+}
+function update_existing_data($con, $fullName, $email, $age, $mobile, $address)
+{
+    $query = "UPDATE student_profile SET fullName = ?, email = ?, age = ?, mobile = ?, address = ? WHERE id = 1";
 
+    $stmt = mysqli_prepare($con, $query);
+    mysqli_stmt_bind_param($stmt, 'ssiss', $fullName, $email, $age, $mobile, $address);
+
+    if (mysqli_stmt_execute($stmt)) {
+        mysqli_stmt_close($stmt);
+        return true;
+    } else {
+        mysqli_stmt_close($stmt);
+        return false;
+    }
+}
 ?>

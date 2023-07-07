@@ -7,24 +7,24 @@ require "../../connect/connect.php";
 
 //pagination part
 
-if (isset($_GET["page"])) {
-    $page = $_GET["page"];
-} else {
-    $page = 1;
-}
-$per_page_record = 10; // limit
-$start_from = ($page - 1) * $per_page_record;
-if(isset($_GET['search'])){
-    $search = $_GET['search'];
-    $data_search = "Select announcement_id, announcement_title, published_on from new_annoucement where announcement_id = '$search' OR announcement_title LIKE '%$search%' LIMIT $start_from, $per_page_record ";
+// if (isset($_GET["page"])) {
+//     $page = $_GET["page"];
+// } else {
+//     $page = 1;
+// }
+// $per_page_record = 10; // limit
+// $start_from = ($page - 1) * $per_page_record;
+// if(isset($_GET['search'])){
+//     $search = $_GET['search'];
+//     $data_search = "Select announcement_id, announcement_title, published_on from new_annoucement where announcement_id = '$search' OR announcement_title LIKE '%$search%' LIMIT $start_from, $per_page_record ";
 
-}else{
-    $data_search = "Select announcement_id, announcement_title, published_on from new_annoucement LIMIT $start_from, $per_page_record";
-}
-$query = mysqli_query($db_connection, $data_search);
+// }else{
+//     $data_search = "Select announcement_id, announcement_title, published_on from new_annoucement LIMIT $start_from, $per_page_record";
+// }
+// $query = mysqli_query($db_connection, $data_search);
 
   
-?>
+// ?>
 
 
 <!-- Auth -->
@@ -54,7 +54,6 @@ $query = mysqli_query($db_connection, $data_search);
                     <th scope="col">Title</th>
                     <th scope="col">Published On</th>
                     <th scope="col">Status</th>
-                    <th scope="col">Operation</th>
                     <th scope="col">Registrations</th>
                     <th scope="col">Download</th>
 
@@ -98,18 +97,6 @@ $query = mysqli_query($db_connection, $data_search);
                     <th class="pt-3 text-center text-success">
                         Active
                     </th>
-                    <td class="py-3 text-center ">
-                        <div class="d-flex justify-content-center align-items-center">
-
-                            <button class="btn btn-success" role="button">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
-                                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
-                                </svg>
-                            </button>
-
-                        </div>
-
-                    </td>
                     <td class="py-3 text-center ">
                         <div class="d-flex justify-content-center align-items-center">
 
