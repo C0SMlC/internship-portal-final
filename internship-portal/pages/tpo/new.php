@@ -3,7 +3,6 @@ $title = "Dashboard";
 $style = "./styles/global.css";
 $favicon = "../../assets/favicon.ico";
 include_once("../../components/head.php");
-require "../../connect/connect.php";
 
 if ($_SERVER['REQUEST_METHOD'] == "POST" && !empty($_POST['announcement_title']) && !empty($_POST['description']) && !empty($_POST['skills_required']) && !empty($_POST['location']) && !empty($_POST['start_date']) && !empty($_POST['duration']) && !empty($_POST['branch']) && !empty($_POST['work_type']) && !empty($_POST['stipend_type']) && !empty($_POST['work_location']) && !empty($_POST['perks'])) {
     $announcement_title = $_POST['announcement_title'];
@@ -12,27 +11,47 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && !empty($_POST['announcement_title'])
     $location = $_POST['location'];
     $start_date = $_POST['start_date'];
     $duration = $_POST['duration'];
-    $branch = $_POST['branch'];
+    $branch = implode(',', $_POST['branch']); // Convert array of selected branches to comma-separated string
     $work_type = $_POST['work_type'];
     $stipend_type = $_POST['stipend_type'];
     $stipend = $_POST['stipend'];
     $work_location = $_POST['work_location'];
     $perks = $_POST['perks'];
 
-    $query = "insert into new_annoucement(announcement_title,description, skills_required, location, start_date, duration, branch, work_type, stipend_type, stipend, work_location, perks ) values('$announcement_title', ' $description', '$skills_required', '$location', '$start_date', '$duration', '$branch', '$work_type', '$stipend_type', '$stipend', '$work_location', '$perks') ";
-    if(mysqli_query($db_connection, $query))
-    {
-        return true;
-        die;
-    }else{
-        echo "error". mysqli_error($db_connection);
+    // Establish database connection
+    $db_host = "localhost";
+    $db_user = "root";
+    $db_pass = "";
+    $db_name = "upload";
+    
+    $db_connection = mysqli_connect($db_host, $db_user, $db_pass, $db_name);
+    if (!$db_connection) {
+        die("Connection failed: " . mysqli_connect_error());
     }
-  
 
+    // Prepare the SQL statement
+    $query = "INSERT INTO new_annoucement (announcement_title, description, skills_required, location, start_date, duration, branch, work_type, stipend_type, stipend, work_location, perks) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+    // Prepare the statement
+    $statement = mysqli_prepare($db_connection, $query);
+
+    // Bind the parameters
+    mysqli_stmt_bind_param($statement, "ssssssssssss", $announcement_title, $description, $skills_required, $location, $start_date, $duration, $branch, $work_type, $stipend_type, $stipend, $work_location, $perks);
+
+    // Execute the statement
+    if (mysqli_stmt_execute($statement)) {
+        mysqli_stmt_close($statement);
+        mysqli_close($db_connection);
+        header("Location: anouncementsuccess.php");
+        exit();
+    } else {
+        echo "Error: " . mysqli_stmt_error($statement);
+    }
+} else {
+    echo "";
 }
-// else{echo "empty";
-// }
 ?>
+
 
 <!-- Auth -->
 
@@ -107,40 +126,42 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && !empty($_POST['announcement_title'])
                 <br>
 
                 <div class="form-group">
-    <label><strong>Branch :</strong></label>
-    <br>
-    <br>
+                    <label><strong>Branch :</strong></label>
+                    <br>
+                    <br>
 
-    <label class="form-check form-check-inline">
-        <input class="form-check-input" type="checkbox" name="branch[]" value="ECS" />
-        <span class="form-check-label">ECS</span>
-    </label>
-    <label class="form-check form-check-inline">
-        <input class="form-check-input" type="checkbox" name="branch[]" value="EXTC" />
-        <span class="form-check-label">EXTC</span>
-    </label>
-    <label class="form-check form-check-inline">
-        <input class="form-check-input" type="checkbox" name="branch[]" value="CS" />
-        <span class="form-check-label">CS</span>
-    </label>
-    <label class="form-check form-check-inline">
-        <input class="form-check-input" type="checkbox" name="branch[]" value="IT" />
-        <span class="form-check-label">IT</span>
-    </label>
-    <label class="form-check form-check-inline">
-        <input class="form-check-input" type="checkbox" name="branch[]" value="MECH" />
-        <span class="form-check-label">MECH</span>
-    </label>
-    <label class="form-check form-check-inline">
-        <input class="form-check-input" type="checkbox" name="branch[]" value="AUTO" />
-        <span class="form-check-label">AUTO</span>
-    </label>
-    <label class="form-check form-check-inline">
-        <input class="form-check-input" type="checkbox" name="branch[]" value="All" />
-        <span class="form-check-label">All Branches</span>
-    </label>
-          </div>
+                    <label class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="branch[]" value="EXTC" />
+                        <span class="form-check-label">EXTC</span>
+                    </label>
 
+                    <label class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="branch[]" value="ECS" />
+                        <span class="form-check-label">ECS</span>
+                    </label>
+                    <label class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="branch[]" value="CS" />
+                        <span class="form-check-label">CS</span>
+                    </label>
+                    <label class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="branch[]" value="IT" />
+                        <span class="form-check-label">IT</span>
+                    </label>
+                    <label class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="branch[]" value="MECH" />
+                        <span class="form-check-label">MECH</span>
+                    </label>
+                    <label class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="branch[]" value="AUTO" />
+                        <span class="form-check-label">AUTO</span>
+                    </label>
+                    <label class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="branch[]" value="All Branches" />
+                        <span class="form-check-label">All Branches</span>
+                    </label>
+                    
+
+                </div>
                 <div class="form-group">
                     <label><strong>Work type :</strong></label>
                     <br>

@@ -32,7 +32,7 @@ include_once("../../components/head.php");
     include_once("../../components/announcement/index.php");
     ?>
 
-        <?php
+    <?php
     include_once("../../components/faculty-profile/index.php");
     ?>
 

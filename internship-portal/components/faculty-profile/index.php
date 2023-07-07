@@ -1,5 +1,7 @@
 <?php
-$profileImageUrl = "demo.png";
+require 'connect.php';
+$update = update_data($con);
+$profileImageUrl='demo.png'
 ?>
 
 <div class="main-container">
@@ -33,7 +35,7 @@ $profileImageUrl = "demo.png";
                   class="rounded-circle img-fluid"
                   style="width: 150px"
                 />
-                <h5 class="my-3">John Smith</h5>
+                <h5 class="my-3"><?php echo $update['fac_name']; ?></h5>
                 <p class="text-muted mb-1">Upload Image</p>
               </div>
             </div>
@@ -44,8 +46,8 @@ $profileImageUrl = "demo.png";
                   <div class="col-sm-3">
                     <p class="mb-0">Full Name</p>
                   </div>
-                  <div class="col-sm-9">
-                    <p class="text-muted mb-0">Johnatan Smith</p>
+                   <div class="col-sm-9">
+                    <p class="text-muted mb-0"> <?php echo $update['fac_name']; ?></p>
                   </div>
                 </div>
                 <hr />
@@ -53,8 +55,8 @@ $profileImageUrl = "demo.png";
                   <div class="col-sm-3">
                     <p class="mb-0">Email</p>
                   </div>
-                  <div class="col-sm-9">
-                    <p class="text-muted mb-0">example@example.com</p>
+                    <div class="col-sm-9">
+                    <p class="text-muted mb-0"><?php echo $update['fac_email']; ?></p>
                   </div>
                 </div>
                 <hr />
@@ -62,8 +64,8 @@ $profileImageUrl = "demo.png";
                   <div class="col-sm-3">
                     <p class="mb-0">Age</p>
                   </div>
-                  <div class="col-sm-9">
-                    <p class="text-muted mb-0">20</p>
+                <div class="col-sm-9">
+                    <p class="text-muted mb-0"><?php echo $update['fac_age']; ?></p>
                   </div>
                 </div>
                 <hr />
@@ -72,7 +74,7 @@ $profileImageUrl = "demo.png";
                     <p class="mb-0">Mobile</p>
                   </div>
                   <div class="col-sm-9">
-                    <p class="text-muted mb-0">(098) 765-4321</p>
+                    <p class="text-muted mb-0"><?php echo $update['fac_mobile']; ?></p>
                   </div>
                 </div>
                 <hr />
@@ -80,8 +82,8 @@ $profileImageUrl = "demo.png";
                   <div class="col-sm-3">
                     <p class="mb-0">Address</p>
                   </div>
-                  <div class="col-sm-9">
-                    <p class="text-muted mb-0">Bay Area, San Francisco, CA</p>
+                 <div class="col-sm-9">
+                    <p class="text-muted mb-0"><?php echo $update['fac_address']; ?></p>
                   </div>
                 </div>
               </div>
@@ -97,7 +99,7 @@ $profileImageUrl = "demo.png";
           <!-- Dashboard -->
           <div class="col-lg-8">
             <div class="d-flex align-items-center justify-content-between mb-5">
-              <h2>Internship Details</h2>
+              <h2>Previous Internship Details</h2>
               <a href="./new.php" type="button" class="btn btn-primary">Publish</a>
             </div>
 
@@ -170,69 +172,38 @@ $profileImageUrl = "demo.png";
     </section>
 
     <!-- Edit Profile Form -->
-    <div class="edit-profile-form card d-none" id="editProfileForm">
-      <div class="card-header">
+ <div class="edit-profile-form card d-none" id="editProfileForm">
+      <div class="card-header mt-5 mb-5">
         <h5 class="card-title">Edit Profile</h5>
       </div>
-      <div class="card-body form-card-body">
-        <form>
+      <div class="card-body">
+        <form  method="post" action="update_profile.php">
           <div class="mb-3">
             <label for="fullName" class="form-label">Full Name</label>
-            <input
-              type="text"
-              class="form-control"
-              id="fullName"
-              name="fullName"
-              required
-            />
+            <input type="text" class="form-control" id="fullName" name="fullName" value=" <?php echo $update['fac_name']; ?>" required>
           </div>
           <div class="mb-3">
             <label for="email" class="form-label">Email</label>
-            <input
-              type="email"
-              class="form-control"
-              id="email"
-              name="email"
-              required
-            />
+            <input type="email" class="form-control" id="email" name="email" value=" <?php echo $update['fac_email']; ?>" required>
           </div>
           <div class="mb-3">
             <label for="age" class="form-label">Age</label>
-            <input
-              type="number"
-              class="form-control"
-              id="age"
-              name="age"
-              required
-            />
+            <input type="number" class="form-control" id="age" name="age" value= "<?php echo $update['fac_age']; ?>" required>
           </div>
           <div class="mb-3">
             <label for="mobile" class="form-label">Mobile</label>
-            <input
-              type="tel"
-              class="form-control"
-              id="mobile"
-              name="mobile"
-              required
-            />
+            <input type="text" class="form-control" id="mobile" name="mobile" value="<?php echo $update['fac_mobile']; ?>" required>
           </div>
           <div class="mb-3">
             <label for="address" class="form-label">Address</label>
-            <textarea
-              class="form-control"
-              id="address"
-              name="address"
-              required
-            ></textarea>
+            <input type="text" class="form-control" id="address" name="address" value="<?php echo $update['fac_address']; ?>" required>
           </div>
           <button type="submit" class="btn btn-primary">Save</button>
-          <button type="button" class="btn btn-secondary" onclick="closeForm()">
-            Cancel
-          </button>
+          <button  class="btn btn-primary" id="closeForm" onclick="closeForm(event)">Cancel</button>
+
         </form>
       </div>
     </div>
-
 </div>
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
@@ -287,9 +258,14 @@ function openForm() {
   document.getElementById('editProfileForm').classList.remove('d-none');
 }
 
-function closeForm() {
+function closeForm(event) {
+  event.preventDefault(); // Prevent form submission
+
+
   document.getElementById('editProfileForm').classList.add('d-none');
+  return false;
 }
+
 </script>
 
 <style>
@@ -343,8 +319,7 @@ body {
   right: 5%;
   cursor: pointer;
   z-index: 100;
-
-  background-image:url('<?php echo $profileImageUrl; ?>');
+  background-image: url('demo.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -449,4 +424,11 @@ body {
   color: #fafafa;
 }
 
+.card-title, .form-label{
+  color: #fafafa;
+}
+
+.form-control{
+  width:450px;
+}
 </style>

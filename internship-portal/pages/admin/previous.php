@@ -19,7 +19,7 @@ include_once("../../components/head.php");
 // $query = mysqli_query($conn, $data_search);
 ?>
 <?php
-require './auth.php';
+// require './auth.php';
 ?>
 <body>
     <?php
@@ -49,6 +49,9 @@ require './auth.php';
                     <th scope="col">Operation</th>
                     <th scope="col">Registrations</th>
                     <th scope="col">Download</th>
+                    <th scope="col">Action</th>
+
+
 
                 </tr>
             </thead>
@@ -116,6 +119,15 @@ require './auth.php';
                         </div>
 
                     </td>
+
+                    <td class="py-3 text-center">
+                      <div class="d-flex justify-content-center align-items-center">
+                          <button class="btn btn-danger delete-button" data-id="14">
+                                  Delete
+                          </button>
+                      </div>
+                      </td>
+
 
                 </tr>
 

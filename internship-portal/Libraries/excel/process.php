@@ -23,7 +23,7 @@ $excelData = implode("\t", array_values($fields)) . "\n";
 
 // // Fetch records from database 
 $data_search = "SELECT ID,Firstname,Lastname,Resume_Link,CreatedAt FROM `applicant_data`";
-$query = mysqli_query($conn, $data_search);
+$query = mysqli_query($db_connection, $data_search);
 if ($query->num_rows > 0) {
     // Output each row of the data 
     while ($row = mysqli_fetch_array($query)) {
