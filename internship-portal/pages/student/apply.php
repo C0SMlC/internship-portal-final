@@ -1,4 +1,4 @@
-<?php
+Updated apply.php code is as follows: <?php
 $title = "Dashboard";
 $style = "./styles/global.css";
 $favicon = "../../assets/favicon.ico";
