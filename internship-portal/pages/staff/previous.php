@@ -1,9 +1,13 @@
 <?php
+
 $title = "Dashboard";
 $style = "./styles/global.css";
 $favicon = "../../assets/favicon.ico";
 include_once("../../components/head.php");
 require "../../connect/connect.php";
+
+$query = "SELECT * FROM new_announcement";
+$result = mysqli_query($db_connection, $query);
 
 //pagination part
 

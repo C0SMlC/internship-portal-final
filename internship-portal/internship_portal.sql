@@ -128,3 +128,19 @@ ALTER TABLE `internship_details`
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+CREATE TABLE new_announcement (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  announcement_title VARCHAR(255),
+  description VARCHAR(255),
+  skills_required VARCHAR(255),
+  location VARCHAR(255),
+  start_date DATE,
+  duration VARCHAR(255),
+  branch VARCHAR(255),
+  work_type VARCHAR(255),
+  stipend_type VARCHAR(255),
+  stipend DECIMAL(10,2),
+  work_location VARCHAR(255),
+  perks VARCHAR(255)
+);
