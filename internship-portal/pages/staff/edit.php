@@ -129,52 +129,93 @@ if(isset($_GET['id'])) {
                     <label class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" name="branch" value="MECH" <?php if ($branch == 'MECH') echo 'checked'; ?> />
                         <span class="form-check-label">MECH</span>
-</label>    
-        <label class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="branch" value="AUTO" <?php if ($branch == 'AUTO') echo 'checked'; ?> />
-            <span class="form-check-label">AUTO</span>
-        </label>
-        <label class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="branch" value="All" <?php if ($branch == 'All') echo 'checked'; ?> />
-            <span class="form-check-label">All Branches</span>
-        </label>
-    </div>
-    <div class="form-group">
-        <label><strong>Work type :</strong></label>
-        <br>
-        <br>
-        <label class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="work_type" value="Paid" <?php if ($work_type == 'Paid') echo 'checked'; ?> />
-            <span class="form-check-label">Paid</span>
-        </label>
-        <label class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="work_type" value="UnPaid" <?php if ($work_type == 'UnPaid') echo 'checked'; ?> />
-            <span class="form-check-label">UnPaid</span>
-        </label>
-    </div>
-    <div class="form-group">
-        <label><strong>Stipend type :</strong></label>
-        <br>
-        <br>
-        <label class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="stipend_type" value="Lumpsum (After Internship Duration)" <?php if ($stipend_type == 'Lumpsum (After Internship Duration)') echo 'checked'; ?> />
-            <span class="form-check-label">Lumpsum (After Internship Duration)</span>
-        </label>
-        <label class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="stipend_type" value="Monthly" <?php if ($stipend_type == 'Monthly') echo 'checked'; ?> />
-            <span class="form-check-label">Monthly</span>
-        </label>
-        <label class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="stipend_type" value="UnPaid" <?php if ($stipend_type == 'UnPaid') echo 'checked'; ?> />
-            <span class="form-check-label">UnPaid</span>
-        </label>
-    </div>
-    <!-- ...remaining form fields... -->
-    <div class="container text-center">
-        <div class="row mx-auto">
-            <div class="col mt-5">
-                <button class="btn btn-warning btn-lg col-md-12" type="submit">Save</button>
-            </div>
+                    </label>
+                    <label class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="branch" value="AUTO" <?php if ($branch == 'AUTO') echo 'checked'; ?> />
+                        <span class="form-check-label">AUTO</span>
+                    </label>
+                    <label class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="branch" value="ALl" <?php if ($branch == 'All') echo 'checked'; ?> />
+                        <span class="form-check-label">All Branches</span>
+                    </label>
+
+                </div>
+                <div class="form-group">
+                    <label><strong>Work type :</strong></label>
+                    <br>
+                    <br>
+
+                    <label class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="work_type" value="Paid" <?php if ($work_type == 'Paid') echo 'checked'; ?> />
+                        <span class="form-check-label"> Paid </span>
+                    </label>
+                    <label class="form-checkform-check-inline">
+                        <input class="form-check-input" type="radio" name="work_type" value="UnPaid" <?php if ($work_type == 'UnPaid') echo 'checked'; ?>/>
+                        <span class="form-check-label"> UnPaid </span>
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label><strong>Stipend type :</strong></label>
+                    <br>
+                    <br>
+
+                    <label class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="stipend_type" value="Lumpsum (After Internship Duration)" <?php if ($stipend_type == 'Lumpsum (After Internship Duration)') echo 'checked'; ?> />
+                        <span class="form-check-label"> Lumpsum (After Internship Duration)</span>
+                    </label>
+                    <label class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="stipend_type" value="Monthly" <?php if ($stipend_type == 'Monthly') echo 'checked'; ?> />
+                        <span class="form-check-label"> Monthly </span>
+                    </label>
+                    <label class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="stipend_type" value="UnPaid" <?php if ($stipend_type == 'UnPaid') echo 'checked'; ?> />
+                        <span class="form-check-label"> UnPaid </span>
+                    </label>
+                </div>
+                <div class="col-12">
+
+                    <strong for="Stipend" class="form-label">Stipend</strong>
+                    <br>
+
+                    <input type="text" class="form-control" spellcheck="false" required autocomplete="off" name="stipend" id="Stipend" placeholder="(In Rupees)" value = "<?php echo $stipend; ?>">
+                </div>
+                <div class="form-group">
+                    <label><strong>Work Location :</strong></label>
+                    <br>
+                    <br>
+
+                    <label class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="work_location" value="Work From Home" <?php if ($work_location == 'Work From Home') echo 'checked'; ?> />
+                        <span class="form-check-label"> Work From Home</span>
+                    </label>
+                    <label class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="work_location" value= 'Hybrid'<?php if ($work_location == 'Hybrid') echo 'checked'; ?> />
+                        <span class="form-check-label"> Hybrid </span>
+                    </label>
+                    <label class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="work_location" value="OnSite" <?php if ($work_location == 'OnSite') echo 'checked'; ?> />
+                        <span class="form-check-label"> OnSite </span>
+                    </label>
+                </div>
+                <div class="col-12">
+                    <strong for="Perks" class="form-label">Perks</strong>
+                    <br>
+
+                    <input type="text" class="form-control" spellcheck="false" required autocomplete="off" name="perks" id="Perks" placeholder="e.g. Certificate, Letter Of Recommendation, Flexible timings, etc..." value = "<?php echo $perks; ?>">
+                </div>
+                <br>
+                <div class="container text-center">
+                    <div class="row mx-auto">
+                        <div class="col mt-5">
+                            <button class="btn btn-warning btn-lg col-md-12" role="button">Save</button>
+                        </div>
+
+                    </div>
+                </div>
+
+
+
+            </form>
         </div>
     </div>
 </form>

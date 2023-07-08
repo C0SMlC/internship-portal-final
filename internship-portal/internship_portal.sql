@@ -128,3 +128,84 @@ ALTER TABLE `internship_details`
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+-- phpMyAdmin SQL Dump
+-- version 5.2.0
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1:3306
+-- Generation Time: Jul 07, 2023 at 03:30 PM
+-- Server version: 8.0.31
+-- PHP Version: 8.0.26
+
+------------------------------------------------------------
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `internship_portal`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `applications`
+--
+
+DROP TABLE IF EXISTS `applications`;
+CREATE TABLE IF NOT EXISTS `applications` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `student_name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `contact_no` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
+  `student_location` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `cv_file` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `application_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `action` varchar(10) COLLATE utf8mb4_general_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `applications`
+--
+
+INSERT INTO `applications` (`id`, `student_name`, `contact_no`, `student_location`, `cv_file`, `application_date`, `action`) VALUES
+(1, 'Jane A', '98765432210', 'Panvel', 'Jane A_XYZPvtLtd_2000PE0400.pdf', '2023-07-01 06:14:50', ''),
+(3, 'Sanu', '1234567890', 'Uran', 'Sanu_XYZPvtLtd_2000PE0400.pdf', '2023-07-03 10:23:07', ''),
+(4, 'Apu', '1234567890', 'Panvel', 'Apu_XYZPvtLtd_2000PE0400.pdf', '2023-07-04 07:21:25', '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `new_annoucement`
+--
+
+DROP TABLE IF EXISTS `new_annoucement`;
+CREATE TABLE IF NOT EXISTS `new_annoucement` (
+  `announcement_id` int NOT NULL AUTO_INCREMENT,
+  `announcement_title` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `description` text COLLATE utf8mb4_general_ci NOT NULL,
+  `skills_required` text COLLATE utf8mb4_general_ci NOT NULL,
+  `location` text COLLATE utf8mb4_general_ci NOT NULL,
+  `start_date` date NOT NULL,
+  `duration` int NOT NULL,
+  `branch` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `work_type` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `stipend_type` varchar(10) COLLATE utf8mb4_general_ci NOT NULL,
+  `stipend` text COLLATE utf8mb4_general_ci NOT NULL,
+  `work_location` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `perks` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `user_id` varchar(80) COLLATE utf8mb4_general_ci NOT NULL,
+  `published_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`announcement_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+--
+
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

@@ -3,6 +3,7 @@ $title = "Dashboard";
 $style = "./styles/global.css";
 $favicon = "../../assets/favicon.ico";
 include_once("../../components/head.php");
+//require ".../.../Upload-and-Store-pdf/index.php";
 
 //pagination part
 //connect db here
@@ -12,12 +13,14 @@ if (isset($_GET["page"])) {
 } else {
     $page = 1;
 }
-// $per_page_record = 10; // limit
-// $start_from = ($page - 1) * $per_page_record;
-// // $data_search = "SELECT * FROM userregisdata LIMIT $start_from, $per_page_record";//db query here
-// $data_search = "";
-// $query = mysqli_query($conn, $data_search);
-?>
+$per_page_record = 10; // limit
+$start_from = ($page - 1) * $per_page_record;
+$data_search = "SELECT * FROM applications LIMIT $start_from, $per_page_record";//db query here
+//$data_search = "";
+$query = mysqli_query($db_connection, $data_search);
+
+
+?> 
 
 <!-- Auth -->
 
@@ -36,87 +39,68 @@ if (isset($_GET["page"])) {
                     <th scope="col">ID</th>
                     <th scope="col">Applicant Name</th>
                     <th scope="col">Resume</th>
-                    <th scope="col">Actions</th>
+                    <th scope="col">Action</th>
                 </tr>
             </thead>
             <tbody>
-                <tr class="table-light" data-applicant-id="1">
+                <?php 
+                while($row= mysqli_fetch_assoc($query)){
+                    $id = $row['id'];
+                    $name = $row['student_name'];
+                    $resumeLink = "../../Upload-and-Store-pdf/index.php?id=".$id;
+                
+                ?>
+                <tr class="table-light">
                     <th class="pt-3 text-center" scope="row">
-                        13
+                        <?php echo $id; ?>
                     </th>
                     <td class="pt-3" scope="row">
-                        Mithilesh Ganesh Sharma
+                        <?php echo $name; ?>
                     </td>
                     <td class="pt-3 text-center">
-                        <a href="#" target="_blank">Link</a>
+                        <a href="<?php echo $resumeLink; ?>" target="_blank">Link</a>
                     </td>
                     <td class="text-center">
-                        <button class="btn btn-success">Approve</button>
-                        <button class="btn btn-danger">Reject</button>
+                        <form action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>" method="POST">
+                            <input type="hidden" name="applicant_id" value="<?php echo $id; ?>">
+
+                            <button type="submit" name="approve_btn_<?php echo $id; ?>" class="btn btn-success" value="Approved">Approve</button>
+                            <button type="submit" name="reject_btn_<?php echo $id; ?>" class="btn btn-danger" value= "Rejected">Reject</button>
+                            
+                        </form>
+                        
+                    
+                       
                     </td>
                 </tr>
-                <tr class="table-light" data-applicant-id="2">
-                    <th class="pt-3 text-center" scope="row">
-                        13
-                    </th>
-                    <td class="pt-3" scope="row">
-                        Mithilesh Ganesh Sharma
-                    </td>
-                    <td class="pt-3 text-center">
-                        <a href="#" target="_blank">Link</a>
-                    </td>
-                    <td class="text-center">
-                        <button class="btn btn-success">Approve</button>
-                        <button class="btn btn-danger">Reject</button>
-                    </td>
-                </tr>
-                <tr class="table-light" data-applicant-id="3">
-                    <th class="pt-3 text-center" scope="row">
-                        13
-                    </th>
-                    <td class="pt-3" scope="row">
-                        Mithilesh Ganesh Sharma
-                    </td>
-                    <td class="pt-3 text-center">
-                        <a href="#" target="_blank">Link</a>
-                    </td>
-                    <td class="text-center">
-                        <button class="btn btn-success">Approve</button>
-                        <button class="btn btn-danger">Reject</button>
-                    </td>
-                </tr>
-                <tr class="table-light" data-applicant-id="4">
-                    <th class="pt-3 text-center" scope="row">
-                        13
-                    </th>
-                    <td class="pt-3" scope="row">
-                        Mithilesh Ganesh Sharma
-                    </td>
-                    <td class="pt-3 text-center">
-                        <a href="#" target="_blank">Link</a>
-                    </td>
-                    <td class="text-center">
-                        <button class="btn btn-success">Approve</button>
-                        <button class="btn btn-danger">Reject</button>
-                    </td>
-                </tr>
-                <tr class="table-light" data-applicant-id="5">
-                    <th class="pt-3 text-center" scope="row">
-                        13
-                    </th>
-                    <td class="pt-3" scope="row">
-                        Mithilesh Ganesh Sharma
-                    </td>
-                    <td class="pt-3 text-center">
-                        <a href="#" target="_blank">Link</a>
-                    </td>
-                    <td class="text-center">
-                        <button class="btn btn-success">Approve</button>
-                        <button class="btn btn-danger">Reject</button>
-                    </td>
-                </tr>
+                <?php 
+
+                if ($_SERVER['REQUEST_METHOD'] === 'POST'){
+                    if (isset($_POST['approve_btn_' . $id])) {
+                        // Insert data into the new table for approved applicants
+                        $updateQuery = "Update applications set action = 'approved' where id = $id ";
+                        echo $updateQuery;
+                        echo mysqli_error($db_connection);
+                        mysqli_query($db_connection, $updateQuery);
+                    }
+
+                    if (isset($_POST['reject_btn_' . $id])) {
+                        // Insert data into the new table for rejected applicants
+                        $updateQuery = "Update applications set action = 'rejected' where id = $id ";
+                        echo $updateQuery;
+                        echo mysqli_error($db_connection);
+                        mysqli_query($db_connection, $updateQuery);
+                    }
+                }
+                ?>
+            
+                        
+                <?php 
+                }
+                ?>
             </tbody>
         </table>
+       
         <br>
         <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-center">
@@ -160,6 +144,8 @@ if (isset($_GET["page"])) {
                 </li>
             </ul>
         </nav>
+       
+        
     </div>
 
     <script>
