@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && !empty($_POST['announcement_title'])
     $location = $_POST['location'];
     $start_date = $_POST['start_date'];
     $duration = $_POST['duration'];
-    $branch = $_POST['branch'];
+    $branch = implode(", ", $_POST['branch']);
     $work_type = $_POST['work_type'];
     $stipend_type = $_POST['stipend_type'];
     $stipend = $_POST['stipend'];
