@@ -76,7 +76,8 @@ if(isset($_GET['id'])) {
                     <strong for="Title" class="form-label">Announcement Title</strong>
                     <br>
                     <br>
-                    <input type="text" class="form-control" spellcheck="false" required autocomplete="off" name="announcement_title" id="Title" value="<?php echo $announcement_title; ?>" placeholder="e.g. ABC pvt. ltd. hiring interns for XYZ fields....">
+                    <input type="text" class="form-control" spellcheck="false" required autocomplete="off" name="announcement_title" id="Title" value="<?php echo isset($announcement_title) ? $announcement_title : ''; ?>" placeholder="e.g. ABC pvt. ltd. hiring interns for XYZ fields....">
+
                 </div>
                 <br>
                 <div class="mb-3">
