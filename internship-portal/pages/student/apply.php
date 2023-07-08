@@ -1,4 +1,4 @@
-Updated apply.php code is as follows: <?php
+<?php
 $title = "Dashboard";
 $style = "./styles/global.css";
 $favicon = "../../assets/favicon.ico";
@@ -44,6 +44,9 @@ $stmt = $conn->prepare($sql);
 $stmt->bind_param("sssss", $userName, $admissionNo, $contact, $studentLocation, $filename);
 $stmt->execute();
 $stmt->close();
+$sql = "INSERT INTO new_announcement (id, student_name, admission_no, contact_no, student_location, cv_file, application_date) VALUES (?, ?, ?, ?, ?, ?, NOW())";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("isssss", $id, $userName, $admissionNo, $contact, $studentLocation, $filename);
 
 
             // Display success message
