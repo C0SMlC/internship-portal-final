@@ -169,7 +169,7 @@ if(isset($_GET['id'])) {
                         <span class="form-check-label">AUTO</span>
                     </label>
                     <label class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="branch" value="ALl" <?php if ($branch == 'All') echo 'checked'; ?> />
+                        <input class="form-check-input" type="radio" name="branch" value="ALL" <?php if ($branch == 'All') echo 'checked'; ?> />
                         <span class="form-check-label">All Branches</span>
                     </label>
 
