@@ -1,4 +1,4 @@
-Updated apply.php code is as follows: <?php
+<?php
 $title = "Dashboard";
 $style = "./styles/global.css";
 $favicon = "../../assets/favicon.ico";
@@ -18,43 +18,27 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Check if the form is submitted
-if (isset($_POST['submit'])) {
-    // Retrieve the form data
-$userName = $_POST['userName'];
-$admissionNo = $_POST['admissionNo'];
-$contact = $_POST['Contact'];
-$studentLocation = $_POST['StudentLocation'];
-$resume = $_FILES['resume'];
+// Initialize the announcement title variable
+$announcementTitle = '';
 
+// Retrieve the announcement titles and cv_file values from the tables
+$sql = "SELECT SUBSTRING_INDEX(SUBSTRING_INDEX(a.cv_file, '_', -2), '_', 1) AS announcement_title, a.cv_file
+        FROM applications AS a
+        INNER JOIN new_annoucement AS n ON n.announcement_title = SUBSTRING_INDEX(SUBSTRING_INDEX(a.cv_file, '_', -2), '_', 1)";
+$result = $conn->query($sql);
 
-    // Check if a file is selected
-    if (isset($resume) && $resume['error'] === UPLOAD_ERR_OK) {
-        // Specify the target directory to store the uploaded files
-        $targetDirectory = __DIR__ . "/CV_Uploads/";
+// Check if there are any matching rows
+if ($result && $result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $announcementTitle = $row['announcement_title'];
+        $cvFile = $row['cv_file'];
 
-        // Generate a unique filename based on the given format
-        $filename = str_replace(' ', '_', $userName) . "_" . str_replace(' ', '_', "XYZPvtLtd") . "_" . str_replace(' ', '_', "2000PE0400") . ".pdf";
-
-        // Move the uploaded file to the target directory
-        if (move_uploaded_file($resume['tmp_name'], $targetDirectory . $filename)) {
-// Insert the data into the "Applications" table
-$sql = "INSERT INTO Applications (student_name, admission_no, contact_no, student_location, cv_file, application_date) VALUES (?, ?, ?, ?, ?, NOW())";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("sssss", $userName, $admissionNo, $contact, $studentLocation, $filename);
-$stmt->execute();
-$stmt->close();
-
-
-            // Display success message
-            $successMessage = "Applying for XYZ Pvt Ltd has been successful.";
-        } else {
-            // Display error message
-            $errorMessage = "Failed to move the uploaded file.";
-        }
-    } else {
-        // Display error message
-        $errorMessage = "Please select a valid PDF file.";
+        // Update the company_name column in the applications table with the announcement title
+        $updateSql = "UPDATE applications SET company_name=? WHERE cv_file=?";
+        $stmtUpdate = $conn->prepare($updateSql);
+        $stmtUpdate->bind_param("ss", $announcementTitle, $cvFile);
+        $stmtUpdate->execute();
+        $stmtUpdate->close();
     }
 }
 
@@ -68,7 +52,7 @@ $conn->close();
     ?>
 
     <div class="container my-2 greet">
-        <p>Applying for XYZ Pvt Ltd</p>
+        <p>Applying for <?php echo $announcementTitle; ?></p>
     </div>
 
     <div class="container my-3" id="content">
@@ -82,52 +66,51 @@ $conn->close();
                     <div class="alert alert-danger" role="alert">
                         <?php echo $errorMessage; ?>
                     </div>
-                <?php else : ?>
-                    <form class="row g-3" action="<?php echo htmlentities($_SERVER['PHP_SELF']) ?>" method="POST" enctype="multipart/form-data">
-                        <div class="col-12">
-                            <strong for="userName" class="form-label">Student Full Name</strong>
-                            <input type="text" class="form-control" spellcheck="false" required autocomplete="off" name="userName" id="userName" placeholder="John Richard Doe">
+                <?php endif; ?>  
+
+                <form class="row g-3" action="<?php echo htmlentities($_SERVER['PHP_SELF']) ?>" method="POST" enctype="multipart/form-data">
+                    <div class="col-12">
+                        <strong for="userName" class="form-label">Student Full Name</strong>
+                        <input type="text" class="form-control" spellcheck="false" required autocomplete="off" name="userName" id="userName" placeholder="John Richard Doe">
+                    </div>
+                    <div class="col-12">
+                        <strong for="admissionNo" class="form-label">Admission Number</strong>
+                        <input type="text" class="form-control" spellcheck="false" required autocomplete="off" name="admissionNo" id="admissionNo" placeholder="2099SM4004">
+                    </div>
+                    <div class="col-12">
+                        <strong for="Contact" class="form-label">Contact No.</strong>
+                        <input type="text" class="form-control" spellcheck="false" required autocomplete="off" name="Contact" id="Contact" placeholder="987654210">
+                    </div>
+                    <div class="col-12">
+                        <strong for="StudentLocation" class="form-label">Student Location</strong>
+                        <input type="text" class="form-control" spellcheck="false" required autocomplete="off" name="StudentLocation" id="StudentLocation" placeholder="e.g. Panvel">
+                    </div>
+                    <div class="col-12">
+                        <strong for="resume" class="form-label">Upload CV</strong>
+                        <input type="file" accept=".pdf" class="form-control" spellcheck="false" required autocomplete="off" name="resume" id="resume">
+                        <br>
+                        <div class="text">
+                            <strong for="resume" class="form-label">Note! :-</strong>
+                            <small for="resume" class="form-label">
+                                <i>
+                                    CV format
+                                    <br>
+                                    <b class="text-danger bg-warning">Student-name_Company-name_Admission-no.pdf</b>
+                                    <br>
+                                    (JohnDoe_MarkIndustries_2000PE0400.pdf)
+                                </i>
+                            </small>
                         </div>
-                         <div class="col-12">
-                            <strong for="userName" class="form-label">Admission Number</strong>
-                            <input type="text" class="form-control" spellcheck="false" required autocomplete="off" name="admissionNo" id="admissionNo" placeholder="2099SM4004">
-                         </div>
-                        <div class="col-12">
-                            <strong for="Contact" class="form-label">Contact No.</strong>
-                            <input type="text" class="form-control" spellcheck="false" required autocomplete="off" name="Contact" id="Contact" placeholder="987654210">
-                        </div>
-                        <div class="col-12">
-                            <strong for="StudentLocation" class="form-label">Student Location</strong>
-                            <input type="text" class="form-control" spellcheck="false" required autocomplete="off" name="StudentLocation" id="StudentLocation" placeholder="e.g. Panvel">
-                        </div>
-                        <div class="col-12">
-                            <strong for="resume" class="form-label">Upload CV</strong>
-                            <input type="file" accept=".pdf" class="form-control" spellcheck="false" required autocomplete="off" name="resume" id="resume">
-                            <br>
-                            <div class="text">
-                                <strong for="resume" class="form-label">Note! :-</strong>
-                                <small for="resume" class="form-label">
-                                    <i>
-                                        CV format
-                                        <br>
-                                        <b class="text-danger bg-warning">Student-name_Company-name_Admission-no.pdf</b>
-                                        <br>
-                                        (JohnDoe_MarkIndustries_2000PE0400.pdf)
-                                    </i>
-                                </small>
+                    </div>
+                    <div class="container text-center">
+                        <div class="row mx-auto">
+                            <div class="col mt-3">
+                                <button class="btn btn-primary btn-lg col-md-12" role="button" name="submit">Apply</button>
                             </div>
                         </div>
-                        <div class="container text-center">
-                            <div class="row mx-auto">
-                                <div class="col mt-3">
-                                    <button class="btn btn-primary btn-lg col-md-12" role="button" name="submit">Apply</button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                <?php endif; ?>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 </body>
-</html>
