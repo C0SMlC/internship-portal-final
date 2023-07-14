@@ -111,16 +111,18 @@ if(isset($_GET['id'])) {
                     <input type="text" class="form-control" spellcheck="false" required autocomplete="off" name="duration" id="Duration" placeholder="Number (In Months)" value="<?php echo $duration; ?>">
                 </div>
                 <br>
+
                 <div class="form-group">
-                    <label><strong>Branch:</strong></label>
+                    <label><strong>Branch :</strong></label>
                     <br>
                     <br>
+
                     <label class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="branch" value="ECS" <?php if ($branch == 'ECS') echo 'checked'; ?>>
+                        <input class="form-check-input" type="radio" name="branch" value="ECS" <?php if ($branch == 'ECS') echo 'checked'; ?> />
                         <span class="form-check-label">ECS</span>
                     </label>
                     <label class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="branch" value="CS" <?php if ($branch == 'CS') echo 'checked'; ?>>
+                        <input class="form-check-input" type="radio" name="branch" value="CS" <?php if ($branch == 'CS') echo 'checked'; ?>/>
                         <span class="form-check-label">CS</span>
                     </label>
                     <label class="form-check form-check-inline">
@@ -136,7 +138,7 @@ if(isset($_GET['id'])) {
                         <span class="form-check-label">AUTO</span>
                     </label>
                     <label class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="branch" value="ALl" <?php if ($branch == 'All') echo 'checked'; ?> />
+                        <input class="form-check-input" type="radio" name="branch" value="ALL" <?php if ($branch == 'All') echo 'checked'; ?> />
                         <span class="form-check-label">All Branches</span>
                     </label>
 
