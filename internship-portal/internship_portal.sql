@@ -182,8 +182,8 @@ INSERT INTO `applications` (`id`, `student_name`, `contact_no`, `student_locatio
 -- Table structure for table `new_annoucement`
 --
 
-DROP TABLE IF EXISTS `new_annoucement`;
-CREATE TABLE IF NOT EXISTS `new_annoucement` (
+DROP TABLE IF EXISTS `new_announcement`;
+CREATE TABLE IF NOT EXISTS `new_announcement` (
   `announcement_id` int NOT NULL AUTO_INCREMENT,
   `announcement_title` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `description` text COLLATE utf8mb4_general_ci NOT NULL,

@@ -16,10 +16,10 @@ $per_page_record = 10; // limit
 $start_from = ($page - 1) * $per_page_record;
 if(isset($_GET['search'])){
     $search = $_GET['search'];
-    $data_search = "Select announcement_id, announcement_title, published_on from new_annoucement where announcement_id = '$search' OR announcement_title LIKE '%$search%' LIMIT $start_from, $per_page_record ";
+    $data_search = "Select announcement_id, announcement_title, published_on from new_announcement where announcement_id = '$search' OR announcement_title LIKE '%$search%' LIMIT $start_from, $per_page_record ";
 
 }else{
-    $data_search = "Select announcement_id, announcement_title, published_on from new_annoucement LIMIT $start_from, $per_page_record";
+    $data_search = "Select announcement_id, announcement_title, published_on from new_announcement LIMIT $start_from, $per_page_record";
 }
 $query = mysqli_query($db_connection, $data_search);
 
@@ -56,6 +56,8 @@ $query = mysqli_query($db_connection, $data_search);
                     <th scope="col">Status</th>
                     <th scope="col">Registrations</th>
                     <th scope="col">Download</th>
+                    <th scope="col">Action</th>
+
 
                 </tr>
             </thead>
@@ -123,6 +125,14 @@ $query = mysqli_query($db_connection, $data_search);
                         </div>
 
                     </td>
+                    <td class="py-3 text-center">
+    <div class="d-flex justify-content-center align-items-center">
+        <span class="status-span" data-announcement-id="<?php echo $announcement_id; ?>">
+            Active
+        </span>
+    </div>
+</td>
+
                 <?php 
                 }
                 ?>
@@ -176,6 +186,36 @@ $query = mysqli_query($db_connection, $data_search);
             </ul>
         </nav>
     </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const statusSpans = document.querySelectorAll('.status-span');
+        
+        statusSpans.forEach(function(span) {
+            span.addEventListener('click', function() {
+                const announcementId = this.dataset.announcementId;
+                const isActive = this.textContent === 'Active';
+
+                // Perform the status update
+                if (isActive) {
+                    this.textContent = 'Inactive';
+                } else {
+                    this.textContent = 'Active';
+                }
+
+                // Update the button content
+                const button = this.closest('tr').querySelector('.btn-action');
+                button.textContent = isActive ? 'Activate' : 'Deactivate';
+
+                // Send an AJAX request to update the server-side database
+                // You will need to implement the server-side logic to handle this request and update the database accordingly
+                // You can use the announcementId to identify the row and update the status column in the database
+                // This step requires server-side code and cannot be handled by JavaScript alone.
+            });
+        });
+    });
+</script>
+
+
 </body>
 
 </html>
