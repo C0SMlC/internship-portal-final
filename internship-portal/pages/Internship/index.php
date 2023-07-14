@@ -11,7 +11,7 @@ if(isset($_GET['id'])) {
     $id = $_GET['id'];
 
     // Query to fetch the specific announcement based on the ID
-    $query = "SELECT * FROM new_announcement WHERE announcement_id = '$id'";
+    $query = "SELECT * FROM new_annoucement WHERE announcement_id = '$id'";
     $result = mysqli_query($db_connection, $query);
 
     // Check if a row is found
@@ -51,29 +51,22 @@ if(isset($_GET['id'])) {
     <div class="container my-2 greet">
         <p>Apply for Internship</p>
     </div>
-    <!--HIDE Success alert 
-<div class="alert alert-success container col-8" role="alert">
-
-    <h2 class="alert-heading">Successfully applied for XYZ pvt ltd.</h2>
-    <p>You have successfully registered for 
-        <b>XYZ pvt ltd</b>. Please keep checking your mes email inbox for further updates. 
-    </p>
-</div>
-
-<div class="alert alert-warning container col-8" role="alert">
-
-    <h2 class="alert-heading">Cannot apply for this internship!</h2>
-
-    <hr>
-
-    <p> 
-
-        <b>Please upload your previous completion certificate.</b> 
-        <br>
-        To apply for this internship please upload your previous completion certificate or contact TPO. 
-    </p>
-</div>
-THIS PART -->
+    <div class="alert alert-success container col-8" role="alert">
+        <h2 class="alert-heading">Successfully applied for XYZ pvt ltd.</h2>
+        <hr>
+        <p>You have successfully registered for 
+            <b>XYZ pvt ltd</b> . Please keep checking your mes email inbox for further updates. 
+        </p>
+       
+    </div>
+    <div class="alert alert-warning container col-8" role="alert">
+        <h2 class="alert-heading">Cannot apply for this internship!</h2>
+        <hr>
+        <p> 
+            <b>Please upload your previous completion certificate.</b> 
+            <br>
+            To apply for this internship please upload your previous completion certificate or contact TPO. 
+        </p>
        
     </div>
     <div class="container my-3 text-justify" id="content">
