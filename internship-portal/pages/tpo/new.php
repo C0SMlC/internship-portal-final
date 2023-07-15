@@ -4,7 +4,13 @@ $style = "./styles/global.css";
 $favicon = "../../assets/favicon.ico";
 include_once("../../components/head.php");
 
-if ($_SERVER['REQUEST_METHOD'] == "POST" && !empty($_POST['announcement_title']) && !empty($_POST['description']) && !empty($_POST['skills_required']) && !empty($_POST['location']) && !empty($_POST['start_date']) && !empty($_POST['duration']) && !empty($_POST['branch']) && !empty($_POST['work_type']) && !empty($_POST['stipend_type']) && !empty($_POST['work_location']) && !empty($_POST['perks'])) {
+
+$db_host = "localhost";
+$db_user = "root";
+$db_pass = "";
+$db_name = "upload";
+$db_connection = mysqli_connect($db_host, $db_user, $db_pass, $db_name);
+if ($_SERVER['REQUEST_METHOD'] == "POST" && !empty($_POST['announcement_title']) && !empty($_POST['description']) && !empty($_POST['skills_required']) && !empty($_POST['location']) && !empty($_POST['start_date']) && !empty($_POST['duration']) && !empty($_POST['branch']) && !empty($_POST['work_type']) && !empty($_POST['stipend_type']) && !empty($_POST['work_location']) && !empty($_POST['perks']) && !empty($_POST['company'])) {
     $announcement_title = $_POST['announcement_title'];
     $description = $_POST['description'];
     $skills_required = $_POST['skills_required'];
@@ -17,26 +23,36 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && !empty($_POST['announcement_title'])
     $stipend = $_POST['stipend'];
     $work_location = $_POST['work_location'];
     $perks = $_POST['perks'];
+    $company = $_POST['company'];
 
     // Establish database connection
-    $db_host = "localhost";
-    $db_user = "root";
-    $db_pass = "";
-    $db_name = "upload";
-    
-    $db_connection = mysqli_connect($db_host, $db_user, $db_pass, $db_name);
-    if (!$db_connection) {
-        die("Connection failed: " . mysqli_connect_error());
-    }
+    // Establish database connection
+ $query = "INSERT INTO new_announcement (announcement_title, description, skills_required, location, start_date, duration, branch, work_type, stipend_type, stipend, work_location, perks, company) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+$statement = mysqli_prepare($db_connection, $query);
+if ($statement === false) {
+    die("Error in prepare statement: " . mysqli_error($db_connection));
+}
+
+
 
     // Prepare the SQL statement
-    $query = "INSERT INTO new_annoucement (announcement_title, description, skills_required, location, start_date, duration, branch, work_type, stipend_type, stipend, work_location, perks) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+   
+    //$query = "INSERT INTO new_annoucement (announcement_title, description, skills_required, location, start_date, duration, branch, work_type, stipend_type, stipend, work_location, perks, company) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    // Prepare the SQL statement
+//$query = "INSERT INTO new_annoucement (announcement_title, description, skills_required, location, start_date, duration, branch, work_type, stipend_type, stipend, work_location, perks, company) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
 
     // Prepare the statement
     $statement = mysqli_prepare($db_connection, $query);
 
     // Bind the parameters
-    mysqli_stmt_bind_param($statement, "ssssssssssss", $announcement_title, $description, $skills_required, $location, $start_date, $duration, $branch, $work_type, $stipend_type, $stipend, $work_location, $perks);
+    //mysqli_stmt_bind_param($statement, "ssssssssssss", $announcement_title, $description, $skills_required, $location, $start_date, $duration, $branch, $work_type, $stipend_type, $stipend, $work_location, $perks);
+    //mysqli_stmt_bind_param($statement, "sssssssssssss", $announcement_title, $description, $skills_required, $location, $start_date, $duration, $branch, $work_type, $stipend_type, $stipend, $work_location, $perks, $company);
+    // Bind the parameters
+mysqli_stmt_bind_param($statement, "sssssssssssss", $announcement_title, $description, $skills_required, $location, $start_date, $duration, $branch, $work_type, $stipend_type, $stipend, $work_location, $perks, $company);
+
+
 
     // Execute the statement
     if (mysqli_stmt_execute($statement)) {
@@ -71,11 +87,18 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && !empty($_POST['announcement_title'])
                     <strong for="Title" class="form-label">Announcement Title</strong>
                     <br>
                     <br>
-
+                
                     <input type="text" class="form-control" spellcheck="false" required autocomplete="off" name="announcement_title"
                         id="Title" placeholder="e.g. ABC pvt. ltd. hiring interns for XYZ fields....">
                 </div>
                 <br>
+                <div class="col-12">
+    <strong for="Company" class="form-label">Company</strong>
+    <br>
+    <input type="text" class="form-control" spellcheck="false" required autocomplete="off" name="company" id="Company" placeholder="Company Name">
+</div>
+<br>
+
 
                 <div class="mb-3">
                     <label for="Description" class="form-label">
@@ -250,3 +273,5 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && !empty($_POST['announcement_title'])
 </body>
 
 </html>
+
+

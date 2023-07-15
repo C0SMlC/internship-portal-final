@@ -1,5 +1,3 @@
-
-
 <?php
 $title = "Dashboard";
 $style = "./styles/global.css";
@@ -66,7 +64,7 @@ $end = $start + $per_page_record;
             </div>
              <div class="col-auto ml-auto">
                 <button class="btn btn-primary btn-download-excel">Download Excel</button>
-                <button class="btn btn-primary btn-download-pdf">Download PDF</button>
+                <!--<button class="btn btn-primary btn-download-pdf">Download PDF</button>-->
              </div>
         </form>
     </div>
@@ -81,6 +79,7 @@ $end = $start + $per_page_record;
                     <th scope="col">End Date</th>
                     <th scope="col">Type</th>
                     <th scope="col">Class</th>
+                   <!-- <th scope="col">Student Name</th>-->
                 </tr>
             </thead>
             <tbody>
@@ -93,6 +92,7 @@ $end = $start + $per_page_record;
                     $endDate = $student['endDate'];
                     $type = $student['type'];
                     $class = $student['class'];
+                    $studentName = $student['studentName'];
 
                     // Display student information
                     echo "<tr>";
@@ -103,6 +103,7 @@ $end = $start + $per_page_record;
                     echo "<td class='pt-3 text-center'>{$endDate}</td>";
                     echo "<td class='pt-3 text-center'>{$type}</td>";
                     echo "<td class='pt-3 text-center'>{$class}</td>";
+                   // echo "<td class='pt-3 text-center'>{$studentName}</td>";
                     echo "</tr>";
                 }
                 ?>
@@ -186,19 +187,7 @@ $end = $start + $per_page_record;
     }
 
     // Function to download the table data in PDF format
-    function downloadPDF() {
-      // Initialize jsPDF
-      var doc = new jsPDF();
-
-      // Get the table element
-      var table = document.querySelector('table');
-
-      // Generate the PDF
-      doc.autoTable({ html: table });
-
-      // Download the PDF file
-      doc.save('table_data.pdf');
-    }
+   
 
     // Add event listeners to the download buttons
     $(document).ready(function() {

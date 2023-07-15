@@ -35,6 +35,8 @@ if (isset($_GET['id'])) {
         $endDate = $student['endDate'];
         $type = $student['type'];
         $class = $student['class'];
+       
+
 
         // Display the student's information as a non-editable form
         echo "<form>";
@@ -67,9 +69,11 @@ if (isset($_GET['id'])) {
         echo "<label for='type' class='form-label'><strong>Type</strong></label>";
         echo "<input type='text' class='form-control' id='type' value='$type' readonly>";
         echo "</div>";
+        
         echo "<div class='mb-3'>";
         echo "<label for='class' class='form-label'><strong>Class</strong></label>";
         echo "<input type='text' class='form-control' id='class' value='$class' readonly>";
+        echo "</div>";
         echo "</div>";
         echo "</div>";
         echo "</div>";
@@ -93,6 +97,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $endDate = $_POST["endDate"];
         $type = $_POST["type"];
         $class = $_POST["class"];
+        
 
         if ($status === "Approved") {
             $table = "approved_data";
@@ -101,7 +106,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         // Prepare and execute the SQL statement
-        $stmt = $conn->prepare("INSERT INTO feedback (id, comment, status, company, appliedOn, startDate, endDate, type, class, approvedOn) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, CURDATE())");
+        $stmt = $conn->prepare("INSERT INTO feedback (id, comment, status, company, appliedOn, startDate, endDate, type, class, approvedOn ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, CURDATE())");
         $stmt->bind_param("sssssssss", $id, $comment, $status, $company, $appliedOn, $startDate, $endDate, $type, $class);
         $stmt->execute();
 
@@ -143,6 +148,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <input type="hidden" name="endDate" value="<?php echo $endDate; ?>">
             <input type="hidden" name="type" value="<?php echo $type; ?>">
             <input type="hidden" name="class" value="<?php echo $class; ?>">
+            
         </form>
     </div>
 </div>
