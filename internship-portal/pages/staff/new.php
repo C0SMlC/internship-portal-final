@@ -12,23 +12,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $location = $_POST["location"];
     $start_date = $_POST["start_date"];
     $duration = $_POST["duration"];
-    $branch = isset($_POST["branch"]) ? implode(", ", $_POST["branch"]) : "";
+    $branch = $_POST["branch"];
     $work_type = $_POST["work_type"];
     $stipend_type = $_POST["stipend_type"];
     $stipend = $_POST["stipend"];
     $work_location = $_POST["work_location"];
     $perks = $_POST["perks"];
-    $user_id = isset($_POST["user_id"]) ? $_POST["user_id"] : "";
+    $user_id = $_POST["user_id"];
 
-    $query = "INSERT INTO new_announcement (announcement_title, description, skills_required, location, start_date, duration, branch, work_type, stipend_type, stipend, work_location, perks, user_id)
-              VALUES ('$announcement_title', '$description', '$skills_required', '$location', '$start_date', '$duration', '$branch', '$work_type', '$stipend_type', '$stipend', '$work_location', '$perks', '$user_id')";
-
-    if (mysqli_query($db_connection, $query)) {
-        echo "Data inserted successfully!";
-    } else {
-        echo "Error inserting data: " . mysqli_error($db_connection);
+    $query = "insert into new_annoucement(announcement_title,description, skills_required, location, start_date, duration, branch, work_type, stipend_type, stipend, work_location, perks ) values('$announcement_title', ' $description', '$skills_required', '$location', '$start_date', '$duration', '$branch', '$work_type', '$stipend_type', '$stipend', '$work_location', '$perks') ";
+    if(mysqli_query($db_connection, $query))
+    {
+        return true;
+        die;
+    }else{
+        echo "error". mysqli_error($db_connection);
     }
+  
+
 }
+// else{echo "empty";
+// }
 ?>
 
 <!-- Auth -->
