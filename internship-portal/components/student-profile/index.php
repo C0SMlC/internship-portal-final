@@ -104,15 +104,15 @@ $profileImageUrl = "demo.png";
                   <div class="panel">
                     <div class="internship internship-applied">
                       <p class="internship-text">Applied</p>
-                      <p>5</p>
+                      <p>10</p>
                     </div>
                     <div class="internship internhsip-accepted">
                       <p class="internship-text">Accepted</p>
-                      <p>5</p>
+                      <p>7</p>
                     </div>
                     <div class="internship internship-rejected">
                       <p class="internship-text">Rejected</p>
-                      <p>5</p>
+                      <p>3</p>
                     </div>
                   </div>
                 </div>
