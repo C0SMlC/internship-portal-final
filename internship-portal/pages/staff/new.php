@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && !empty($_POST['announcement_title'])
     $location = $_POST['location'];
     $start_date = $_POST['start_date'];
     $duration = $_POST['duration'];
-    $branch = $_POST['branch'];
+    $branch = implode(", ", $_POST['branch']);
     $work_type = $_POST['work_type'];
     $stipend_type = $_POST['stipend_type'];
     $stipend = $_POST['stipend'];
@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && !empty($_POST['announcement_title'])
     }else{
         echo "error". mysqli_error($db_connection);
     }
-  
+
 
 }
 // else{echo "empty";
@@ -45,7 +45,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && !empty($_POST['announcement_title'])
     </div>
     <div class="container my-3" id="content">
         <div class="bg-light p-5 rounded">
-            <form class="row g-3" action="<?php echo htmlentities($_SERVER['PHP_SELF']) ?>" method="POST">
+                <form class="row g-3" action="<?php echo htmlentities($_SERVER['PHP_SELF']) ?>" method="POST" onsubmit="return validateForm();">
+
 
                 <div class="col-12">
 
@@ -106,7 +107,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && !empty($_POST['announcement_title'])
                 </div>
                 <br>
 
-                <div class="form-group">
+               <div class="form-group">
     <label><strong>Branch :</strong></label>
     <br>
     <br>
@@ -139,7 +140,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && !empty($_POST['announcement_title'])
         <input class="form-check-input" type="checkbox" name="branch[]" value="All" />
         <span class="form-check-label">All Branches</span>
     </label>
-          </div>
+    <div id="branch-error" class="invalid-feedback" style="display: none;">Please select at least one branch.</div>
+</div>
+
 
                 <div class="form-group">
                     <label><strong>Work type :</strong></label>
@@ -222,6 +225,16 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && !empty($_POST['announcement_title'])
         </div>
     </div>
 
+<script>
+    function validateForm() {
+        var checkboxes = document.querySelectorAll('input[name="branch[]"]:checked');
+        if (checkboxes.length === 0) {
+            document.getElementById("branch-error").style.display = "block";
+            return false;
+        }
+        return true;
+    }
+</script>
 
 
 

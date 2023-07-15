@@ -1,0 +1,17 @@
+{
+    "name": "sanik/internship-portal-final",
+    "autoload": {
+        "psr-4": {
+            "Sanik\\InternshipPortalFinal\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Sanika",
+            "email": "sanikammhatre@gmail.com"
+        }
+    ],
+    "require": {
+        "phpoffice/phpspreadsheet": "^1.29"
+    }
+}

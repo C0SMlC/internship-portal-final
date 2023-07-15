@@ -38,7 +38,7 @@ if(isset($_GET['id'])) {
                 $location = $_POST['location'];
                 $start_date = $_POST['start_date'];
                 $duration = $_POST['duration'];
-                $branch = $_POST['branch'];
+                $branch = implode(",",$_POST['branch']);
                 $work_type = $_POST['work_type'];
                 $stipend_type = $_POST['stipend_type'];
                 $stipend = $_POST['stipend'];
@@ -147,31 +147,16 @@ if(isset($_GET['id'])) {
                     <label><strong>Branch :</strong></label>
                     <br>
                     <br>
-
-                    <label class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="branch" value="ECS" <?php if ($branch == 'ECS') echo 'checked'; ?> />
-                        <span class="form-check-label">ECS</span>
-                    </label>
-                    <label class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="branch" value="CS" <?php if ($branch == 'CS') echo 'checked'; ?>/>
-                        <span class="form-check-label">CS</span>
-                    </label>
-                    <label class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="branch" value="IT" <?php if ($branch == 'IT') echo 'checked'; ?> />
-                        <span class="form-check-label">IT</span>
-                    </label>
-                    <label class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="branch" value="MECH" <?php if ($branch == 'MECH') echo 'checked'; ?> />
-                        <span class="form-check-label">MECH</span>
-                    </label>
-                    <label class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="branch" value="AUTO" <?php if ($branch == 'AUTO') echo 'checked'; ?> />
-                        <span class="form-check-label">AUTO</span>
-                    </label>
-                    <label class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="branch" value="ALl" <?php if ($branch == 'All') echo 'checked'; ?> />
-                        <span class="form-check-label">All Branches</span>
-                    </label>
+                    <?php
+                    $branchOptions = array('ECS', 'EXTC', 'CS', 'IT', 'MECH', 'AUTO', 'All');
+                    foreach ($branchOptions as $option) {
+                        $checked = (in_array($option, explode(",", $branch))) ? 'checked' : '';
+                        echo '<label class="form-check form-check-inline">';
+                        echo '<input class="form-check-input" type="checkbox" name="branch[]" value="' . $option . '" ' . $checked . '>';
+                        echo '<span class="form-check-label">' . $option . '</span>';
+                        echo '</label>';
+                    }
+                    ?>
 
                 </div>
                 <div class="form-group">
