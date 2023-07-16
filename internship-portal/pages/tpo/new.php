@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
     // Validate other fields as needed
 
     if (empty($errors)) {
-        $query = "INSERT INTO new_announcement (company_name, description, skills_required, location, start_date, duration, branch, work_type, stipend_type, stipend, work_location, perks)
+        $query = "INSERT INTO new_annoucement (company_name, description, skills_required, location, start_date, duration, branch, work_type, stipend_type, stipend, work_location, perks)
                   VALUES ('$company_name', '$description', '$skills_required', '$location', '$start_date', '$duration', '" . implode(", ", $branch) . "', '$work_type', '$stipend_type', '$stipend', '$work_location', '$perks')";
 
         if (mysqli_query($db_connection, $query)) {
