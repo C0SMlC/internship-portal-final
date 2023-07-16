@@ -14,7 +14,7 @@ if ($conn->connect_error) {
 }
 
 // Retrieving company name 
-$companyName = isset($_GET["company"]) ? $_GET["company"] : '';
+$companyName = isset($_GET["company_name"]) ? $_GET["company_name"] : '';
 
 //inner join
 $sql = "SELECT students.StudentName, students.Major

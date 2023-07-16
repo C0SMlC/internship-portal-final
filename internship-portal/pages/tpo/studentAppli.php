@@ -28,9 +28,9 @@ $searchedData = [];
 
 // Fetch data from the database table
 if (!empty($search)) {
-    $sql = "SELECT * FROM student_info WHERE id LIKE '%$search%' OR company LIKE '%$search%' LIMIT $start, $per_page_record";
+    $sql = "SELECT id, company_name, appliedOn, startDate, endDate, type, class, studentName, resume FROM student_info WHERE id LIKE '%$search%' OR company_name LIKE '%$search%' LIMIT $start, $per_page_record";
 } else {
-    $sql = "SELECT * FROM student_info LIMIT $start, $per_page_record";
+    $sql = "SELECT id, company_name, appliedOn, startDate, endDate, type, class, studentName, resume FROM student_info LIMIT $start, $per_page_record";
 }
 
 $result = $conn->query($sql);
@@ -79,6 +79,7 @@ $end = $start + $per_page_record;
                     <th scope="col">End Date</th>
                     <th scope="col">Type</th>
                     <th scope="col">Class</th>
+                    <th scope="col">Resume</th>
                    <!-- <th scope="col">Student Name</th>-->
                 </tr>
             </thead>
@@ -86,25 +87,42 @@ $end = $start + $per_page_record;
                 <?php
                 foreach ($searchedData as $student) {
                     $id = $student['id'];
-                    $company = $student['company'];
+                    $company_name = $student['company_name'];
                     $appliedOn = $student['appliedOn'];
                     $startDate = $student['startDate'];
                     $endDate = $student['endDate'];
                     $type = $student['type'];
                     $class = $student['class'];
                     $studentName = $student['studentName'];
+                    $resume = $student['resume'];
+
+                    // Convert the longblob data to PDF file
+                    // Convert the longblob data to PDF file
+                    $pdfUrl = "data:application/pdf;base64," . base64_encode($resume);
+
 
                     // Display student information
+                    // Display student information
+                    // Display student information
                     echo "<tr>";
-                    echo "<td class='pt-3 text-center'><a href='decision.php?id={$id}'>{$id}</a></td>";
-                    echo "<td class='pt-3'>{$company}</td>";
+                    echo "<td class='pt-3 text-center fw-bold '><a href='decision.php?id={$id}'>{$id}</a></td>";
+                    echo "<td class='pt-3'>{$company_name}</td>";
                     echo "<td class='pt-3 text-center'>{$appliedOn}</td>";
                     echo "<td class='pt-3 text-center'>{$startDate}</td>";
                     echo "<td class='pt-3 text-center'>{$endDate}</td>";
                     echo "<td class='pt-3 text-center'>{$type}</td>";
                     echo "<td class='pt-3 text-center'>{$class}</td>";
-                   // echo "<td class='pt-3 text-center'>{$studentName}</td>";
+                    echo "<td class='pt-3 text-center'>
+    <a href='view_resume.php?id={$id}' target='_blank' class='btn btn-warning'>
+        <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-eye-fill' viewBox='0 0 16 16'>
+            <path d='M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z' />
+            <path d='M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z' />
+        </svg>
+    </a>
+</td>";
                     echo "</tr>";
+                   
+
                 }
                 ?>
             </tbody>

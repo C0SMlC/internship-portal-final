@@ -29,7 +29,7 @@ if (isset($_GET['id'])) {
     if ($result->num_rows > 0) {
         $student = $result->fetch_assoc();
         $id = $student['id'];
-        $company = $student['company'];
+        $company_name = $student['company_name'];
         $appliedOn = $student['appliedOn'];
         $startDate = $student['startDate'];
         $endDate = $student['endDate'];
@@ -50,8 +50,8 @@ if (isset($_GET['id'])) {
         echo "<input type='text' class='form-control' id='id' value='$id' readonly>";
         echo "</div>";
         echo "<div class='mb-3'>";
-        echo "<label for='company' class='form-label'><strong>Company</strong></label>";
-        echo "<input type='text' class='form-control' id='company' value='$company' readonly>";
+        echo "<label for='company_name' class='form-label'><strong>Company</strong></label>";
+        echo "<input type='text' class='form-control' id='company_name' value='$company_name' readonly>";
         echo "</div>";
         echo "<div class='mb-3'>";
         echo "<label for='appliedOn' class='form-label'><strong>Applied On</strong></label>";
@@ -87,11 +87,11 @@ if (isset($_GET['id'])) {
 
 // Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (isset($_POST["comment"]) && isset($_POST["status"]) && isset($_POST["company"]) && isset($_POST["appliedOn"]) && isset($_POST["startDate"]) && isset($_POST["endDate"]) && isset($_POST["type"]) && isset($_POST["class"])) {
+    if (isset($_POST["comment"]) && isset($_POST["status"]) && isset($_POST["company_name"]) && isset($_POST["appliedOn"]) && isset($_POST["startDate"]) && isset($_POST["endDate"]) && isset($_POST["type"]) && isset($_POST["class"])) {
         // Get the form data
         $comment = $_POST["comment"];
         $status = $_POST["status"];
-        $company = $_POST["company"];
+        $company_name = $_POST["company_name"];
         $appliedOn = $_POST["appliedOn"];
         $startDate = $_POST["startDate"];
         $endDate = $_POST["endDate"];
@@ -106,8 +106,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         // Prepare and execute the SQL statement
-        $stmt = $conn->prepare("INSERT INTO feedback (id, comment, status, company, appliedOn, startDate, endDate, type, class, approvedOn ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, CURDATE())");
-        $stmt->bind_param("sssssssss", $id, $comment, $status, $company, $appliedOn, $startDate, $endDate, $type, $class);
+        $stmt = $conn->prepare("INSERT INTO feedback (id, comment, status, company_name, appliedOn, startDate, endDate, type, class, approvedOn ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, CURDATE())");
+        $stmt->bind_param("sssssssss", $id, $comment, $status, $company_name, $appliedOn, $startDate, $endDate, $type, $class);
         $stmt->execute();
 
         // Close the statement
@@ -142,7 +142,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </div>
                 </div>
             </div>
-            <input type="hidden" name="company" value="<?php echo $company; ?>">
+            <input type="hidden" name="company_name" value="<?php echo $company_name; ?>">
             <input type="hidden" name="appliedOn" value="<?php echo $appliedOn; ?>">
             <input type="hidden" name="startDate" value="<?php echo $startDate; ?>">
             <input type="hidden" name="endDate" value="<?php echo $endDate; ?>">

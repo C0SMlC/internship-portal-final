@@ -5,12 +5,12 @@ $favicon = "../../assets/favicon.ico";
 include_once("../../components/head.php");
 require "./tpodbconnect.php";
 
-if(isset($_GET['company'])) {
+if(isset($_GET['company_name'])) {
     // Retrieve the company name from the URL
-    $company = $_GET['company'];
+    $company_name = $_GET['company_name'];
 
     // Query to fetch the specific announcement based on the company name
-    $query = "SELECT * FROM new_announcement WHERE company = '$company'";
+    $query = "SELECT * FROM new_announcement WHERE company_name = '$company_name'";
 
     $result = mysqli_query($db_connection, $query);
     if (!$result) {
@@ -22,7 +22,7 @@ if(isset($_GET['company'])) {
         $row = mysqli_fetch_assoc($result);
 
         // Extract the information from the row
-        $announcement_title = $row["announcement_title"];
+        $company_name = $row["company_name"];
         $description = $row["description"];
         $duration = $row["duration"];
         $start_date = $row["start_date"];
@@ -54,7 +54,7 @@ if(isset($_GET['company'])) {
         <p>Apply for Internship</p>
     </div>
     <div class="alert alert-success container col-8" role="alert">
-        <h2 class="alert-heading">Successfully applied for <?php echo $company ?> pvt ltd.</h2>
+        <h2 class="alert-heading">Successfully applied for <//?php echo $company_name ?> pvt ltd.</h2>
         <hr>
         <p>You have successfully registered for 
             <b>XYZ pvt ltd</b> . Please keep checking your mes email inbox for further updates. 
@@ -75,7 +75,7 @@ if(isset($_GET['company'])) {
         <div class="bg-light p-5 rounded">
 
 
-            <p class="h3 "><?php echo $company; ?></p>
+            <p class="h3 "><?php echo $company_name; ?></p>
             <br>
             <p class="lead">
             <?php echo $description; ?>
@@ -87,7 +87,7 @@ if(isset($_GET['company'])) {
                 </p>
                 <p class="lead">
                     <small>
-                    <?php echo $announcement_title; ?>
+                    <?php echo $company_name; ?>
                     </small>
                 </p>
             </div>
