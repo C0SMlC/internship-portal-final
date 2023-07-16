@@ -59,10 +59,8 @@ $conn->close();
                 <tr>
                     <th scope="col">ID</th>
                     <th scope="col">Company</th>
-                    
                     <th scope="col">Start Date</th>
                     <th scope="col">End Date</th>
-                    
                     <th scope="col">Download</th>
                 </tr>
             </thead>
