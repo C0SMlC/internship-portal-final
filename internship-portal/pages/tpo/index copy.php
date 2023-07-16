@@ -260,7 +260,7 @@ if(isset($_GET['company_name'])) {
         <div class="response-box">
             <div style="text-align: center;">
                 
-                <a href="./active.php" class="btn btn-primary btn-sm col-md-2 p-sm-4" role="button">Go Back</a>
+                <a href="./index.php" class="btn btn-primary btn-sm col-md-2 p-sm-4" role="button">Go Back</a>
             </div>
         </div>
     </div>

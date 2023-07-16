@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
 
         if (mysqli_query($db_connection, $query)) {
             // Success, redirect or show a success message
-            header("Location: announcementsuccess.php");
+            header("Location: anouncementsuccess.php");
             exit;
         } else {
             $errors[] = "Error: " . mysqli_error($db_connection);

@@ -6,7 +6,7 @@ if (isset($_GET['id'])) {
     $servername = "localhost";
     $username = "root";
     $password = "";
-    $dbname = "upload";
+    $dbname = "internship_portal";
 
     // Create a database connection
     $conn = new mysqli($servername, $username, $password, $dbname);
@@ -17,7 +17,7 @@ if (isset($_GET['id'])) {
     }
 
     // Retrieve the resume from the database
-    $sql = "SELECT resume FROM student_info WHERE id = '{$id}'";
+    $sql = "SELECT resume FROM applications WHERE id = '{$id}'";
     $result = $conn->query($sql);
 
     if ($result && $result->num_rows > 0) {
