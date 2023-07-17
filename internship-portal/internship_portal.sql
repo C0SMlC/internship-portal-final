@@ -179,7 +179,7 @@ INSERT INTO `applications` (`id`, `student_name`, `contact_no`, `student_locatio
 -- --------------------------------------------------------
 
 --
--- Table structure for table `new_annoucement`
+-- Table structure for table `new_announcement`
 --
 
 DROP TABLE IF EXISTS `new_announcement`;

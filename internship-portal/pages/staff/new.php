@@ -1,5 +1,4 @@
 <?php
-
 $title = "Dashboard";
 $style = "./styles/global.css";
 $favicon = "../../assets/favicon.ico";
@@ -13,7 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $location = $_POST["location"];
     $start_date = $_POST["start_date"];
     $duration = $_POST["duration"];
-    $branch = $_POST["branch"];
+    $branch = implode(",", $_POST["branch"]);
     $work_type = $_POST["work_type"];
     $stipend_type = $_POST["stipend_type"];
     $stipend = $_POST["stipend"];
@@ -21,10 +20,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $perks = $_POST["perks"];
     $user_id = $_POST["user_id"];
 
+    // Prepare the SQL statement using prepared statements
     $query = "INSERT INTO new_announcement (announcement_title, description, skills_required, location, start_date, duration, branch, work_type, stipend_type, stipend, work_location, perks, user_id)
-              VALUES ('$announcement_title', '$description', '$skills_required', '$location', '$start_date', '$duration', '$branch', '$work_type', '$stipend_type', '$stipend', '$work_location', '$perks', '$user_id')";
+              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $statement = mysqli_prepare($db_connection, $query);
+    mysqli_stmt_bind_param($statement, "sssssssssssss", $announcement_title, $description, $skills_required, $location, $start_date, $duration, $branch, $work_type, $stipend_type, $stipend, $work_location, $perks, $user_id);
 
-    if (mysqli_query($db_connection, $query)) {
+    if (mysqli_stmt_execute($statement)) {
         echo "Data inserted successfully!";
     } else {
         echo "Error inserting data: " . mysqli_error($db_connection);
@@ -35,26 +37,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <!-- Auth -->
 
 <body>
-    <?php
-    include_once("../../components/navbar/index.php");
-    ?>
+    <?php include_once("../../components/navbar/index.php"); ?>
     <div class="container my-2 greet">
         <p>New Announcement</p>
     </div>
     <div class="container my-3" id="content">
         <div class="bg-light p-5 rounded">
             <form class="row g-3" action="<?php echo htmlentities($_SERVER['PHP_SELF']) ?>" method="POST">
-
                 <div class="col-12">
-
                     <strong for="Title" class="form-label">Announcement Title</strong>
                     <br>
                     <br>
-
-                    <input type="text" class="form-control" spellcheck="false" required autocomplete="off" name="announcement_title"
-                        id="Title" placeholder="e.g. ABC pvt. ltd. hiring interns for XYZ fields....">
+                    <input type="text" class="form-control" spellcheck="false" required autocomplete="off" name="announcement_title" id="Title" placeholder="e.g. ABC pvt. ltd. hiring interns for XYZ fields....">
                 </div>
-                <br>
 
                 <div class="mb-3">
                     <label for="Description" class="form-label">
@@ -205,23 +200,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         id="Perks" placeholder="e.g. Certificate, Letter Of Recommendation, Flexible timings, etc...">
                 </div>
                 <br>
+<!-- Rest of the form fields -->
+
+<div class="col-12">
+                    <strong for="user_id" class="form-label">User ID</strong>
+                    <br>
+                    <input type="text" class="form-control" spellcheck="false" required autocomplete="off" name="user_id" id="user_id" placeholder="Enter User ID">
+                </div>
+
+                <!-- Submit button -->
                 <div class="container text-center">
                     <div class="row mx-auto">
                         <div class="col mt-5">
                             <button class="btn btn-warning btn-lg col-md-12" role="button">Add Announcement</button>
                         </div>
-
                     </div>
                 </div>
-
-
-
             </form>
         </div>
     </div>
+</body>
 
-
-
+</html>
 
 
 </body>
