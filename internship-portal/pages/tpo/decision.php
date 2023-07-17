@@ -8,7 +8,7 @@ include_once("../../components/head.php");
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "upload";
+$dbname = "internship_portal";
 
 // Create a database connection
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -23,18 +23,18 @@ if (isset($_GET['id'])) {
     $id = $_GET['id'];
 
     // Fetch the student's data from the database
-    $sql = "SELECT * FROM student_info WHERE id = '$id'";
+    $sql = "SELECT * FROM applications WHERE id = '$id'";
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
         $student = $result->fetch_assoc();
         $id = $student['id'];
-        $company = $student['company'];
-        $appliedOn = $student['appliedOn'];
-        $startDate = $student['startDate'];
-        $endDate = $student['endDate'];
-        $type = $student['type'];
-        $class = $student['class'];
+        $company_name = $student['company_name'];
+        $student_name = $student['student_name'];
+        $admission_no = $student['admission_no'];
+        $contact_no = $student['contact_no'];
+        $student_location = $student['student_location'];
+        $application_date = $student['application_date'];
 
         // Display the student's information as a non-editable form
         echo "<form>";
@@ -48,28 +48,29 @@ if (isset($_GET['id'])) {
         echo "<input type='text' class='form-control' id='id' value='$id' readonly>";
         echo "</div>";
         echo "<div class='mb-3'>";
-        echo "<label for='company' class='form-label'><strong>Company</strong></label>";
-        echo "<input type='text' class='form-control' id='company' value='$company' readonly>";
+        echo "<label for='company_name' class='form-label'><strong>Company Name</strong></label>";
+        echo "<input type='text' class='form-control' id='company_name' value='$company_name' readonly>";
         echo "</div>";
         echo "<div class='mb-3'>";
-        echo "<label for='appliedOn' class='form-label'><strong>Applied On</strong></label>";
-        echo "<input type='text' class='form-control' id='appliedOn' value='$appliedOn' readonly>";
+        echo "<label for='student_name' class='form-label'><strong>Student Name</strong></label>";
+        echo "<input type='text' class='form-control' id='student_name' value='$student_name' readonly>";
         echo "</div>";
         echo "<div class='mb-3'>";
-        echo "<label for='startDate' class='form-label'><strong>Start Date</strong></label>";
-        echo "<input type='text' class='form-control' id='startDate' value='$startDate' readonly>";
+        echo "<label for='admission_no' class='form-label'><strong>Admission No</strong></label>";
+        echo "<input type='text' class='form-control' id='admission_no' value='$admission_no' readonly>";
         echo "</div>";
         echo "<div class='mb-3'>";
-        echo "<label for='endDate' class='form-label'><strong>End Date</strong></label>";
-        echo "<input type='text' class='form-control' id='endDate' value='$endDate' readonly>";
+        echo "<label for='contact_no' class='form-label'><strong>Contact No</strong></label>";
+        echo "<input type='text' class='form-control' id='contact_no' value='$contact_no' readonly>";
         echo "</div>";
         echo "<div class='mb-3'>";
-        echo "<label for='type' class='form-label'><strong>Type</strong></label>";
-        echo "<input type='text' class='form-control' id='type' value='$type' readonly>";
+        echo "<label for='student_location' class='form-label'><strong>Student Location</strong></label>";
+        echo "<input type='text' class='form-control' id='student_location' value='$student_location' readonly>";
         echo "</div>";
         echo "<div class='mb-3'>";
-        echo "<label for='class' class='form-label'><strong>Class</strong></label>";
-        echo "<input type='text' class='form-control' id='class' value='$class' readonly>";
+        echo "<label for='application_date' class='form-label'><strong>Application Date</strong></label>";
+        echo "<input type='text' class='form-control' id='application_date' value='$application_date' readonly>";
+        echo "</div>";
         echo "</div>";
         echo "</div>";
         echo "</div>";
@@ -83,16 +84,17 @@ if (isset($_GET['id'])) {
 
 // Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (isset($_POST["comment"]) && isset($_POST["status"]) && isset($_POST["company"]) && isset($_POST["appliedOn"]) && isset($_POST["startDate"]) && isset($_POST["endDate"]) && isset($_POST["type"]) && isset($_POST["class"])) {
+    if (isset($_POST["id"]) && isset($_POST["comment"]) && isset($_POST["status"]) && isset($_POST["company_name"]) && isset($_POST["student_name"]) && isset($_POST["admission_no"]) && isset($_POST["contact_no"]) && isset($_POST["student_location"]) && isset($_POST["application_date"])) {
         // Get the form data
+        $id = $_POST["id"];
         $comment = $_POST["comment"];
         $status = $_POST["status"];
-        $company = $_POST["company"];
-        $appliedOn = $_POST["appliedOn"];
-        $startDate = $_POST["startDate"];
-        $endDate = $_POST["endDate"];
-        $type = $_POST["type"];
-        $class = $_POST["class"];
+        $company_name = $_POST["company_name"];
+        $student_name = $_POST["student_name"];
+        $admission_no = $_POST["admission_no"];
+        $contact_no = $_POST["contact_no"];
+        $student_location = $_POST["student_location"];
+        $application_date = $_POST["application_date"];
 
         if ($status === "Approved") {
             $table = "approved_data";
@@ -101,8 +103,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         // Prepare and execute the SQL statement
-        $stmt = $conn->prepare("INSERT INTO feedback (id, comment, status, company, appliedOn, startDate, endDate, type, class, approvedOn) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, CURDATE())");
-        $stmt->bind_param("sssssssss", $id, $comment, $status, $company, $appliedOn, $startDate, $endDate, $type, $class);
+        $stmt = $conn->prepare("INSERT INTO feedback (id, comment, status, company_name, student_name, admission_no, contact_no, student_location, application_date, approvedOn) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, CURDATE())");
+        $stmt->bind_param("sssssssss", $id, $comment, $status, $company_name, $student_name, $admission_no, $contact_no, $student_location, $application_date);
         $stmt->execute();
 
         // Close the statement
@@ -113,16 +115,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     }
 }
-
 ?>
 
 <div class="container my-2 greet">
-    <p>Application ID: <?php echo $_GET['id']; ?></p>
+    <p>Application ID: <?php echo isset($_GET['id']) ? $_GET['id'] : 'N/A'; ?></p>
 </div>
 
 <div class="container my-3" id="content">
     <div class="bg-light p-5 rounded">
-        <form class="row g-3" action="<?php echo htmlentities($_SERVER['PHP_SELF']) ?>" method="POST">
+        <form class="row g-3" action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>" method="POST">
             <div class="mb-3">
                 <label for="inputComment" class="form-label"><strong>Comment</strong></label>
                 <textarea class="form-control" id="inputComment" name="comment" rows="10" placeholder="e.g. Please collect the approval letter from the office"></textarea>
@@ -137,15 +138,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </div>
                 </div>
             </div>
-            <input type="hidden" name="company" value="<?php echo $company; ?>">
-            <input type="hidden" name="appliedOn" value="<?php echo $appliedOn; ?>">
-            <input type="hidden" name="startDate" value="<?php echo $startDate; ?>">
-            <input type="hidden" name="endDate" value="<?php echo $endDate; ?>">
-            <input type="hidden" name="type" value="<?php echo $type; ?>">
-            <input type="hidden" name="class" value="<?php echo $class; ?>">
+            <?php if (isset($_GET['id'])) { ?>
+            <input type="hidden" name="id" value="<?php echo $_GET['id']; ?>">
+            <input type="hidden" name="company_name" value="<?php echo $company_name; ?>">
+            <input type="hidden" name="student_name" value="<?php echo $student_name; ?>">
+            <input type="hidden" name="admission_no" value="<?php echo $admission_no; ?>">
+            <input type="hidden" name="contact_no" value="<?php echo $contact_no; ?>">
+            <input type="hidden" name="student_location" value="<?php echo $student_location; ?>">
+            <input type="hidden" name="application_date" value="<?php echo $application_date; ?>">
+            <?php } ?>
         </form>
     </div>
 </div>
 </body>
 </html>
-

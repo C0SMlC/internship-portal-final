@@ -3,23 +3,26 @@ $title = "Dashboard";
 $style = "./index.css";
 $favicon = "../../assets/favicon.ico";
 include_once("../../components/head.php");
-require "../../connect/connect.php";
+require "./tpodbconnect.php";
 
+if(isset($_GET['company_name'])) {
+    // Retrieve the company name from the URL
+    $company_name = $_GET['company_name'];
 
-if(isset($_GET['id'])) {
-    // Retrieve the ID from the URL
-    $id = $_GET['id'];
+    // Query to fetch the specific announcement based on the company name
+    $query = "SELECT * FROM new_annoucement WHERE company_name = '$company_name'";
 
-    // Query to fetch the specific announcement based on the ID
-    $query = "SELECT * FROM new_annoucement WHERE announcement_id = '$id'";
     $result = mysqli_query($db_connection, $query);
+    if (!$result) {
+        die('Query execution error: ' . mysqli_error($db_connection));
+    }
 
     // Check if a row is found
     if(mysqli_num_rows($result) > 0) {
         $row = mysqli_fetch_assoc($result);
 
         // Extract the information from the row
-        $announcement_title = $row["announcement_title"];
+        $company_name = $row["company_name"];
         $description = $row["description"];
         $duration = $row["duration"];
         $start_date = $row["start_date"];
@@ -32,27 +35,26 @@ if(isset($_GET['id'])) {
         $stipend = $row["stipend"];
         $perks = $row["perks"];
     } else {
-        // No announcement found with the specified ID, handle accordingly
+        // No announcement found with the specified company name, handle accordingly
         echo "Announcement not found.";
         exit;
     }
 } else {
-    // ID parameter not present in the URL, handle accordingly
+    // Company parameter not present in the URL, handle accordingly
     echo "Invalid request.";
     exit;
 }
-
 ?>
 
 <body>
     <?php
     include_once("../../components/navbar/index.php");
     ?>
-    <div class="container my-2 greet">
+   <!-- <div class="container my-2 greet">
         <p>Apply for Internship</p>
     </div>
     <div class="alert alert-success container col-8" role="alert">
-        <h2 class="alert-heading">Successfully applied for XYZ pvt ltd.</h2>
+        <h2 class="alert-heading">Successfully applied for <//?php echo $company_name ?> pvt ltd.</h2>
         <hr>
         <p>You have successfully registered for 
             <b>XYZ pvt ltd</b> . Please keep checking your mes email inbox for further updates. 
@@ -68,17 +70,27 @@ if(isset($_GET['id'])) {
             To apply for this internship please upload your previous completion certificate or contact TPO. 
         </p>
        
-    </div>
+    </div>-->
     <div class="container my-3 text-justify" id="content">
         <div class="bg-light p-5 rounded">
 
 
-            <p class="h3 "><?php echo $announcement_title; ?></p>
+            <p class="h3 "><?php echo $company_name; ?></p>
             <br>
             <p class="lead">
             <?php echo $description; ?>
             </p>
             <br>
+            <div>
+                <p class="h5">
+                    Announcement Title
+                </p>
+                <p class="lead">
+                    <small>
+                    <?php echo $company_name; ?>
+                    </small>
+                </p>
+            </div>
             <div>
                 <p class="h5">
                     Duration
@@ -201,8 +213,8 @@ if(isset($_GET['id'])) {
                 </p>
             </div>
             <br>
-            <div class="col d-flex align-items-center justify-content-center">
-                <a href="../staff/edit.php?id=<?php echo $id; ?>" class="btn btn-warning btn-lg col col-lg-2 col-md-4 col-sm-6 d-flex align-items-center justify-content-evenly" role="button" aria-disabled="true">
+            <!--<div class="col d-flex align-items-center justify-content-center">
+                <a href="../staff/edit.php?id=<//?php echo $id; ?>" class="btn btn-warning btn-lg col col-lg-2 col-md-4 col-sm-6 d-flex align-items-center justify-content-evenly" role="button" aria-disabled="true">
                     <div>
                         Edit
                     </div>
@@ -222,7 +234,7 @@ if(isset($_GET['id'])) {
                         <path fill-rule="evenodd" d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0v-5z" />
                     </svg>
                 </a>
-            </div>
+            </div>-->
             <!-- <br> -->
             <!-- <div class="col d-flex align-items-center justify-content-center">
                 <button href="../student/apply.php" class="btn btn-warning btn-lg col col-lg-3 col-md-4 col-sm-6 d-flex align-items-center justify-content-evenly" disabled role="button" aria-disabled="true">
@@ -244,7 +256,16 @@ if(isset($_GET['id'])) {
                 </button>
             </div> -->
         </div>
+        <div class="container">
+        <div class="response-box">
+            <div style="text-align: center;">
+                
+                <a href="./index.php" class="btn btn-primary btn-sm col-md-2 p-sm-4" role="button">Go Back</a>
+            </div>
+        </div>
     </div>
+    </div>
+    
 
 </body>
 

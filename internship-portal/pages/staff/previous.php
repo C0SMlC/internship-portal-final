@@ -16,13 +16,24 @@ $per_page_record = 10; // limit
 $start_from = ($page - 1) * $per_page_record;
 if(isset($_GET['search'])){
     $search = $_GET['search'];
-    $data_search = "Select announcement_id, announcement_title, published_on from new_announcement where announcement_id = '$search' OR announcement_title LIKE '%$search%' LIMIT $start_from, $per_page_record ";
+    $data_search = "Select announcement_id, announcement_title, status, published_on from new_annoucement where announcement_id = '$search' OR announcement_title LIKE '%$search%' LIMIT $start_from, $per_page_record ";
 
 }else{
-    $data_search = "Select announcement_id, announcement_title, published_on from new_announcement LIMIT $start_from, $per_page_record";
+    $data_search = "Select announcement_id, announcement_title, status, published_on from new_annoucement LIMIT $start_from, $per_page_record";
 }
 $query = mysqli_query($db_connection, $data_search);
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    foreach ($_POST as $key => $value) {
+        if (strpos($key, 'status_') === 0) {
+            $announcement_id = substr($key, strlen('status_'));
+            $status = $value;
+
+            $updateQuery = "UPDATE new_annoucement SET status = '$status' WHERE announcement_id = $announcement_id";
+            mysqli_query($db_connection, $updateQuery);
+        }
+    }
+}
   
 ?>
 
@@ -56,8 +67,6 @@ $query = mysqli_query($db_connection, $data_search);
                     <th scope="col">Status</th>
                     <th scope="col">Registrations</th>
                     <th scope="col">Download</th>
-                    <th scope="col">Action</th>
-
 
                 </tr>
             </thead>
@@ -67,6 +76,7 @@ $query = mysqli_query($db_connection, $data_search);
                     $announcement_id = $row["announcement_id"];
                     $announcement_title = $row["announcement_title"];
                     $published_on = $row["published_on"];
+                    $status = $row['status'];
                 ?>
                 <tr class="table-light">
                     <th class="pt-3 text-center text-danger" scope="row">
@@ -97,7 +107,21 @@ $query = mysqli_query($db_connection, $data_search);
                     ?>
                     </td>
                     <th class="pt-3 text-center text-success">
-                        Active
+                        <?php if ($status) : ?>
+                            <p style="color: <?php echo ($status === 'Active') ? 'green' : 'red'; ?>">
+                            <?php echo $status; ?></p>
+                        <?php else : ?>
+                            <form class="action-form" action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>" method="POST">
+                                <input type="hidden" name="announcement_id" value="<?php echo $announcement_id; ?>">
+                                <select name="status_<?php echo $announcement_id; ?>">
+                                    <option value="Active">Active</option>
+                                    <option value="Inactive">Inactive</option>
+                                </select>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </form>
+                            
+                        <?php endif; ?>
+                        
                     </th>
                     <td class="py-3 text-center ">
                         <div class="d-flex justify-content-center align-items-center">
@@ -125,14 +149,6 @@ $query = mysqli_query($db_connection, $data_search);
                         </div>
 
                     </td>
-                    <td class="py-3 text-center">
-    <div class="d-flex justify-content-center align-items-center">
-        <span class="status-span" data-announcement-id="<?php echo $announcement_id; ?>">
-            Active
-        </span>
-    </div>
-</td>
-
                 <?php 
                 }
                 ?>
@@ -144,78 +160,102 @@ $query = mysqli_query($db_connection, $data_search);
         <br>
         <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-center">
-                <li class="page-item <?php //if ($page < 2) echo "disabled" 
-                                        ?>">
-                    <a class="page-link" href="previous.php?page=<?php //echo $page - 1; 
-                                                                    ?>" tabindex="-1">Previous</a>
-                </li>
-                <?php
-                //$row_search = "SELECT COUNT(*) FROM userregisdata";
-                //count from db query
-                // $rs_result = mysqli_query($conn, $row_search);
-                // $row = mysqli_fetch_row($rs_result);
-                // $total_records = $row[0];
-                // $total_pages = ceil($total_records / $per_page_record);
-                // $start = $page;
-                // if ($page < $total_pages - 2) {
-                //     $end = $page + 2;
-                // } else {
-                //     $start = $total_pages - 2;
-                //     $end = $total_pages;
-                // }
-                //
-                //temporary start and end
-                $start = 1;
-                $end = 3;
-                //
-                //
-                for ($i = $start; $i <= $end; $i++) {
-                    if ($i == $page) {
-                        $pagLink = "<li class='page-item active'><a class='page-link'  href='previous.php?page=$i'>" . $i . "</a></li>";
+            <?php
+                    $total_records_query = "SELECT COUNT(*) AS total FROM new_annoucement";
+                    $total_records_result = mysqli_query($db_connection, $total_records_query);
+                    $total_records_row = mysqli_fetch_assoc($total_records_result);
+                    $total_records = $total_records_row['total'];
+                    
+                    // Calculate total number of pages
+                    $total_pages = ceil($total_records / $per_page_record);
+                    
+                    // Display Previous button
+                    if ($page > 1) {
+                        echo "<li class='page-item'><a class='page-link' href='previous.php?page=".($page - 1)."'>Previous</a></li>";
                     } else {
-                        $pagLink = "<li class='page-item'><a class='page-link'  href='previous.php?page=$i'>" . $i . "</a></li>";
-                    };
-                    echo $pagLink;
-                }
-                ?>
-                <li class="page-item <?php //if ($page == $total_pages) echo "disabled" 
-                                        ?>">
-                    <a class="page-link" href="previous.php?page=<?php //if ($page < $total_pages) echo $page + 1; 
-                                                                    ?>">Next</a>
-                </li>
+                        echo "<li class='page-item disabled'><a class='page-link'>Previous</a></li>";
+                    }
+
+                    // Determine the range of visible pages
+                    $visiblePages = 5; // Adjust this value as needed
+                    $halfVisible = floor($visiblePages / 2);
+                    $start = max(1, $page - $halfVisible);
+                    $end = min($start + $visiblePages - 1, $total_pages);
+
+                    // Display ellipsis and first page link if necessary
+                    if ($start > 1) {
+                        echo "<li class='page-item'><a class='page-link' href='previous.php?page=1'>1</a></li>";
+                        if ($start > 2) {
+                            echo "<li class='page-item disabled'><a class='page-link'>...</a></li>";
+                        }
+                    }
+
+                    // Display page links
+                    for ($i = $start; $i <= $end; $i++) {
+                        if ($i == $page) {
+                            echo "<li class='page-item active'><a class='page-link' href='previous.php?page=$i'>$i</a></li>";
+                        } else {
+                            echo "<li class='page-item'><a class='page-link' href='previous.php?page=$i'>$i</a></li>";
+                        }
+                    }
+
+                    // Display ellipsis and last page link if necessary
+                    if ($end < $total_pages) {
+                        if ($end < $total_pages - 1) {
+                            echo "<li class='page-item disabled'><a class='page-link'>...</a></li>";
+                        }
+                        echo "<li class='page-item'><a class='page-link' href='previous.php?page=$total_pages'>$total_pages</a></li>";
+                    }
+
+                    // Display Next button
+                    if ($page < $total_pages) {
+                        echo "<li class='page-item'><a class='page-link' href='previous.php?page=".($page + 1)."'>Next</a></li>";
+                    } else {
+                        echo "<li class='page-item disabled'><a class='page-link'>Next</a></li>";
+                    }
+                    ?>
             </ul>
         </nav>
     </div>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const statusSpans = document.querySelectorAll('.status-span');
-        
-        statusSpans.forEach(function(span) {
-            span.addEventListener('click', function() {
-                const announcementId = this.dataset.announcementId;
-                const isActive = this.textContent === 'Active';
 
-                // Perform the status update
-                if (isActive) {
-                    this.textContent = 'Inactive';
-                } else {
-                    this.textContent = 'Active';
-                }
+    <script>
+        // Hide the submit button and show the approved/rejected message
+        function showActionMessage(form, status) {
+            const select = form.querySelector('select');
+            const submitButton = form.querySelector('button[type="submit"]');
+            select.disabled = true;
+            submitButton.disabled = true;
+            submitButton.style.display = 'none';
+            select.style.display = 'none';
+            const message = document.createElement('p');
+            message.textContent = status;
+            message.style.color = (status === 'Active') ? 'green' : 'red';
+            form.appendChild(message);
+        }
 
-                // Update the button content
-                const button = this.closest('tr').querySelector('.btn-action');
-                button.textContent = isActive ? 'Activate' : 'Deactivate';
+        // Add event listeners to each form
+        const forms = document.querySelectorAll('.action-form');
+        forms.forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
 
-                // Send an AJAX request to update the server-side database
-                // You will need to implement the server-side logic to handle this request and update the database accordingly
-                // You can use the announcementId to identify the row and update the status column in the database
-                // This step requires server-side code and cannot be handled by JavaScript alone.
+                const select = this.querySelector('select');
+                const status = select.value;
+
+                // Send AJAX request to update the action in the database
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', this.action, true);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                        // Request completed successfully
+                        showActionMessage(form, status);
+                    }
+                };
+                xhr.send('status_' + this.querySelector('input[name="announcement_id"]').value + '=' + status);
             });
         });
-    });
-</script>
-
-
+    </script>
 </body>
 
 </html>

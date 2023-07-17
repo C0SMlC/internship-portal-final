@@ -20,18 +20,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $perks = $_POST["perks"];
     $user_id = $_POST["user_id"];
 
-    // Prepare the SQL statement using prepared statements
     $query = "INSERT INTO new_announcement (announcement_title, description, skills_required, location, start_date, duration, branch, work_type, stipend_type, stipend, work_location, perks, user_id)
-              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    $statement = mysqli_prepare($db_connection, $query);
-    mysqli_stmt_bind_param($statement, "sssssssssssss", $announcement_title, $description, $skills_required, $location, $start_date, $duration, $branch, $work_type, $stipend_type, $stipend, $work_location, $perks, $user_id);
+              VALUES ('$announcement_title', '$description', '$skills_required', '$location', '$start_date', '$duration', '$branch', '$work_type', '$stipend_type', '$stipend', '$work_location', '$perks', '$user_id')";
 
-    if (mysqli_stmt_execute($statement)) {
+    if (mysqli_query($db_connection, $query)) {
         echo "Data inserted successfully!";
     } else {
         echo "Error inserting data: " . mysqli_error($db_connection);
     }
+
+
 }
+// else{echo "empty";
+// }
 ?>
 
 <!-- Auth -->
@@ -44,6 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div class="container my-3" id="content">
         <div class="bg-light p-5 rounded">
             <form class="row g-3" action="<?php echo htmlentities($_SERVER['PHP_SELF']) ?>" method="POST">
+
                 <div class="col-12">
                     <strong for="Title" class="form-label">Announcement Title</strong>
                     <br>
@@ -99,7 +101,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
                 <br>
 
-                <div class="form-group">
+               <div class="form-group">
     <label><strong>Branch :</strong></label>
     <br>
     <br>
@@ -132,7 +134,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <input class="form-check-input" type="checkbox" name="branch[]" value="All" />
         <span class="form-check-label">All Branches</span>
     </label>
-          </div>
+    <div id="branch-error" class="invalid-feedback" style="display: none;">Please select at least one branch.</div>
+</div>
+
 
                 <div class="form-group">
                     <label><strong>Work type :</strong></label>
@@ -221,7 +225,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
 </body>
 
-</html>
+
+
 
 
 </body>

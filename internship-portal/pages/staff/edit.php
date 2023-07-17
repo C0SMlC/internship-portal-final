@@ -48,20 +48,30 @@ if(isset($_GET['id'])) {
             $query = "UPDATE new_announcement SET announcement_title = '$announcement_title', description = '$description', duration = '$duration', start_date = '$start_date', skills_required = '$skills_required', branch = '$branch', location = '$location', work_type = '$work_type', work_location = '$work_location', stipend_type = '$stipend_type', stipend = '$stipend', perks = '$perks' WHERE announcement_id = '$id'";
             if(mysqli_query($db_connection, $query)) {
                 header("Location: /internship-portal-final/internship-portal/pages/Internship/index.php");
-                exit;
-            } else {
-                echo "Error: " . mysqli_error($db_connection);
+                die;
+               
+            
             }
-        }
+
+      
     } else {
         // No announcement found with the specified ID, handle accordingly
         echo "Announcement not found.";
         die;
     }
+// } else {
+//     // ID parameter not present in the URL, handle accordingly
+//     echo "Invalid request.";
+//     die;
 }
+
+
+
+
 ?>
 
 <!-- Auth -->
+
 <body>
     <?php
     include_once("../../components/navbar/index.php");
@@ -71,44 +81,59 @@ if(isset($_GET['id'])) {
     </div>
     <div class="container my-3" id="content">
         <div class="bg-light p-5 rounded">
-            <form class="row g-3" action="<?php echo htmlentities($_SERVER['PHP_SELF']).'?id=' . $id; ?>" method="POST">
+            <form class="row g-3" action="<?php echo htmlentities($_SERVER['PHP_SELF']).'?id=' . $id;  ?>" method="POST">
+
                 <div class="col-12">
+
                     <strong for="Title" class="form-label">Announcement Title</strong>
                     <br>
                     <br>
-                    <input type="text" class="form-control" spellcheck="false" required autocomplete="off" name="announcement_title" id="Title" value="<?php echo isset($announcement_title) ? $announcement_title : ''; ?>" placeholder="e.g. ABC pvt. ltd. hiring interns for XYZ fields....">
 
+                    <input type="text" class="form-control" spellcheck="false" required autocomplete="off" name="announcement_title" id="Title" value = "<?php echo $announcement_title; ?>" placeholder="e.g. ABC pvt. ltd. hiring interns for XYZ fields....">
                 </div>
                 <br>
+
                 <div class="mb-3">
                     <label for="Description" class="form-label">
-                        <strong>Description</strong>
+                        <strong>
+                            Description
+                        </strong>
+
                     </label>
                     <br>
-                    <textarea class="form-control" id="Description" rows="10" placeholder="Description Of Announcement" name="description"><?php echo $description; ?></textarea>
+
+                    <textarea class="form-control" id="Description" rows="10" placeholder="Description Of Announcement"  name = "description" ><?php echo $description; ?></textarea>
                 </div>
                 <div class="mb-3">
                     <label for="skills" class="form-label">
-                        <strong>Skills required</strong>
+                        <strong>
+                            Skills required
+                        </strong>
+
                     </label>
                     <br>
-                    <textarea class="form-control" id="skills" rows="2" placeholder="e.g. AutoCAD, JAVA, Web development, PCB Designing, etc..." name="skills_required"><?php echo $skills_required; ?></textarea>
+                    <textarea class="form-control" id="skills" rows="2" placeholder="e.g. AutoCAD, JAVA, Web development, PCB Designing, etc..." name = "skills_required"><?php echo $skills_required; ?></textarea>
                 </div>
                 <div class="col-12">
                     <strong for="Location" class="form-label">Location</strong>
                     <br>
-                    <input type="text" class="form-control" spellcheck="false" required autocomplete="off" name="location" id="Location" placeholder="e.g. Raigad, Panvel" value="<?php echo $location; ?>">
+
+                    <input type="text" class="form-control" spellcheck="false" required autocomplete="off" name="location" id="Location" placeholder="e.g. Raigad,Panvel" value = "<?php echo $location; ?>">
                 </div>
                 <br>
+
                 <div class="col-12">
                     <strong for="startDate" class="form-label">Start Date</strong>
-                    <input id="startDate" class="form-control" type="date" name="start_date" value="<?php echo $start_date; ?>"/>
+                    <input id="startDate" class="form-control" type="date" name = "start_date" value = "<?php echo $start_date; ?>"/>
+
                 </div>
                 <br>
                 <div class="col-12">
+
                     <strong for="Duration" class="form-label">Duration</strong>
                     <br>
-                    <input type="text" class="form-control" spellcheck="false" required autocomplete="off" name="duration" id="Duration" placeholder="Number (In Months)" value="<?php echo $duration; ?>">
+
+                    <input type="text" class="form-control" spellcheck="false" required autocomplete="off" name="duration" id="Duration" placeholder="Number (In Months)" value = "<?php echo $duration; ?>">
                 </div>
                 <br>
 
@@ -116,31 +141,16 @@ if(isset($_GET['id'])) {
                     <label><strong>Branch :</strong></label>
                     <br>
                     <br>
-
-                    <label class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="branch" value="ECS" <?php if ($branch == 'ECS') echo 'checked'; ?> />
-                        <span class="form-check-label">ECS</span>
-                    </label>
-                    <label class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="branch" value="CS" <?php if ($branch == 'CS') echo 'checked'; ?>/>
-                        <span class="form-check-label">CS</span>
-                    </label>
-                    <label class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="branch" value="IT" <?php if ($branch == 'IT') echo 'checked'; ?> />
-                        <span class="form-check-label">IT</span>
-                    </label>
-                    <label class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="branch" value="MECH" <?php if ($branch == 'MECH') echo 'checked'; ?> />
-                        <span class="form-check-label">MECH</span>
-                    </label>
-                    <label class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="branch" value="AUTO" <?php if ($branch == 'AUTO') echo 'checked'; ?> />
-                        <span class="form-check-label">AUTO</span>
-                    </label>
-                    <label class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="branch" value="ALL" <?php if ($branch == 'All') echo 'checked'; ?> />
-                        <span class="form-check-label">All Branches</span>
-                    </label>
+                    <?php
+                    $branchOptions = array('ECS', 'EXTC', 'CS', 'IT', 'MECH', 'AUTO', 'All');
+                    foreach ($branchOptions as $option) {
+                        $checked = (in_array($option, explode(",", $branch))) ? 'checked' : '';
+                        echo '<label class="form-check form-check-inline">';
+                        echo '<input class="form-check-input" type="checkbox" name="branch[]" value="' . $option . '" ' . $checked . '>';
+                        echo '<span class="form-check-label">' . $option . '</span>';
+                        echo '</label>';
+                    }
+                    ?>
 
                 </div>
                 <div class="form-group">
@@ -221,4 +231,11 @@ if(isset($_GET['id'])) {
             </form>
         </div>
     </div>
-</form>
+
+
+
+
+
+</body>
+
+</html>

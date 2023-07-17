@@ -3,30 +3,26 @@ $title = "Dashboard";
 $style = "./styles/global.css";
 $favicon = "../../assets/favicon.ico";
 include_once("../../components/head.php");
+require "./tpodbconnect.php";
 
-if ($_SERVER['REQUEST_METHOD'] == "POST" && !empty($_POST['announcement_title']) && !empty($_POST['description']) && !empty($_POST['skills_required']) && !empty($_POST['location']) && !empty($_POST['start_date']) && !empty($_POST['duration']) && !empty($_POST['branch']) && !empty($_POST['work_type']) && !empty($_POST['stipend_type']) && !empty($_POST['work_location']) && !empty($_POST['perks'])) {
-    $announcement_title = $_POST['announcement_title'];
-    $description = $_POST['description'];
-    $skills_required = $_POST['skills_required'];
-    $location = $_POST['location'];
-    $start_date = $_POST['start_date'];
-    $duration = $_POST['duration'];
-    $branch = implode(',', $_POST['branch']); // Convert array of selected branches to comma-separated string
-    $work_type = $_POST['work_type'];
-    $stipend_type = $_POST['stipend_type'];
-    $stipend = $_POST['stipend'];
-    $work_location = $_POST['work_location'];
-    $perks = $_POST['perks'];
+$errors = [];
 
-    // Establish database connection
-    $db_host = "localhost";
-    $db_user = "root";
-    $db_pass = "";
-    $db_name = "upload";
-    
-    $db_connection = mysqli_connect($db_host, $db_user, $db_pass, $db_name);
-    if (!$db_connection) {
-        die("Connection failed: " . mysqli_connect_error());
+if ($_SERVER['REQUEST_METHOD'] === "POST") {
+    $company_name = $_POST['company_name'] ?? '';
+    $description = $_POST['description'] ?? '';
+    $skills_required = $_POST['skills_required'] ?? '';
+    $location = $_POST['location'] ?? '';
+    $start_date = $_POST['start_date'] ?? '';
+    $duration = $_POST['duration'] ?? '';
+    $branch = $_POST['branch'] ?? [];
+    $work_type = $_POST['work_type'] ?? '';
+    $stipend_type = $_POST['stipend_type'] ?? '';
+    $stipend = $_POST['stipend'] ?? '';
+    $work_location = $_POST['work_location'] ?? '';
+    $perks = $_POST['perks'] ?? '';
+
+    if (empty($company_name)) {
+        $errors[] = "Company Name is required.";
     }
 
     // Prepare the SQL statement
@@ -47,33 +43,35 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && !empty($_POST['announcement_title'])
     } else {
         echo "Error: " . mysqli_stmt_error($statement);
     }
-} else {
-    echo "";
 }
 ?>
 
-
 <!-- Auth -->
 
+<html>
+
+<head>
+    <title><?php echo $title; ?></title>
+    <link rel="stylesheet" href="<?php echo $style; ?>">
+    <link rel="icon" href="<?php echo $favicon; ?>">
+</head>
+
 <body>
-    <?php
-    include_once("../../components/navbar/index.php");
-    ?>
+    <?php include_once("../../components/navbar/index.php"); ?>
     <div class="container my-2 greet">
         <p>New Announcement</p>
     </div>
     <div class="container my-3" id="content">
         <div class="bg-light p-5 rounded">
-            <form class="row g-3" action="<?php echo htmlentities($_SERVER['PHP_SELF']) ?>" method="POST">
+            <form class="row g-3" action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>" method="POST"
+                onsubmit="return validateForm();">
 
                 <div class="col-12">
-
-                    <strong for="Title" class="form-label">Announcement Title</strong>
+                    <strong for="Company" class="form-label">Company Name</strong>
                     <br>
                     <br>
-
-                    <input type="text" class="form-control" spellcheck="false" required autocomplete="off" name="announcement_title"
-                        id="Title" placeholder="e.g. ABC pvt. ltd. hiring interns for XYZ fields....">
+                    <input type="text" class="form-control" spellcheck="false" required autocomplete="off" name="company_name"
+                        id="Company" placeholder="e.g. ABC pvt. ltd.">
                 </div>
                 <br>
 
@@ -125,43 +123,43 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && !empty($_POST['announcement_title'])
                 </div>
                 <br>
 
-                <div class="form-group">
-                    <label><strong>Branch :</strong></label>
-                    <br>
-                    <br>
+               <div class="form-group">
+    <label><strong>Branch :</strong></label>
+    <br>
+    <br>
 
-                    <label class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" name="branch[]" value="EXTC" />
-                        <span class="form-check-label">EXTC</span>
-                    </label>
+    <label class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" name="branch[]" value="ECS" />
+        <span class="form-check-label">ECS</span>
+    </label>
+    <label class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" name="branch[]" value="EXTC" />
+        <span class="form-check-label">EXTC</span>
+    </label>
+    <label class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" name="branch[]" value="CS" />
+        <span class="form-check-label">CS</span>
+    </label>
+    <label class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" name="branch[]" value="IT" />
+        <span class="form-check-label">IT</span>
+    </label>
+    <label class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" name="branch[]" value="MECH" />
+        <span class="form-check-label">MECH</span>
+    </label>
+    <label class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" name="branch[]" value="AUTO" />
+        <span class="form-check-label">AUTO</span>
+    </label>
+    <label class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" name="branch[]" value="All" />
+        <span class="form-check-label">All Branches</span>
+    </label>
+    <div id="branch-error" class="invalid-feedback" style="display: none;">Please select at least one branch.</div>
+</div>
 
-                    <label class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" name="branch[]" value="ECS" />
-                        <span class="form-check-label">ECS</span>
-                    </label>
-                    <label class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" name="branch[]" value="CS" />
-                        <span class="form-check-label">CS</span>
-                    </label>
-                    <label class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" name="branch[]" value="IT" />
-                        <span class="form-check-label">IT</span>
-                    </label>
-                    <label class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" name="branch[]" value="MECH" />
-                        <span class="form-check-label">MECH</span>
-                    </label>
-                    <label class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" name="branch[]" value="AUTO" />
-                        <span class="form-check-label">AUTO</span>
-                    </label>
-                    <label class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" name="branch[]" value="All Branches" />
-                        <span class="form-check-label">All Branches</span>
-                    </label>
-                    
 
-                </div>
                 <div class="form-group">
                     <label><strong>Work type :</strong></label>
                     <br>
@@ -228,25 +226,38 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && !empty($_POST['announcement_title'])
                         id="Perks" placeholder="e.g. Certificate, Letter Of Recommendation, Flexible timings, etc...">
                 </div>
                 <br>
+
+                <?php if (!empty($errors)) : ?>
+                <div class="alert alert-danger">
+                    <ul>
+                        <?php foreach ($errors as $error) : ?>
+                        <li><?php echo $error; ?></li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+                <?php endif; ?>
+
                 <div class="container text-center">
                     <div class="row mx-auto">
                         <div class="col mt-5">
-                            <button class="btn btn-warning btn-lg col-md-12" role="button">Add Announcement</button>
+                            <button class="btn btn-warning btn-lg col-md-12" type="submit">Add Announcement</button>
                         </div>
-
                     </div>
                 </div>
-
-
-
             </form>
         </div>
     </div>
 
-
-
-
-
+    <script>
+        function validateForm() {
+            var checkboxes = document.querySelectorAll('input[name="branch[]"]:checked');
+            if (checkboxes.length === 0) {
+                alert("Please select at least one branch.");
+                return false;
+            }
+            return true;
+        }
+    </script>
 </body>
 
 </html>

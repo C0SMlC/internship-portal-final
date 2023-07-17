@@ -1,5 +1,3 @@
-
-
 <?php
 $title = "Dashboard";
 $style = "./styles/global.css";
@@ -10,7 +8,7 @@ include_once("../../components/head.php");
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "upload";
+$dbname = "internship_portal";
 
 // Create a database connection
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -30,12 +28,16 @@ $searchedData = [];
 
 // Fetch data from the database table
 if (!empty($search)) {
-    $sql = "SELECT * FROM student_info WHERE id LIKE '%$search%' OR company LIKE '%$search%' LIMIT $start, $per_page_record";
+    $sql = "SELECT id, company_name, student_name, admission_no, contact_no, student_location, application_date, resume FROM applications WHERE id LIKE '%$search%' OR company_name LIKE '%$search%' LIMIT $start, $per_page_record";
 } else {
-    $sql = "SELECT * FROM student_info LIMIT $start, $per_page_record";
+    $sql = "SELECT id, company_name, student_name, admission_no, contact_no, student_location, application_date, resume FROM applications LIMIT $start, $per_page_record";
 }
 
 $result = $conn->query($sql);
+
+if (!$result) {
+    die("Query execution failed: " . $conn->error);
+}
 
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
@@ -44,8 +46,13 @@ if ($result->num_rows > 0) {
 }
 
 // Count total records for pagination
-$total_records_sql = "SELECT COUNT(*) AS count FROM student_info";
+$total_records_sql = "SELECT COUNT(*) AS count FROM applications";
 $total_records_result = $conn->query($total_records_sql);
+
+if (!$total_records_result) {
+    die("Query execution failed: " . $conn->error);
+}
+
 $total_records = $total_records_result->fetch_assoc()['count'];
 $total_pages = ceil($total_records / $per_page_record);
 $end = $start + $per_page_record;
@@ -66,7 +73,7 @@ $end = $start + $per_page_record;
             </div>
              <div class="col-auto ml-auto">
                 <button class="btn btn-primary btn-download-excel">Download Excel</button>
-                <button class="btn btn-primary btn-download-pdf">Download PDF</button>
+                <!--<button class="btn btn-primary btn-download-pdf">Download PDF</button>-->
              </div>
         </form>
     </div>
@@ -76,39 +83,52 @@ $end = $start + $per_page_record;
                 <tr>
                     <th scope="col">ID</th>
                     <th scope="col">Company</th>
-                    <th scope="col">Applied On</th>
-                    <th scope="col">Start Date</th>
-                    <th scope="col">End Date</th>
-                    <th scope="col">Type</th>
-                    <th scope="col">Class</th>
+                    <th scope="col">Student Name</th>
+                    <th scope="col">Admission No</th>
+                    <th scope="col">Contact No</th>
+                    <th scope="col">Student Location</th>
+                    <th scope="col">Application Date</th>
+                    <th scope="col">Resume</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
                 foreach ($searchedData as $student) {
                     $id = $student['id'];
-                    $company = $student['company'];
-                    $appliedOn = $student['appliedOn'];
-                    $startDate = $student['startDate'];
-                    $endDate = $student['endDate'];
-                    $type = $student['type'];
-                    $class = $student['class'];
+                    $company_name = $student['company_name'];
+                    $student_name = $student['student_name'];
+                    $admission_no = $student['admission_no'];
+                    $contact_no = $student['contact_no'];
+                    $student_location = $student['student_location'];
+                    $application_date = $student['application_date'];
+                    $resume = $student['resume'];
+
+                    // Convert the longblob data to PDF file
+                    $pdfUrl = "data:application/pdf;base64," . base64_encode($resume);
 
                     // Display student information
                     echo "<tr>";
-                    echo "<td class='pt-3 text-center'><a href='decision.php?id={$id}'>{$id}</a></td>";
-                    echo "<td class='pt-3'>{$company}</td>";
-                    echo "<td class='pt-3 text-center'>{$appliedOn}</td>";
-                    echo "<td class='pt-3 text-center'>{$startDate}</td>";
-                    echo "<td class='pt-3 text-center'>{$endDate}</td>";
-                    echo "<td class='pt-3 text-center'>{$type}</td>";
-                    echo "<td class='pt-3 text-center'>{$class}</td>";
+                    echo "<td class='pt-3 text-center fw-bold'><a href='decision.php?id={$id}' style='text-decoration: none; color: #00008B; font-weight:bold;'>{$id}</a></td>";
+                    echo "<td class='pt-3'><a href='index copy.php?company_name={$company_name}' style='text-decoration: none; color: #00008B; font-weight:bold;'>{$company_name}</a></td>";
+                    //echo "<td><a href='./index copy.php?company_name=" . urlencode($row["company_name"]) . "' class='company-link'>" . $row["company_name"] . "</a></td>";
+                    echo "<td class='pt-3 text-center'>{$student_name}</td>";
+                    echo "<td class='pt-3 text-center'>{$admission_no}</td>";
+                    echo "<td class='pt-3 text-center'>{$contact_no}</td>";
+                    echo "<td class='pt-3 text-center'>{$student_location}</td>";
+                    echo "<td class='pt-3 text-center'>{$application_date}</td>";
+                    echo "<td class='pt-3 text-center'>
+                            <a href='view_resume.php?id={$id}' target='_blank' class='btn btn-warning'>
+                                <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-eye-fill' viewBox='0 0 16 16'>
+                                    <path d='M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z' />
+                                    <path d='M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z' />
+                                </svg>
+                            </a>
+                        </td>";
                     echo "</tr>";
                 }
                 ?>
             </tbody>
         </table>
-        
     </div>
     <nav aria-label="Page navigation example">
         <ul class="pagination justify-content-center">
@@ -132,38 +152,7 @@ $end = $start + $per_page_record;
     </nav>
 </body>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-<!-- Add the following JavaScript code after your table -->
-<!--<script>
-  // Function to download the table data in Excel format
-  function downloadExcel() {
-    // Generate the table data
-    var tableData = '<table>' + $('table').html() + '</table>';
-
-    // Create a temporary download link element
-    var link = document.createElement('a');
-    link.href = 'data:application/vnd.ms-excel;base64,' + btoa(tableData);
-    link.download = 'table_data.xls';
-    link.style.display = 'none';
-
-    // Append the link element to the document
-    document.body.appendChild(link);
-
-    // Trigger the click event on the link
-    link.click();
-
-    // Remove the link from the document
-    document.body.removeChild(link);
-  }
-
-  // Add an event listener to the "Download Excel" button
-  $(document).ready(function() {
-    $('.btn-download-excel').click(function() {
-      downloadExcel();
-    });
-  });
-</script>-->
- <script>
+<script>
     // Function to download the table data in Excel format
     function downloadExcel() {
       // Generate the table data
@@ -185,32 +174,13 @@ $end = $start + $per_page_record;
       document.body.removeChild(link);
     }
 
-    // Function to download the table data in PDF format
-    function downloadPDF() {
-      // Initialize jsPDF
-      var doc = new jsPDF();
-
-      // Get the table element
-      var table = document.querySelector('table');
-
-      // Generate the PDF
-      doc.autoTable({ html: table });
-
-      // Download the PDF file
-      doc.save('table_data.pdf');
-    }
-
-    // Add event listeners to the download buttons
+    // Add an event listener to the "Download Excel" button
     $(document).ready(function() {
       $('.btn-download-excel').click(function() {
         downloadExcel();
       });
-
-      $('.btn-download-pdf').click(function() {
-        downloadPDF();
-      });
     });
-  </script>
+</script>
 </html>
 
 <?php

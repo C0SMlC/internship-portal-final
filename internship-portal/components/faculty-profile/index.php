@@ -105,9 +105,9 @@ $profileImageUrl='demo.png'
 
             <div class="internship-detail row py-2">
               <div class="card mb-2">
-                <h5 class="card-header">Name Of Internship</h5>
+                <h5 class="card-header">PSP PVT LIMITED, NEW MUMBAI</h5>
                 <div class="card-body">
-                  <h5 class="card-title">Position</h5>
+                  <h5 class="card-title">Full Stack Developer</h5>
                   <p class="card-text mt-3">
                     With supporting text below as a natural lead-in to
                     additional content.
@@ -115,15 +115,15 @@ $profileImageUrl='demo.png'
                   <p>Published On : 20/01/2022</p>
                   <div class="d-flex internship-date">
                     <p>Students Applied :</p>
-                    <p class="ms-2 status">69</p>
+                    <p class="ms-2 status">10</p>
                   </div>
                 </div>
               </div>
 
               <div class="card mb-2">
-                <h5 class="card-header">Name Of Internship</h5>
+                <h5 class="card-header">PSP PVT LIMITED, NEW MUMBAI</h5>
                 <div class="card-body">
-                  <h5 class="card-title">Position</h5>
+                  <h5 class="card-title">Full Stack Developer</h5>
                   <p class="card-text mt-3">
                     With supporting text below as a natural lead-in to
                     additional content.
@@ -131,14 +131,14 @@ $profileImageUrl='demo.png'
                   <p>Published On : 20/01/2022</p>
                   <div class="d-flex internship-date">
                     <p>Students Applied :</p>
-                    <p class="ms-2 status">69</p>
+                    <p class="ms-2 status">10</p>
                   </div>
                 </div>
               </div>
               <div class="card mb-2">
-                <h5 class="card-header">Name Of Internship</h5>
+                <h5 class="card-header">PSP PVT LIMITED, NEW MUMBAI</h5>
                 <div class="card-body">
-                  <h5 class="card-title">Position</h5>
+                  <h5 class="card-title">Full Stack Developer</h5>
                   <p class="card-text mt-3">
                     With supporting text below as a natural lead-in to
                     additional content.
@@ -146,14 +146,14 @@ $profileImageUrl='demo.png'
                   <p>Published On : 20/01/2022</p>
                   <div class="d-flex internship-date">
                     <p>Students Applied :</p>
-                    <p class="ms-2 status">69</p>
+                    <p class="ms-2 status">10</p>
                   </div>
                 </div>
               </div>
               <div class="card mb-2">
-                <h5 class="card-header">Name Of Internship</h5>
+                <h5 class="card-header">PSP PVT LIMITED, NEW MUMBAI</h5>
                 <div class="card-body">
-                  <h5 class="card-title">Position</h5>
+                  <h5 class="card-title">Full Stack Developer</h5>
                   <p class="card-text mt-3">
                     With supporting text below as a natural lead-in to
                     additional content.
@@ -161,7 +161,7 @@ $profileImageUrl='demo.png'
                   <p>Published On : 20/01/2022</p>
                   <div class="d-flex internship-date">
                     <p>Students Applied :</p>
-                    <p class="ms-2 status">69</p>
+                    <p class="ms-2 status">10</p>
                   </div>
                 </div>
               </div>
@@ -425,7 +425,7 @@ body {
 }
 
 .card-title, .form-label{
-  color: #fafafa;
+  color: #666;
 }
 
 .form-control{
