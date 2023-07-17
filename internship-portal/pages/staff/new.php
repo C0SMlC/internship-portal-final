@@ -18,10 +18,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stipend = $_POST["stipend"];
     $work_location = $_POST["work_location"];
     $perks = $_POST["perks"];
-    $user_id = $_POST["user_id"];
 
-    $query = "INSERT INTO new_announcement (announcement_title, description, skills_required, location, start_date, duration, branch, work_type, stipend_type, stipend, work_location, perks, user_id)
-              VALUES ('$announcement_title', '$description', '$skills_required', '$location', '$start_date', '$duration', '$branch', '$work_type', '$stipend_type', '$stipend', '$work_location', '$perks', '$user_id')";
+    $query = "INSERT INTO new_announcement (announcement_title, description, skills_required, location, start_date, duration, branch, work_type, stipend_type, stipend, work_location, perks)
+          VALUES ('$announcement_title', '$description', '$skills_required', '$location', '$start_date', '$duration', '$branch', '$work_type', '$stipend_type', '$stipend', '$work_location', '$perks')";
+
 
     if (mysqli_query($db_connection, $query)) {
         echo "Data inserted successfully!";
@@ -204,13 +204,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         id="Perks" placeholder="e.g. Certificate, Letter Of Recommendation, Flexible timings, etc...">
                 </div>
                 <br>
-<!-- Rest of the form fields -->
-
-<div class="col-12">
-                    <strong for="user_id" class="form-label">User ID</strong>
-                    <br>
-                    <input type="text" class="form-control" spellcheck="false" required autocomplete="off" name="user_id" id="user_id" placeholder="Enter User ID">
-                </div>
 
                 <!-- Submit button -->
                 <div class="container text-center">
