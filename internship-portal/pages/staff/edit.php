@@ -44,28 +44,31 @@ if(isset($_GET['id'])) {
             $stipend = $_POST['stipend'];
             $work_location = $_POST['work_location'];
             $perks = $_POST['perks'];
-
+        
             $query = "UPDATE new_announcement SET announcement_title = '$announcement_title', description = '$description', duration = '$duration', start_date = '$start_date', skills_required = '$skills_required', branch = '$branch', location = '$location', work_type = '$work_type', work_location = '$work_location', stipend_type = '$stipend_type', stipend = '$stipend', perks = '$perks' WHERE announcement_id = '$id'";
             if(mysqli_query($db_connection, $query)) {
                 header("Location: /internship-portal-final/internship-portal/pages/Internship/index.php");
                 die;
+               
+            
             }
-        }
+
+      
     } else {
         // No announcement found with the specified ID, handle accordingly
         echo "Announcement not found.";
         die;
     }
-} else {
-    // ID parameter not present in the URL, handle accordingly
-    echo "Invalid request.";
-    die;
+// } else {
+//     // ID parameter not present in the URL, handle accordingly
+//     echo "Invalid request.";
+//     die;
 }
+
+
+
+
 ?>
-
-<!-- Rest of the HTML code -->
-
-
 
 <!-- Auth -->
 
@@ -232,3 +235,5 @@ if(isset($_GET['id'])) {
 </body>
 
 </html>
+
+!
