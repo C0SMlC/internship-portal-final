@@ -8,7 +8,7 @@ require "./tpodbconnect.php";
 $errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] === "POST") {
-    $company_name = $_POST['company_name'] ?? '';
+    $announcement_title = $_POST['announcement_title'] ?? '';
     $description = $_POST['description'] ?? '';
     $skills_required = $_POST['skills_required'] ?? '';
     $location = $_POST['location'] ?? '';
@@ -21,8 +21,8 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
     $work_location = $_POST['work_location'] ?? '';
     $perks = $_POST['perks'] ?? '';
 
-    if (empty($company_name)) {
-        $errors[] = "Company Name is required.";
+    if (empty($announcement_title)) {
+        $errors[] = "Announcement Title is required.";
     }
 
     // Prepare the SQL statement
@@ -32,7 +32,8 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
     $statement = mysqli_prepare($db_connection, $query);
 
     // Bind the parameters
-    mysqli_stmt_bind_param($statement, "ssssssssssss", $announcement_title, $description, $skills_required, $location, $start_date, $duration, $branch, $work_type, $stipend_type, $stipend, $work_location, $perks);
+    $branch_string = implode(", ", $branch);
+    mysqli_stmt_bind_param($statement, "ssssssssssss", $announcement_title, $description, $skills_required, $location, $start_date, $duration, $branch_string, $work_type, $stipend_type, $stipend, $work_location, $perks);
 
     // Execute the statement
     if (mysqli_stmt_execute($statement)) {
@@ -67,11 +68,11 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
                 onsubmit="return validateForm();">
 
                 <div class="col-12">
-                    <strong for="Company" class="form-label">Company Name</strong>
+                    <strong for="Company" class="form-label">Announcement Title</strong>
                     <br>
                     <br>
-                    <input type="text" class="form-control" spellcheck="false" required autocomplete="off" name="company_name"
-                        id="Company" placeholder="e.g. ABC pvt. ltd.">
+                    <input type="text" class="form-control" spellcheck="false" required autocomplete="off" name="announcement_title"
+                        id="Company" placeholder="e.g. New Announcement Title">
                 </div>
                 <br>
 
@@ -85,7 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
                     <br>
 
                     <textarea class="form-control" id="Description" rows="10"
-                        placeholder="Description Of Announcement" name = "description"></textarea>
+                        placeholder="Description Of Announcement" name="description"></textarea>
                 </div>
                 <div class="mb-3">
                     <label for="skills" class="form-label">
@@ -96,20 +97,21 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
                     </label>
                     <br>
                     <textarea class="form-control" id="skills" rows="2"
-                        placeholder="e.g. AutoCAD, JAVA, Web development, PCB Designing, etc..." name = "skills_required"></textarea>
+                        placeholder="e.g. AutoCAD, JAVA, Web development, PCB Designing, etc..."
+                        name="skills_required"></textarea>
                 </div>
                 <div class="col-12">
                     <strong for="Location" class="form-label">Location</strong>
                     <br>
 
                     <input type="text" class="form-control" spellcheck="false" required autocomplete="off"
-                        name="location" id="Location" placeholder="e.g. Raigad,Panvel">
+                        name="location" id="Location" placeholder="e.g. Raigad, Panvel">
                 </div>
                 <br>
 
                 <div class="col-12">
                     <strong for="startDate" class="form-label">Start Date</strong>
-                    <input id="startDate" class="form-control" type="date" name = "start_date" />
+                    <input id="startDate" class="form-control" type="date" name="start_date" />
 
                 </div>
                 <br>
@@ -123,41 +125,42 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
                 </div>
                 <br>
 
-               <div class="form-group">
-    <label><strong>Branch :</strong></label>
-    <br>
-    <br>
+                <div class="form-group">
+                    <label><strong>Branch :</strong></label>
+                    <br>
+                    <br>
 
-    <label class="form-check form-check-inline">
-        <input class="form-check-input" type="checkbox" name="branch[]" value="ECS" />
-        <span class="form-check-label">ECS</span>
-    </label>
-    <label class="form-check form-check-inline">
-        <input class="form-check-input" type="checkbox" name="branch[]" value="EXTC" />
-        <span class="form-check-label">EXTC</span>
-    </label>
-    <label class="form-check form-check-inline">
-        <input class="form-check-input" type="checkbox" name="branch[]" value="CS" />
-        <span class="form-check-label">CS</span>
-    </label>
-    <label class="form-check form-check-inline">
-        <input class="form-check-input" type="checkbox" name="branch[]" value="IT" />
-        <span class="form-check-label">IT</span>
-    </label>
-    <label class="form-check form-check-inline">
-        <input class="form-check-input" type="checkbox" name="branch[]" value="MECH" />
-        <span class="form-check-label">MECH</span>
-    </label>
-    <label class="form-check form-check-inline">
-        <input class="form-check-input" type="checkbox" name="branch[]" value="AUTO" />
-        <span class="form-check-label">AUTO</span>
-    </label>
-    <label class="form-check form-check-inline">
-        <input class="form-check-input" type="checkbox" name="branch[]" value="All" />
-        <span class="form-check-label">All Branches</span>
-    </label>
-    <div id="branch-error" class="invalid-feedback" style="display: none;">Please select at least one branch.</div>
-</div>
+                    <label class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="branch[]" value="ECS" />
+                        <span class="form-check-label">ECS</span>
+                    </label>
+                    <label class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="branch[]" value="EXTC" />
+                        <span class="form-check-label">EXTC</span>
+                    </label>
+                    <label class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="branch[]" value="CS" />
+                        <span class="form-check-label">CS</span>
+                    </label>
+                    <label class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="branch[]" value="IT" />
+                        <span class="form-check-label">IT</span>
+                    </label>
+                    <label class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="branch[]" value="MECH" />
+                        <span class="form-check-label">MECH</span>
+                    </label>
+                    <label class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="branch[]" value="AUTO" />
+                        <span class="form-check-label">AUTO</span>
+                    </label>
+                    <label class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="branch[]" value="All" />
+                        <span class="form-check-label">All Branches</span>
+                    </label>
+                    <div id="branch-error" class="invalid-feedback" style="display: none;">Please select at least one
+                        branch.</div>
+                </div>
 
 
                 <div class="form-group">
@@ -184,7 +187,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
                         <span class="form-check-label"> Lumpsum (After Internship Duration)</span>
                     </label>
                     <label class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="stipend_type" value="UnPaid" />
+                        <input class="form-check-input" type="radio" name="stipend_type" value="Monthly" />
                         <span class="form-check-label"> Monthly </span>
                     </label>
                     <label class="form-check form-check-inline">
@@ -228,13 +231,13 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
                 <br>
 
                 <?php if (!empty($errors)) : ?>
-                <div class="alert alert-danger">
-                    <ul>
-                        <?php foreach ($errors as $error) : ?>
-                        <li><?php echo $error; ?></li>
-                        <?php endforeach; ?>
-                    </ul>
-                </div>
+                    <div class="alert alert-danger">
+                        <ul>
+                            <?php foreach ($errors as $error) : ?>
+                                <li><?php echo $error; ?></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
                 <?php endif; ?>
 
                 <div class="container text-center">
