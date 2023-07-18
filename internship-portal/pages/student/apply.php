@@ -19,7 +19,7 @@ if ($conn->connect_error) {
 }
 
 // Retrieve the announcement titles from the new_announcement table
-$sql = "SELECT announcement_id, announcement_title FROM new_announcement";
+$sql = "SELECT announcement_id, company_name FROM new_announcement";
 $result = $conn->query($sql);
 
 // Prepare the success and error message variables
@@ -41,29 +41,32 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["submit"])) {
         $targetDirectory = __DIR__ . "/CV_Uploads/";
 
         // Retrieve the selected announcement title based on the announcement ID
-        $stmt = $conn->prepare("SELECT announcement_title FROM new_announcement WHERE announcement_id = ?");
+        $stmt = $conn->prepare("SELECT company_name FROM new_announcement WHERE announcement_id = ?");
         $stmt->bind_param("i", $announcementId);
         $stmt->execute();
-        $stmt->bind_result($announcementTitle);
+        $stmt->bind_result($company_name);
         $stmt->fetch();
         $stmt->close();
 
         // Generate a unique filename based on the given format
-        $filename = $userName . "_" . $announcementTitle . "_" . $admissionNo . ".pdf";
+        $filename = $userName . "_" . $company_name . "_" . $admissionNo . ".pdf";
 
         // Move the uploaded file to the target directory
         if (move_uploaded_file($resume["tmp_name"], $targetDirectory . $filename)) {
-            // Insert the data into the "Applications" table
-$sql = "INSERT INTO Applications (student_name, admission_no, contact_no, student_location, resume, cv_file, company_name, application_date) VALUES (?, ?, ?, ?, ?, ?, ?, NOW())";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("sssssss", $userName, $admissionNo, $contactNo, $studentLocation, $filename, $filename, $announcementTitle);
-$stmt->execute();
-$stmt->close();
+            // Read the PDF file contents
+            $pdfData = file_get_contents($targetDirectory . $filename);
 
+            // Insert the data into the "Applications" table
+            $sql = "INSERT INTO applications (student_name, admission_no, contact_no, student_location, resume, cv_file, company_name, application_date) VALUES (?, ?, ?, ?, ?, ?, ?, NOW())";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("ssssbss", $userName, $admissionNo, $contactNo, $studentLocation, $pdfData, $filename, $company_name);
+            $stmt->send_long_data(4, $pdfData); // Send the large data for the 'resume' column
+            $stmt->execute();
+            $stmt->close();
 
             // Display success message
-            $successMessage = "Applying for " . $announcementTitle . " has been successful.";
-                } else {
+            $successMessage = "Applying for " . $company_name . " has been successful.";
+        } else {
             // Display error message
             $errorMessage = "Failed to move the uploaded file.";
         }
@@ -77,13 +80,20 @@ $stmt->close();
 $conn->close();
 ?>
 
+<!DOCTYPE html>
+<html>
+<head>
+    <title><?php echo $title; ?></title>
+    <link rel="stylesheet" href="<?php echo $style; ?>">
+    <link rel="icon" href="<?php echo $favicon; ?>">
+</head>
 <body>
     <?php
     include_once("../../components/navbar/index.php");
     ?>
 
     <div class="container my-2 greet">
-        <p>Applying for <?php echo isset($announcementTitle) ? $announcementTitle : ""; ?></p>
+        <p>Applying for <?php echo isset($company_name) ? $company_name : ""; ?></p>
     </div>
 
     <div class="container my-3" id="content">
@@ -126,7 +136,7 @@ $conn->close();
                             if ($result && $result->num_rows > 0) {
                                 while ($row = $result->fetch_assoc()) {
                                     $id = $row['announcement_id'];
-                                    $title = $row['announcement_title'];
+                                    $title = $row['company_name'];
                                     echo "<option value=\"$id\">$title</option>";
                                 }
                             }
@@ -145,7 +155,7 @@ $conn->close();
                                     <br>
                                     <b class="text-danger bg-warning">Student-name_Announcement-title_Admission-no.pdf</b>
                                     <br>
-                                    (JohnDoe_<?php echo isset($announcementTitle) ? $announcementTitle : ""; ?>_2000PE0400.pdf)
+                                    (JohnDoe_<?php echo isset($company_name) ? $company_name : ""; ?>_2000PE0400.pdf)
                                 </i>
                             </small>
                         </div>
@@ -162,3 +172,4 @@ $conn->close();
         </div>
     </div>
 </body>
+</html>
