@@ -18,9 +18,9 @@ $companyName = isset($_GET["company_name"]) ? $_GET["company_name"] : '';
 
 //inner join
 $sql = "SELECT student_name, admission_no , contact_no
-        FROM feedback
+        FROM applications
         
-        WHERE company_name = '$companyName' and status = 'Approved' ";
+        WHERE company_name = '$companyName' and action = 'Approved' ";
 
 $result = $conn->query($sql);
 

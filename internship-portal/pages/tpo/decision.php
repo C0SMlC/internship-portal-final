@@ -84,27 +84,15 @@ if (isset($_GET['id'])) {
 
 // Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (isset($_POST["id"]) && isset($_POST["comment"]) && isset($_POST["status"]) && isset($_POST["company_name"]) && isset($_POST["student_name"]) && isset($_POST["admission_no"]) && isset($_POST["contact_no"]) && isset($_POST["student_location"]) && isset($_POST["application_date"])) {
+    if (isset($_POST["action"]) && isset($_POST["comment"]) && isset($_POST["id"])) {
         // Get the form data
         $id = $_POST["id"];
+        $action = $_POST["action"];
         $comment = $_POST["comment"];
-        $status = $_POST["status"];
-        $company_name = $_POST["company_name"];
-        $student_name = $_POST["student_name"];
-        $admission_no = $_POST["admission_no"];
-        $contact_no = $_POST["contact_no"];
-        $student_location = $_POST["student_location"];
-        $application_date = $_POST["application_date"];
-
-        if ($status === "Approved") {
-            $table = "approved_data";
-        } else {
-            $table = "rejected_data";
-        }
 
         // Prepare and execute the SQL statement
-        $stmt = $conn->prepare("INSERT INTO feedback (id, comment, status, company_name, student_name, admission_no, contact_no, student_location, application_date, approvedOn) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, CURDATE())");
-        $stmt->bind_param("sssssssss", $id, $comment, $status, $company_name, $student_name, $admission_no, $contact_no, $student_location, $application_date);
+        $stmt = $conn->prepare("UPDATE applications SET action = ?, comment = ? WHERE id = ?");
+        $stmt->bind_param("sss", $action, $comment, $id);
         $stmt->execute();
 
         // Close the statement
@@ -131,10 +119,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="container text-center">
                 <div class="row mx-auto">
                     <div class="col mt-3">
-                        <button class="btn btn-success btn-lg col-md-12 p-sm-4" name="status" value="Approved" type="submit">Approve</button>
+                        <button class="btn btn-success btn-lg col-md-12 p-sm-4" name="action" value="Approved" type="submit">Approve</button>
                     </div>
                     <div class="col my-3">
-                        <button class="btn btn-danger btn-lg col-md-12 p-sm-4" name="status" value="Rejected" type="submit">Reject</button>
+                        <button class="btn btn-danger btn-lg col-md-12 p-sm-4" name="action" value="Rejected" type="submit">Reject</button>
                     </div>
                 </div>
             </div>
