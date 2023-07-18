@@ -68,11 +68,11 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
                 onsubmit="return validateForm();">
 
                 <div class="col-12">
-                    <strong for="Company" class="form-label">Announcement Title</strong>
+                    <strong for="Company" class="form-label">Company Name</strong>
                     <br>
                     <br>
                     <input type="text" class="form-control" spellcheck="false" required autocomplete="off" name="announcement_title"
-                        id="Company" placeholder="e.g. New Announcement Title">
+                        id="Company" placeholder="e.g. XYX Ltd..">
                 </div>
                 <br>
 

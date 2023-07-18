@@ -16,12 +16,16 @@ if (isset($_GET['id'])) {
         die("Connection failed: " . $conn->connect_error);
     }
 
-    // Retrieve the resume from the database
-    $sql = "SELECT resume FROM applications WHERE id = '{$id}'";
-    $result = $conn->query($sql);
+    // Prepare and execute the SQL statement
+    $sql = "SELECT resume FROM applications WHERE id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
     if ($result && $result->num_rows > 0) {
-        $resume = $result->fetch_assoc()['resume'];
+        $row = $result->fetch_assoc();
+        $resume = $row['resume'];
 
         // Set the appropriate headers to display the PDF
         header('Content-type: application/pdf');
@@ -32,6 +36,7 @@ if (isset($_GET['id'])) {
     }
 
     // Close the database connection
+    $stmt->close();
     $conn->close();
 }
 ?>
