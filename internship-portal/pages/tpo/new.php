@@ -8,7 +8,7 @@ require "./tpodbconnect.php";
 $errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] === "POST") {
-    $company_name = $_POST['company_name'] ?? '';
+    $announcement_title = $_POST['announcement_title'] ?? '';
     $description = $_POST['description'] ?? '';
     $skills_required = $_POST['skills_required'] ?? '';
     $location = $_POST['location'] ?? '';
@@ -21,19 +21,19 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
     $work_location = $_POST['work_location'] ?? '';
     $perks = $_POST['perks'] ?? '';
 
-    if (empty($company_name)) {
+    if (empty($announcement_title)) {
         $errors[] = "Announcement Title is required.";
     }
 
     // Prepare the SQL statement
-    $query = "INSERT INTO new_announcement (company_name, description, skills_required, location, start_date, duration, branch, work_type, stipend_type, stipend, work_location, perks) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $query = "INSERT INTO new_announcement (announcement_title, description, skills_required, location, start_date, duration, branch, work_type, stipend_type, stipend, work_location, perks) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     // Prepare the statement
     $statement = mysqli_prepare($db_connection, $query);
 
     // Bind the parameters
     $branch_string = implode(", ", $branch);
-    mysqli_stmt_bind_param($statement, "ssssssssssss", $company_name, $description, $skills_required, $location, $start_date, $duration, $branch_string, $work_type, $stipend_type, $stipend, $work_location, $perks);
+    mysqli_stmt_bind_param($statement, "ssssssssssss", $announcement_title, $description, $skills_required, $location, $start_date, $duration, $branch_string, $work_type, $stipend_type, $stipend, $work_location, $perks);
 
     // Execute the statement
     if (mysqli_stmt_execute($statement)) {
@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
                     <strong for="Company" class="form-label">Company Name</strong>
                     <br>
                     <br>
-                    <input type="text" class="form-control" spellcheck="false" required autocomplete="off" name="company_name"
+                    <input type="text" class="form-control" spellcheck="false" required autocomplete="off" name="announcement_title"
                         id="Company" placeholder="e.g. XYX Ltd..">
                 </div>
                 <br>

@@ -14,13 +14,13 @@ if ($conn->connect_error) {
 }
 
 // Retrieving company name 
-$companyName = isset($_GET["company_name"]) ? $_GET["company_name"] : '';
+$companyName = isset($_GET["announcement_title"]) ? $_GET["announcement_title"] : '';
 
 //inner join
 $sql = "SELECT student_name, admission_no , contact_no
         FROM applications
         
-        WHERE company_name = '$companyName' and action = 'Approved' ";
+        WHERE announcement_title = '$companyName' and action = 'Approved' ";
 
 $result = $conn->query($sql);
 

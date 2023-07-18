@@ -28,9 +28,9 @@ $searchedData = [];
 
 // Fetch data from the database table
 if (!empty($search)) {
-    $sql = "SELECT id, company_name, student_name, admission_no, contact_no, student_location, application_date, resume FROM applications WHERE id LIKE '%$search%' OR company_name LIKE '%$search%' LIMIT $start, $per_page_record";
+    $sql = "SELECT id, announcement_title, student_name, admission_no, contact_no, student_location, application_date, resume FROM applications WHERE id LIKE '%$search%' OR announcement_title LIKE '%$search%' LIMIT $start, $per_page_record";
 } else {
-    $sql = "SELECT id, company_name, student_name, admission_no, contact_no, student_location, application_date, resume FROM applications LIMIT $start, $per_page_record";
+    $sql = "SELECT id, announcement_title, student_name, admission_no, contact_no, student_location, application_date, resume FROM applications LIMIT $start, $per_page_record";
 }
 
 $result = $conn->query($sql);
@@ -95,7 +95,7 @@ $end = $start + $per_page_record;
                 <?php
                 foreach ($searchedData as $student) {
                     $id = $student['id'];
-                    $company_name = $student['company_name'];
+                    $announcement_title = $student['announcement_title'];
                     $student_name = $student['student_name'];
                     $admission_no = $student['admission_no'];
                     $contact_no = $student['contact_no'];
@@ -109,8 +109,8 @@ $end = $start + $per_page_record;
                     // Display student information
                     echo "<tr>";
                     echo "<td class='pt-3 text-center fw-bold'><a href='decision.php?id={$id}' style='text-decoration: none; color: #00008B; font-weight:bold;'>{$id}</a></td>";
-                    echo "<td class='pt-3'><a href='index copy.php?company_name={$company_name}' style='text-decoration: none; color: #00008B; font-weight:bold;'>{$company_name}</a></td>";
-                    //echo "<td><a href='./index copy.php?company_name=" . urlencode($row["company_name"]) . "' class='company-link'>" . $row["company_name"] . "</a></td>";
+                    echo "<td class='pt-3'><a href='index copy.php?announcement_title={$announcement_title}' style='text-decoration: none; color: #00008B; font-weight:bold;'>{$announcement_title}</a></td>";
+                    //echo "<td><a href='./index copy.php?announcement_title=" . urlencode($row["announcement_title"]) . "' class='company-link'>" . $row["announcement_title"] . "</a></td>";
                     echo "<td class='pt-3 text-center'>{$student_name}</td>";
                     echo "<td class='pt-3 text-center'>{$admission_no}</td>";
                     echo "<td class='pt-3 text-center'>{$contact_no}</td>";

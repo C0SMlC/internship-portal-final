@@ -34,7 +34,7 @@ $searchedData = [];
 
 // Fetch data from the database table
 if (!empty($search)) {
-    $sql = "SELECT * FROM student_info WHERE id LIKE '%$search%' OR company_name LIKE '%$search%' LIMIT $start, $per_page_record";
+    $sql = "SELECT * FROM student_info WHERE id LIKE '%$search%' OR announcement_title LIKE '%$search%' LIMIT $start, $per_page_record";
 } else {
     $sql = "SELECT * FROM student_info LIMIT $start, $per_page_record";
 }
@@ -65,7 +65,7 @@ $sheet->setCellValue('H1', 'Resume');
 $row = 2;
 foreach ($searchedData as $student) {
     $sheet->setCellValue('A' . $row, $student['id']);
-    $sheet->setCellValue('B' . $row, $student['company_name']);
+    $sheet->setCellValue('B' . $row, $student['announcement_title']);
     $sheet->setCellValue('C' . $row, $student['appliedOn']);
     $sheet->setCellValue('D' . $row, $student['startDate']);
     $sheet->setCellValue('E' . $row, $student['endDate']);

@@ -21,7 +21,7 @@ if ($conn->connect_error) {
 // Retrieve data from the database
 $search = isset($_GET["search"]) ? $_GET["search"] : '';
 
-$sql = "SELECT * FROM applications WHERE action = 'approved' AND (id LIKE '%$search%' OR company_name LIKE '%$search%')";
+$sql = "SELECT * FROM applications WHERE action = 'approved' AND (id LIKE '%$search%' OR announcement_title LIKE '%$search%')";
 $result = $conn->query($sql);
 
 // Close the database connection
@@ -65,7 +65,7 @@ $conn->close();
                         // Output row data
                         echo "<tr>";
                         echo "<td>" . $row["id"] . "</td>";
-                        echo "<td>" . $row["company_name"] . "</td>";
+                        echo "<td>" . $row["announcement_title"] . "</td>";
                         echo "<td>" . $row["student_name"] . "</td>";
                         echo "<td>" . $row["admission_no"] . "</td>";
                         echo "<td>" . $row["contact_no"] . "</td>";
