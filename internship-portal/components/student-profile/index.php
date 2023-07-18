@@ -11,11 +11,11 @@ $profileImageUrl = "demo.png";
             <div class="col">
               <nav
                 aria-label="breadcrumb"
-                class="rounded-3 p-3 mb-4 vh custom-breadcrumb"
+                class="rounded-3 p-3 mb-5 vh custom-breadcrumb"
               >
                 <ol class="breadcrumb mb-0">
                   <li class="breadcrumb-item text-white">
-                    <a href="#">Home</a>
+                    <a href="/">Home</a>
                   </li>
                   <li class="breadcrumb-item active" aria-current="page">
                     User Profile
@@ -98,7 +98,7 @@ $profileImageUrl = "demo.png";
 
             <!-- Dashboard -->
             <div class="col-lg-8">
-              <h2 class="mb-4">Dashboard</h2>
+              <h2 class="mb-4 font-weight-bold">Dashboard</h2>
               <div class="card mb-3">
                 <div class="card-body py-4">
                   <div class="panel">
@@ -117,7 +117,7 @@ $profileImageUrl = "demo.png";
                   </div>
                 </div>
               </div>
-              <h2 class="mt-5 mb-5">Internship Details</h2>
+              <h2 class="mt-5 mb-4 font-weight-bold">Internship Details</h2>
               <div class="internship-detail row py-2">
                 <div class="card mb-2">
                   <h5 class="card-header">Name Of Internship</h5>
@@ -272,7 +272,6 @@ let isVisible = false;
 profileExpander.addEventListener('click', () => {
   if (!isVisible) {
     isVisible = true;
-
     mainContainer.classList.add('main-container-active')
     mainContainer.style.display = 'block';
     mainProfile.style.display = 'block';
@@ -281,6 +280,7 @@ profileExpander.addEventListener('click', () => {
     profileExpander.style.transform = 'scale(0)';
     profileExpander.style.backgroundImage =
       'url("https://api.iconify.design/material-symbols/close.svg")';
+
 
     setTimeout(() => {
       mainProfile.style.opacity = '1';
@@ -358,14 +358,19 @@ body {
   transition: opacity 1s;
 }
 
+.closeProfile{
+  width:1.5rem;
+  height:1.5rem;
+}
+
 .profile {
-  width: 5rem;
-  height: 5rem;
+  width: 3.5rem;
+  height: 3.5rem;
   display: block;
   border-radius: 50%;
   position: fixed;
   bottom: 10%;
-  right: 5%;
+  right: 3%;
   cursor: pointer;
   z-index: 100;
 
