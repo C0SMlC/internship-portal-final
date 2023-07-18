@@ -5,7 +5,7 @@ $favicon = "../../assets/favicon.ico";
 include_once("../../components/head.php");
 require "../../connect/connect.php";
 
-if(isset($_GET['id'])) {
+if (isset($_GET['id'])) {
     // Retrieve the ID from the URL
     $id = $_GET['id'];
 
@@ -14,7 +14,7 @@ if(isset($_GET['id'])) {
     $result = mysqli_query($db_connection, $query);
 
     // Check if a row is found
-    if(mysqli_num_rows($result) > 0) {
+    if (mysqli_num_rows($result) > 0) {
         $row = mysqli_fetch_assoc($result);
 
         // Extract the information from the row
@@ -44,29 +44,24 @@ if(isset($_GET['id'])) {
             $stipend = $_POST['stipend'];
             $work_location = $_POST['work_location'];
             $perks = $_POST['perks'];
-        
+
             $query = "UPDATE new_announcement SET announcement_title = '$announcement_title', description = '$description', duration = '$duration', start_date = '$start_date', skills_required = '$skills_required', branch = '$branch', location = '$location', work_type = '$work_type', work_location = '$work_location', stipend_type = '$stipend_type', stipend = '$stipend', perks = '$perks' WHERE announcement_id = '$id'";
-            if(mysqli_query($db_connection, $query)) {
+            if (mysqli_query($db_connection, $query)) {
                 header("Location: /internship-portal-final/internship-portal/pages/Internship/index.php");
                 die;
-               
-            
             }
+        } // The if statement was not closed properly. I've moved the closing brace here.
 
-      
     } else {
         // No announcement found with the specified ID, handle accordingly
         echo "Announcement not found.";
         die;
     }
-// } else {
-//     // ID parameter not present in the URL, handle accordingly
-//     echo "Invalid request.";
-//     die;
+} else {
+    // ID parameter not present in the URL, handle accordingly
+    echo "Invalid request.";
+    die;
 }
-
-
-
 
 ?>
 
@@ -235,5 +230,3 @@ if(isset($_GET['id'])) {
 </body>
 
 </html>
-
-!
