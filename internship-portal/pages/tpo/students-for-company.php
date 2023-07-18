@@ -3,7 +3,7 @@
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "upload";
+$dbname = "internship_portal";
 
 
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -14,13 +14,13 @@ if ($conn->connect_error) {
 }
 
 // Retrieving company name 
-$companyName = isset($_GET["company"]) ? $_GET["company"] : '';
+$companyName = isset($_GET["announcement_title"]) ? $_GET["announcement_title"] : '';
 
 //inner join
-$sql = "SELECT students.StudentName, students.Major
-        FROM students
-        INNER JOIN companies ON students.IDs = companies.IDs
-        WHERE companies.CompanyName = '$companyName'";
+$sql = "SELECT student_name, admission_no , contact_no
+        FROM applications
+        
+        WHERE announcement_title = '$companyName' and action = 'Approved' ";
 
 $result = $conn->query($sql);
 
@@ -34,7 +34,7 @@ $filename = $companyName.'_students.csv';
 $file = fopen($filename, 'w');
 
 
-fputcsv($file, array('Student Name','Major'));
+fputcsv($file, array('Student Name','Admission No', 'Contact No'));
 
 
 if ($result->num_rows > 0) {

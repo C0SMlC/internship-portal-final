@@ -3,56 +3,37 @@ $title = "Dashboard";
 $style = "./styles/global.css";
 $favicon = "../../assets/favicon.ico";
 include_once("../../components/head.php");
+require "./tpodbconnect.php";
 
+$errors = [];
 
-$db_host = "localhost";
-$db_user = "root";
-$db_pass = "";
-$db_name = "upload";
-$db_connection = mysqli_connect($db_host, $db_user, $db_pass, $db_name);
-if ($_SERVER['REQUEST_METHOD'] == "POST" && !empty($_POST['announcement_title']) && !empty($_POST['description']) && !empty($_POST['skills_required']) && !empty($_POST['location']) && !empty($_POST['start_date']) && !empty($_POST['duration']) && !empty($_POST['branch']) && !empty($_POST['work_type']) && !empty($_POST['stipend_type']) && !empty($_POST['work_location']) && !empty($_POST['perks']) && !empty($_POST['company'])) {
-    $announcement_title = $_POST['announcement_title'];
-    $description = $_POST['description'];
-    $skills_required = $_POST['skills_required'];
-    $location = $_POST['location'];
-    $start_date = $_POST['start_date'];
-    $duration = $_POST['duration'];
-    $branch = implode(',', $_POST['branch']); // Convert array of selected branches to comma-separated string
-    $work_type = $_POST['work_type'];
-    $stipend_type = $_POST['stipend_type'];
-    $stipend = $_POST['stipend'];
-    $work_location = $_POST['work_location'];
-    $perks = $_POST['perks'];
-    $company = $_POST['company'];
+if ($_SERVER['REQUEST_METHOD'] === "POST") {
+    $announcement_title = $_POST['announcement_title'] ?? '';
+    $description = $_POST['description'] ?? '';
+    $skills_required = $_POST['skills_required'] ?? '';
+    $location = $_POST['location'] ?? '';
+    $start_date = $_POST['start_date'] ?? '';
+    $duration = $_POST['duration'] ?? '';
+    $branch = $_POST['branch'] ?? [];
+    $work_type = $_POST['work_type'] ?? '';
+    $stipend_type = $_POST['stipend_type'] ?? '';
+    $stipend = $_POST['stipend'] ?? '';
+    $work_location = $_POST['work_location'] ?? '';
+    $perks = $_POST['perks'] ?? '';
 
-    // Establish database connection
-    // Establish database connection
- $query = "INSERT INTO new_announcement (announcement_title, description, skills_required, location, start_date, duration, branch, work_type, stipend_type, stipend, work_location, perks, company) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
-$statement = mysqli_prepare($db_connection, $query);
-if ($statement === false) {
-    die("Error in prepare statement: " . mysqli_error($db_connection));
-}
-
-
+    if (empty($announcement_title)) {
+        $errors[] = "Announcement Title is required.";
+    }
 
     // Prepare the SQL statement
-   
-    //$query = "INSERT INTO new_annoucement (announcement_title, description, skills_required, location, start_date, duration, branch, work_type, stipend_type, stipend, work_location, perks, company) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    // Prepare the SQL statement
-//$query = "INSERT INTO new_annoucement (announcement_title, description, skills_required, location, start_date, duration, branch, work_type, stipend_type, stipend, work_location, perks, company) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
+    $query = "INSERT INTO new_announcement (announcement_title, description, skills_required, location, start_date, duration, branch, work_type, stipend_type, stipend, work_location, perks) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     // Prepare the statement
     $statement = mysqli_prepare($db_connection, $query);
 
     // Bind the parameters
-    //mysqli_stmt_bind_param($statement, "ssssssssssss", $announcement_title, $description, $skills_required, $location, $start_date, $duration, $branch, $work_type, $stipend_type, $stipend, $work_location, $perks);
-    //mysqli_stmt_bind_param($statement, "sssssssssssss", $announcement_title, $description, $skills_required, $location, $start_date, $duration, $branch, $work_type, $stipend_type, $stipend, $work_location, $perks, $company);
-    // Bind the parameters
-mysqli_stmt_bind_param($statement, "sssssssssssss", $announcement_title, $description, $skills_required, $location, $start_date, $duration, $branch, $work_type, $stipend_type, $stipend, $work_location, $perks, $company);
-
-
+    $branch_string = implode(", ", $branch);
+    mysqli_stmt_bind_param($statement, "ssssssssssss", $announcement_title, $description, $skills_required, $location, $start_date, $duration, $branch_string, $work_type, $stipend_type, $stipend, $work_location, $perks);
 
     // Execute the statement
     if (mysqli_stmt_execute($statement)) {
@@ -63,42 +44,37 @@ mysqli_stmt_bind_param($statement, "sssssssssssss", $announcement_title, $descri
     } else {
         echo "Error: " . mysqli_stmt_error($statement);
     }
-} else {
-    echo "";
 }
 ?>
 
-
 <!-- Auth -->
 
+<html>
+
+<head>
+    <title><?php echo $title; ?></title>
+    <link rel="stylesheet" href="<?php echo $style; ?>">
+    <link rel="icon" href="<?php echo $favicon; ?>">
+</head>
+
 <body>
-    <?php
-    include_once("../../components/navbar/index.php");
-    ?>
+    <?php include_once("../../components/navbar/index.php"); ?>
     <div class="container my-2 greet">
         <p>New Announcement</p>
     </div>
     <div class="container my-3" id="content">
         <div class="bg-light p-5 rounded">
-            <form class="row g-3" action="<?php echo htmlentities($_SERVER['PHP_SELF']) ?>" method="POST">
+            <form class="row g-3" action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>" method="POST"
+                onsubmit="return validateForm();">
 
                 <div class="col-12">
-
-                    <strong for="Title" class="form-label">Announcement Title</strong>
+                    <strong for="Company" class="form-label">Company Name</strong>
                     <br>
                     <br>
-                
                     <input type="text" class="form-control" spellcheck="false" required autocomplete="off" name="announcement_title"
-                        id="Title" placeholder="e.g. ABC pvt. ltd. hiring interns for XYZ fields....">
+                        id="Company" placeholder="e.g. XYX Ltd..">
                 </div>
                 <br>
-                <div class="col-12">
-    <strong for="Company" class="form-label">Company</strong>
-    <br>
-    <input type="text" class="form-control" spellcheck="false" required autocomplete="off" name="company" id="Company" placeholder="Company Name">
-</div>
-<br>
-
 
                 <div class="mb-3">
                     <label for="Description" class="form-label">
@@ -110,7 +86,7 @@ mysqli_stmt_bind_param($statement, "sssssssssssss", $announcement_title, $descri
                     <br>
 
                     <textarea class="form-control" id="Description" rows="10"
-                        placeholder="Description Of Announcement" name = "description"></textarea>
+                        placeholder="Description Of Announcement" name="description"></textarea>
                 </div>
                 <div class="mb-3">
                     <label for="skills" class="form-label">
@@ -121,20 +97,21 @@ mysqli_stmt_bind_param($statement, "sssssssssssss", $announcement_title, $descri
                     </label>
                     <br>
                     <textarea class="form-control" id="skills" rows="2"
-                        placeholder="e.g. AutoCAD, JAVA, Web development, PCB Designing, etc..." name = "skills_required"></textarea>
+                        placeholder="e.g. AutoCAD, JAVA, Web development, PCB Designing, etc..."
+                        name="skills_required"></textarea>
                 </div>
                 <div class="col-12">
                     <strong for="Location" class="form-label">Location</strong>
                     <br>
 
                     <input type="text" class="form-control" spellcheck="false" required autocomplete="off"
-                        name="location" id="Location" placeholder="e.g. Raigad,Panvel">
+                        name="location" id="Location" placeholder="e.g. Raigad, Panvel">
                 </div>
                 <br>
 
                 <div class="col-12">
                     <strong for="startDate" class="form-label">Start Date</strong>
-                    <input id="startDate" class="form-control" type="date" name = "start_date" />
+                    <input id="startDate" class="form-control" type="date" name="start_date" />
 
                 </div>
                 <br>
@@ -154,13 +131,12 @@ mysqli_stmt_bind_param($statement, "sssssssssssss", $announcement_title, $descri
                     <br>
 
                     <label class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" name="branch[]" value="EXTC" />
-                        <span class="form-check-label">EXTC</span>
-                    </label>
-
-                    <label class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" name="branch[]" value="ECS" />
                         <span class="form-check-label">ECS</span>
+                    </label>
+                    <label class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="branch[]" value="EXTC" />
+                        <span class="form-check-label">EXTC</span>
                     </label>
                     <label class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" name="branch[]" value="CS" />
@@ -179,12 +155,14 @@ mysqli_stmt_bind_param($statement, "sssssssssssss", $announcement_title, $descri
                         <span class="form-check-label">AUTO</span>
                     </label>
                     <label class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" name="branch[]" value="All Branches" />
+                        <input class="form-check-input" type="checkbox" name="branch[]" value="All" />
                         <span class="form-check-label">All Branches</span>
                     </label>
-                    
-
+                    <div id="branch-error" class="invalid-feedback" style="display: none;">Please select at least one
+                        branch.</div>
                 </div>
+
+
                 <div class="form-group">
                     <label><strong>Work type :</strong></label>
                     <br>
@@ -209,7 +187,7 @@ mysqli_stmt_bind_param($statement, "sssssssssssss", $announcement_title, $descri
                         <span class="form-check-label"> Lumpsum (After Internship Duration)</span>
                     </label>
                     <label class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="stipend_type" value="UnPaid" />
+                        <input class="form-check-input" type="radio" name="stipend_type" value="Monthly" />
                         <span class="form-check-label"> Monthly </span>
                     </label>
                     <label class="form-check form-check-inline">
@@ -251,27 +229,38 @@ mysqli_stmt_bind_param($statement, "sssssssssssss", $announcement_title, $descri
                         id="Perks" placeholder="e.g. Certificate, Letter Of Recommendation, Flexible timings, etc...">
                 </div>
                 <br>
+
+                <?php if (!empty($errors)) : ?>
+                    <div class="alert alert-danger">
+                        <ul>
+                            <?php foreach ($errors as $error) : ?>
+                                <li><?php echo $error; ?></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                <?php endif; ?>
+
                 <div class="container text-center">
                     <div class="row mx-auto">
                         <div class="col mt-5">
-                            <button class="btn btn-warning btn-lg col-md-12" role="button">Add Announcement</button>
+                            <button class="btn btn-warning btn-lg col-md-12" type="submit">Add Announcement</button>
                         </div>
-
                     </div>
                 </div>
-
-
-
             </form>
         </div>
     </div>
 
-
-
-
-
+    <script>
+        function validateForm() {
+            var checkboxes = document.querySelectorAll('input[name="branch[]"]:checked');
+            if (checkboxes.length === 0) {
+                alert("Please select at least one branch.");
+                return false;
+            }
+            return true;
+        }
+    </script>
 </body>
 
 </html>
-
-

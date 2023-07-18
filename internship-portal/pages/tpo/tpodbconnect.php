@@ -8,7 +8,7 @@ session_regenerate_id(true);
 define('DB_SERVER', 'localhost');
 define('DB_USERNAME', 'root');
 define('DB_PASSWORD', '');
-define('DB_NAME', 'upload');
+define('DB_NAME', 'internship_portal');
 
 // Try connecting to the Database
 $db_connection = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);

@@ -34,7 +34,7 @@ $searchedData = [];
 
 // Fetch data from the database table
 if (!empty($search)) {
-    $sql = "SELECT * FROM student_info WHERE id LIKE '%$search%' OR company LIKE '%$search%' LIMIT $start, $per_page_record";
+    $sql = "SELECT * FROM student_info WHERE id LIKE '%$search%' OR announcement_title LIKE '%$search%' LIMIT $start, $per_page_record";
 } else {
     $sql = "SELECT * FROM student_info LIMIT $start, $per_page_record";
 }
@@ -59,17 +59,19 @@ $sheet->setCellValue('D1', 'Start Date');
 $sheet->setCellValue('E1', 'End Date');
 $sheet->setCellValue('F1', 'Type');
 $sheet->setCellValue('G1', 'Class');
+$sheet->setCellValue('H1', 'Resume');
 
 // Fill in the data
 $row = 2;
 foreach ($searchedData as $student) {
     $sheet->setCellValue('A' . $row, $student['id']);
-    $sheet->setCellValue('B' . $row, $student['company']);
+    $sheet->setCellValue('B' . $row, $student['announcement_title']);
     $sheet->setCellValue('C' . $row, $student['appliedOn']);
     $sheet->setCellValue('D' . $row, $student['startDate']);
     $sheet->setCellValue('E' . $row, $student['endDate']);
     $sheet->setCellValue('F' . $row, $student['type']);
     $sheet->setCellValue('G' . $row, $student['class']);
+    $sheet->setCellValue('H' . $row, $student['resume']);
     $row++;
 }
 
@@ -81,7 +83,9 @@ $sheet->getColumnDimension('D')->setWidth(15);
 $sheet->getColumnDimension('E')->setWidth(15);
 $sheet->getColumnDimension('F')->setWidth(15);
 $sheet->getColumnDimension('G')->setWidth(15);
+$sheet->getColumnDimension('H')->setWidth(30);
 
 // Create a writer and save the spreadsheet as an Excel file
-$writer = new Xlsx
+$writer = new Xlsx();
+$writer->save('your_file_path_here.xlsx');
 ?>

@@ -5,27 +5,28 @@ $favicon = "../../assets/favicon.ico";
 include_once("../../components/head.php");
 require "../../connect/connect.php";
 
-if ($_SERVER['REQUEST_METHOD'] == "POST" && !empty($_POST['announcement_title']) && !empty($_POST['description']) && !empty($_POST['skills_required']) && !empty($_POST['location']) && !empty($_POST['start_date']) && !empty($_POST['duration']) && !empty($_POST['branch']) && !empty($_POST['work_type']) && !empty($_POST['stipend_type']) && !empty($_POST['work_location']) && !empty($_POST['perks'])) {
-    $announcement_title = $_POST['announcement_title'];
-    $description = $_POST['description'];
-    $skills_required = $_POST['skills_required'];
-    $location = $_POST['location'];
-    $start_date = $_POST['start_date'];
-    $duration = $_POST['duration'];
-    $branch = implode(", ", $_POST['branch']);
-    $work_type = $_POST['work_type'];
-    $stipend_type = $_POST['stipend_type'];
-    $stipend = $_POST['stipend'];
-    $work_location = $_POST['work_location'];
-    $perks = $_POST['perks'];
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $announcement_title = $_POST["announcement_title"];
+    $description = $_POST["description"];
+    $skills_required = $_POST["skills_required"];
+    $location = $_POST["location"];
+    $start_date = $_POST["start_date"];
+    $duration = $_POST["duration"];
+    $branch = implode(",", $_POST["branch"]);
+    $work_type = $_POST["work_type"];
+    $stipend_type = $_POST["stipend_type"];
+    $stipend = $_POST["stipend"];
+    $work_location = $_POST["work_location"];
+    $perks = $_POST["perks"];
 
-    $query = "insert into new_annoucement(announcement_title,description, skills_required, location, start_date, duration, branch, work_type, stipend_type, stipend, work_location, perks ) values('$announcement_title', ' $description', '$skills_required', '$location', '$start_date', '$duration', '$branch', '$work_type', '$stipend_type', '$stipend', '$work_location', '$perks') ";
-    if(mysqli_query($db_connection, $query))
-    {
-        return true;
-        die;
-    }else{
-        echo "error". mysqli_error($db_connection);
+    $query = "INSERT INTO new_announcement (announcement_title, description, skills_required, location, start_date, duration, branch, work_type, stipend_type, stipend, work_location, perks)
+          VALUES ('$announcement_title', '$description', '$skills_required', '$location', '$start_date', '$duration', '$branch', '$work_type', '$stipend_type', '$stipend', '$work_location', '$perks')";
+
+
+    if (mysqli_query($db_connection, $query)) {
+        echo "Data inserted successfully!";
+    } else {
+        echo "Error inserting data: " . mysqli_error($db_connection);
     }
 
 
@@ -37,27 +38,20 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && !empty($_POST['announcement_title'])
 <!-- Auth -->
 
 <body>
-    <?php
-    include_once("../../components/navbar/index.php");
-    ?>
+    <?php include_once("../../components/navbar/index.php"); ?>
     <div class="container my-2 greet">
         <p>New Announcement</p>
     </div>
     <div class="container my-3" id="content">
         <div class="bg-light p-5 rounded">
-                <form class="row g-3" action="<?php echo htmlentities($_SERVER['PHP_SELF']) ?>" method="POST" onsubmit="return validateForm();">
-
+            <form class="row g-3" action="<?php echo htmlentities($_SERVER['PHP_SELF']) ?>" method="POST">
 
                 <div class="col-12">
-
                     <strong for="Title" class="form-label">Announcement Title</strong>
                     <br>
                     <br>
-
-                    <input type="text" class="form-control" spellcheck="false" required autocomplete="off" name="announcement_title"
-                        id="Title" placeholder="e.g. ABC pvt. ltd. hiring interns for XYZ fields....">
+                    <input type="text" class="form-control" spellcheck="false" required autocomplete="off" name="announcement_title" id="Title" placeholder="e.g. ABC pvt. ltd. hiring interns for XYZ fields....">
                 </div>
-                <br>
 
                 <div class="mb-3">
                     <label for="Description" class="form-label">
@@ -210,31 +204,20 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && !empty($_POST['announcement_title'])
                         id="Perks" placeholder="e.g. Certificate, Letter Of Recommendation, Flexible timings, etc...">
                 </div>
                 <br>
+
+                <!-- Submit button -->
                 <div class="container text-center">
                     <div class="row mx-auto">
                         <div class="col mt-5">
                             <button class="btn btn-warning btn-lg col-md-12" role="button">Add Announcement</button>
                         </div>
-
                     </div>
                 </div>
-
-
-
             </form>
         </div>
     </div>
+</body>
 
-<script>
-    function validateForm() {
-        var checkboxes = document.querySelectorAll('input[name="branch[]"]:checked');
-        if (checkboxes.length === 0) {
-            document.getElementById("branch-error").style.display = "block";
-            return false;
-        }
-        return true;
-    }
-</script>
 
 
 

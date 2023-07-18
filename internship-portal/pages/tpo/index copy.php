@@ -3,14 +3,29 @@ $title = "Dashboard";
 $style = "./index.css";
 $favicon = "../../assets/favicon.ico";
 include_once("../../components/head.php");
-require "./tpodbconnect.php";
+//require "./tpodbconnect.php";
+session_start();
+session_regenerate_id(true);
+//
+define('DB_SERVER', 'localhost');
+define('DB_USERNAME', 'root');
+define('DB_PASSWORD', '');
+define('DB_NAME', 'internship_portal');
 
-if(isset($_GET['company'])) {
+// Try connecting to the Database
+$db_connection = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+
+// Check the connection
+if ($db_connection === false) {
+    die('Error: Cannot connect');
+}
+
+if(isset($_GET['announcement_title'])) {
     // Retrieve the company name from the URL
-    $company = $_GET['company'];
+    $announcement_title = $_GET['announcement_title'];
 
     // Query to fetch the specific announcement based on the company name
-    $query = "SELECT * FROM new_announcement WHERE company = '$company'";
+    $query = "SELECT * FROM new_announcement WHERE announcement_title = '$announcement_title'";
 
     $result = mysqli_query($db_connection, $query);
     if (!$result) {
@@ -54,7 +69,7 @@ if(isset($_GET['company'])) {
         <p>Apply for Internship</p>
     </div>
     <div class="alert alert-success container col-8" role="alert">
-        <h2 class="alert-heading">Successfully applied for <?php echo $company ?> pvt ltd.</h2>
+        <h2 class="alert-heading">Successfully applied for <//?php echo $announcement_title ?> pvt ltd.</h2>
         <hr>
         <p>You have successfully registered for 
             <b>XYZ pvt ltd</b> . Please keep checking your mes email inbox for further updates. 
@@ -75,7 +90,7 @@ if(isset($_GET['company'])) {
         <div class="bg-light p-5 rounded">
 
 
-            <p class="h3 "><?php echo $company; ?></p>
+            <p class="h3 "><?php echo $announcement_title; ?></p>
             <br>
             <p class="lead">
             <?php echo $description; ?>
@@ -260,7 +275,7 @@ if(isset($_GET['company'])) {
         <div class="response-box">
             <div style="text-align: center;">
                 
-                <a href="./active.php" class="btn btn-primary btn-sm col-md-2 p-sm-4" role="button">Go Back</a>
+                <a href="./index.php" class="btn btn-primary btn-sm col-md-2 p-sm-4" role="button">Go Back</a>
             </div>
         </div>
     </div>
