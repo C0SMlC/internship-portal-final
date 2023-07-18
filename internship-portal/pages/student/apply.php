@@ -19,7 +19,7 @@ if ($conn->connect_error) {
 }
 
 // Retrieve the announcement titles from the new_announcement table
-$sql = "SELECT announcement_id, company_name FROM new_announcement";
+$sql = "SELECT announcement_id, announcement_title FROM new_announcement";
 $result = $conn->query($sql);
 
 // Prepare the success and error message variables
@@ -41,15 +41,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["submit"])) {
         $targetDirectory = __DIR__ . "/CV_Uploads/";
 
         // Retrieve the selected announcement title based on the announcement ID
-        $stmt = $conn->prepare("SELECT company_name FROM new_announcement WHERE announcement_id = ?");
+        $stmt = $conn->prepare("SELECT announcement_title FROM new_announcement WHERE announcement_id = ?");
         $stmt->bind_param("i", $announcementId);
         $stmt->execute();
-        $stmt->bind_result($company_name);
+        $stmt->bind_result($announcement_title);
         $stmt->fetch();
         $stmt->close();
 
         // Generate a unique filename based on the given format
-        $filename = $userName . "_" . $company_name . "_" . $admissionNo . ".pdf";
+        $filename = $userName . "_" . $announcement_title . "_" . $admissionNo . ".pdf";
 
         // Move the uploaded file to the target directory
         if (move_uploaded_file($resume["tmp_name"], $targetDirectory . $filename)) {
@@ -57,15 +57,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["submit"])) {
             $pdfData = file_get_contents($targetDirectory . $filename);
 
             // Insert the data into the "Applications" table
-            $sql = "INSERT INTO applications (student_name, admission_no, contact_no, student_location, resume, cv_file, company_name, application_date) VALUES (?, ?, ?, ?, ?, ?, ?, NOW())";
+            $sql = "INSERT INTO applications (student_name, admission_no, contact_no, student_location, resume, cv_file, announcement_title, application_date) VALUES (?, ?, ?, ?, ?, ?, ?, NOW())";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param("ssssbss", $userName, $admissionNo, $contactNo, $studentLocation, $pdfData, $filename, $company_name);
+            $stmt->bind_param("ssssbss", $userName, $admissionNo, $contactNo, $studentLocation, $pdfData, $filename, $announcement_title);
             $stmt->send_long_data(4, $pdfData); // Send the large data for the 'resume' column
             $stmt->execute();
             $stmt->close();
 
             // Display success message
-            $successMessage = "Applying for " . $company_name . " has been successful.";
+            $successMessage = "Applying for " . $announcement_title . " has been successful.";
         } else {
             // Display error message
             $errorMessage = "Failed to move the uploaded file.";
@@ -93,7 +93,7 @@ $conn->close();
     ?>
 
     <div class="container my-2 greet">
-        <p>Applying for <?php echo isset($company_name) ? $company_name : ""; ?></p>
+        <p>Applying for <?php echo isset($announcement_title) ? $announcement_title : ""; ?></p>
     </div>
 
     <div class="container my-3" id="content">
@@ -136,7 +136,7 @@ $conn->close();
                             if ($result && $result->num_rows > 0) {
                                 while ($row = $result->fetch_assoc()) {
                                     $id = $row['announcement_id'];
-                                    $title = $row['company_name'];
+                                    $title = $row['announcement_title'];
                                     echo "<option value=\"$id\">$title</option>";
                                 }
                             }
@@ -155,7 +155,7 @@ $conn->close();
                                     <br>
                                     <b class="text-danger bg-warning">Student-name_Announcement-title_Admission-no.pdf</b>
                                     <br>
-                                    (JohnDoe_<?php echo isset($company_name) ? $company_name : ""; ?>_2000PE0400.pdf)
+                                    (JohnDoe_<?php echo isset($announcement_title) ? $announcement_title : ""; ?>_2000PE0400.pdf)
                                 </i>
                             </small>
                         </div>
