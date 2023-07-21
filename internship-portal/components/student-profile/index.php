@@ -3,10 +3,10 @@ require 'connect.php';
 $update = update_data($con);
 $profileImageUrl = "demo.png";
 ?>
-    <div class="main-container">
+    <div class="main-container ">
       <div class="profile"></div>
       <div class="profile-conainer">
-        <div class="container py-5">
+        <div class="container pt-5">
           <div class="row">
             <div class="col">
               <nav
@@ -15,7 +15,7 @@ $profileImageUrl = "demo.png";
               >
                 <ol class="breadcrumb mb-0">
                   <li class="breadcrumb-item text-white">
-                    <a href="/">Home</a>
+                    <a class="home" href='#'>Home</a>
                   </li>
                   <li class="breadcrumb-item active" aria-current="page">
                     User Profile
@@ -39,55 +39,56 @@ $profileImageUrl = "demo.png";
                   <p class="text-muted mb-1">Upload Image</p>
                 </div>
               </div>
-              <div class="card mb-4">
+              <div class="card mb-4 px-4">
                 <div class="card-body">
                   <!-- Profile Details -->
                   <div class="row">
-                    <div class="col-sm-3">
+                    <div class="col-4">
                       <p class="mb-0">Full Name</p>
                     </div>
-                    <div class="col-sm-9">
-                      <p class="text-muted mb-0"><?php echo $update['s_name']; ?></p>
+                    <div class="col-8">
+                      <p class="formText mb-0"><?php echo $update['s_name']; ?></p>
                     </div>
                   </div>
                   <hr />
                   <div class="row">
-                    <div class="col-sm-3">
+                    <div class="col-4">
                       <p class="mb-0">Email</p>
                     </div>
-                    <div class="col-sm-9">
-                      <p class="text-muted mb-0"><?php echo $update['s_email']; ?></p>
+                    <div class="col-8">
+                      <p class="formText mb-0"><?php echo $update['s_email']; ?></p>
                     </div>
                   </div>
                   <hr />
                   <div class="row">
-                    <div class="col-sm-3">
+                    <div class="col-4">
                       <p class="mb-0">Age</p>
                     </div>
-                    <div class="col-sm-9">
-                      <p class="text-muted mb-0"><?php echo $update['s_age']; ?></p>
+                    <div class="col-8">
+                      <p class="formText mb-0"><?php echo $update['s_age']; ?></p>
                     </div>
                   </div>
                   <hr />
                   <div class="row">
-                    <div class="col-sm-3">
+                    <div class="col-4">
                       <p class="mb-0">Mobile</p>
                     </div>
-                    <div class="col-sm-9">
-                      <p class="text-muted mb-0"><?php echo $update['s_mobile']; ?></p>
+                    <div class="col-8">
+                      <p class="formText mb-0"><?php echo $update['s_mobile']; ?></p>
                     </div>
                   </div>
                   <hr />
                   <div class="row">
-                    <div class="col-sm-3">
+                    <div class="col-4">
                       <p class="mb-0">Address</p>
                     </div>
-                    <div class="col-sm-9">
-                      <p class="text-muted mb-0"><?php echo $update['s_address']; ?></p>
+                    <div class="col-8">
+                      <p class="formText mb-0"><?php echo $update['s_address']; ?></p>
                     </div>
                   </div>
                 </div>
               </div>
+
               <!-- Edit Profile Link -->
               <div class="edit-profile">
                 <a href="#" class="edit-profile-link" onclick="openForm()"
@@ -264,8 +265,10 @@ $profileImageUrl = "demo.png";
 <script>
 
 const profileExpander = document.querySelector('.profile');
+const hideProfile = document.querySelector('.home')
 const mainProfile = document.querySelector('.profile-conainer');
 const mainContainer = document.querySelector('.main-container');
+const announcement = document.querySelector('.announcement');
 
 let isVisible = false;
 
@@ -278,34 +281,34 @@ profileExpander.addEventListener('click', () => {
     mainProfile.style.opacity = '0';
     profileExpander.style.opacity = '0';
     profileExpander.style.transform = 'scale(0)';
-    profileExpander.style.backgroundImage =
-      'url("https://api.iconify.design/material-symbols/close.svg")';
-
+    profileExpander.style.backgroundImage ='none';
+    announcement.style.display = 'none';
 
     setTimeout(() => {
       mainProfile.style.opacity = '1';
-      profileExpander.style.opacity = '1';
-      profileExpander.style.transform = 'scale(1)';
     }, 250); // Delay of 10 milliseconds before changing the opacity
-  } else {
-    mainContainer.style.opacity='0';
+  } 
+});
+
+hideProfile.addEventListener('click', () => {
+  if (isVisible) {
     profileExpander.style.transform = 'scale(0)';
-    profileExpander.style.backgroundImage = 'url("demo.png")';
-    
+    mainContainer.style.opacity='0';
+    announcement.style.display = 'block';
 
     setTimeout(() => {
+      profileExpander.style.backgroundImage = 'url("demo.png")';
       mainContainer.classList.remove('main-container-active')
       mainProfile.style.display = 'none';
       mainProfile.style.opacity = '1';
-      profileExpander.style.opacity = '1';
       profileExpander.style.transform = 'scale(1)';
+      profileExpander.style.opacity = '1';
       mainContainer.style.opacity='1';
 
-    }, 250); // Wait for the animation to complete before hiding the element
+    },500); // Wait for the animation to complete before hiding the element
 
     isVisible = false;
-  }
-});
+  }});
 
 function openForm() {
   document.getElementById('editProfileForm').classList.remove('d-none');
@@ -329,7 +332,7 @@ body {
   height: 100%;
   position: relative;
   font-size: 100%;
-  background-color: #eee;
+  background-color:#eee;
 }
 
 .main-container {
@@ -337,7 +340,7 @@ body {
 }
 
 .main-container-active{
-    background-color:#eee;
+   background-color:#DEDEDE;
     height:100vh;
     width:100vw;
     z-index:10000;
@@ -358,14 +361,9 @@ body {
   transition: opacity 1s;
 }
 
-.closeProfile{
-  width:1.5rem;
-  height:1.5rem;
-}
-
 .profile {
-  width: 3.5rem;
-  height: 3.5rem;
+  width: 4rem;
+  height: 4rem;
   display: block;
   border-radius: 50%;
   position: fixed;
@@ -384,6 +382,11 @@ body {
 
 .edit {
   cursor: pointer;
+}
+
+.formText{
+  color:#000000;
+  font-weight: 600;
 }
 
 .internship {

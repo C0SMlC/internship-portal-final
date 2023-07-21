@@ -15,12 +15,11 @@ $profileImageUrl='demo.png'
               class="rounded-3 p-3 mb-4 vh custom-breadcrumb"
             >
               <ol class="breadcrumb mb-0">
-                <li class="breadcrumb-item text-white"><a href="#">Home</a></li>
+                <li class="breadcrumb-item text-white"><a href="#" class="home">Home</a></li>
                 <li class="breadcrumb-item active" aria-current="page">
                   User Profile
                 </li>
               </ol>
-              -
             </nav>
           </div>
         </div>
@@ -39,72 +38,71 @@ $profileImageUrl='demo.png'
                 <p class="text-muted mb-1">Upload Image</p>
               </div>
             </div>
-            <div class="card mb-4">
+            <div class="card mb-4 px-6">
               <div class="card-body">
                 <!-- Profile Details -->
                 <div class="row">
-                  <div class="col-sm-3">
-                    <p class="mb-0">Full Name</p>
+                  <div class="col-4">
+                    <p class="mb-0">Full Name :</p>
                   </div>
-                   <div class="col-sm-9">
-                    <p class="text-muted mb-0"> <?php echo $update['fac_name']; ?></p>
-                  </div>
-                </div>
-                <hr />
-                <div class="row">
-                  <div class="col-sm-3">
-                    <p class="mb-0">Email</p>
-                  </div>
-                    <div class="col-sm-9">
-                    <p class="text-muted mb-0"><?php echo $update['fac_email']; ?></p>
+                  <div class="col-8">
+                    <p class=" mb-0 formText"><?php echo $update['fac_name']; ?></p>
                   </div>
                 </div>
                 <hr />
                 <div class="row">
-                  <div class="col-sm-3">
-                    <p class="mb-0">Age</p>
+                  <div class="col-4">
+                    <p class="mb-0">Email :</p>
                   </div>
-                <div class="col-sm-9">
-                    <p class="text-muted mb-0"><?php echo $update['fac_age']; ?></p>
-                  </div>
-                </div>
-                <hr />
-                <div class="row">
-                  <div class="col-sm-3">
-                    <p class="mb-0">Mobile</p>
-                  </div>
-                  <div class="col-sm-9">
-                    <p class="text-muted mb-0"><?php echo $update['fac_mobile']; ?></p>
+                  <div class="col-8">
+                    <p class="mb-0 formText"><?php echo $update['fac_email']; ?></p>
                   </div>
                 </div>
                 <hr />
                 <div class="row">
-                  <div class="col-sm-3">
-                    <p class="mb-0">Address</p>
+                  <div class="col-4">
+                    <p class="mb-0">Age :</p>
                   </div>
-                 <div class="col-sm-9">
-                    <p class="text-muted mb-0"><?php echo $update['fac_address']; ?></p>
+                  <div class="col-8">
+                    <p class="mb-0 formText"><?php echo $update['fac_age']; ?></p>
+                  </div>
+                </div>
+                <hr />
+                <div class="row">
+                  <div class="col-4">
+                    <p class="mb-0">Mobile :</p>
+                  </div>
+                  <div class="col-8">
+                    <p class="mb-0 formText"><?php echo $update['fac_mobile']; ?></p>
+                  </div>
+                </div>
+                <hr />
+                <div class="row">
+                  <div class="col-4">
+                    <p class="mb-0">Address :</p>
+                  </div>
+                  <div class="col-8">
+                    <p class="mb-0 formText"><?php echo $update['fac_address']; ?></p>
                   </div>
                 </div>
               </div>
               <!-- Edit Profile Link -->
               <div class="edit-profile mb-5">
-                <a href="#" class="edit-profile-link mt-4" onclick="openForm()"
-                  >Edit</a
-                >
+                <a href="#" class="edit-profile-link mt-4" onclick="openForm()">Edit</a>
               </div>
             </div>
+
           </div>
 
           <!-- Dashboard -->
           <div class="col-lg-8">
-            <div class="d-flex align-items-center justify-content-between mb-5">
+            <div class="d-flex align-items-center justify-content-between mt-4 mb-3">
               <h2>Previous Internship Details</h2>
               <a href="./new.php" type="button" class="btn btn-primary">Publish</a>
             </div>
 
             <div class="internship-detail row py-2">
-              <div class="card mb-2">
+              <div class="card mb-4 ">
                 <h5 class="card-header">PSP PVT LIMITED, NEW MUMBAI</h5>
                 <div class="card-body">
                   <h5 class="card-title">Full Stack Developer</h5>
@@ -120,7 +118,7 @@ $profileImageUrl='demo.png'
                 </div>
               </div>
 
-              <div class="card mb-2">
+              <div class="card mb-4">
                 <h5 class="card-header">PSP PVT LIMITED, NEW MUMBAI</h5>
                 <div class="card-body">
                   <h5 class="card-title">Full Stack Developer</h5>
@@ -135,7 +133,7 @@ $profileImageUrl='demo.png'
                   </div>
                 </div>
               </div>
-              <div class="card mb-2">
+              <div class="card mb-4">
                 <h5 class="card-header">PSP PVT LIMITED, NEW MUMBAI</h5>
                 <div class="card-body">
                   <h5 class="card-title">Full Stack Developer</h5>
@@ -150,7 +148,7 @@ $profileImageUrl='demo.png'
                   </div>
                 </div>
               </div>
-              <div class="card mb-2">
+              <div class="card mb-4">
                 <h5 class="card-header">PSP PVT LIMITED, NEW MUMBAI</h5>
                 <div class="card-body">
                   <h5 class="card-title">Full Stack Developer</h5>
@@ -213,6 +211,9 @@ $profileImageUrl='demo.png'
 const profileExpander = document.querySelector('.profile');
 const mainProfile = document.querySelector('.profile-conainer');
 const mainContainer = document.querySelector('.main-container');
+const hideProfile = document.querySelector('.home')
+const announcement = document.querySelector('.announcement');
+
 
 let isVisible = false;
 
@@ -226,21 +227,24 @@ profileExpander.addEventListener('click', () => {
     mainProfile.style.opacity = '0';
     profileExpander.style.opacity = '0';
     profileExpander.style.transform = 'scale(0)';
-    profileExpander.style.backgroundImage =
-      'url("https://api.iconify.design/material-symbols/close.svg")';
+    profileExpander.style.backgroundImage ='none';
+    announcement.style.display = 'none';
 
     setTimeout(() => {
       mainProfile.style.opacity = '1';
-      profileExpander.style.opacity = '1';
-      profileExpander.style.transform = 'scale(1)';
     }, 250); // Delay of 10 milliseconds before changing the opacity
-  } else {
-    mainContainer.style.opacity='0';
-    profileExpander.style.transform = 'scale(0)';
-    profileExpander.style.backgroundImage = 'url("demo.png")';
-    
+  } 
+});
 
+hideProfile.addEventListener('click', () => {
+  if (isVisible) {
+    profileExpander.style.transform = 'scale(0)';
+    mainContainer.style.opacity='0';
+    announcement.style.display = 'block';
+    
+    
     setTimeout(() => {
+      profileExpander.style.backgroundImage = 'url("demo.png")';
       mainContainer.classList.remove('main-container-active')
       mainProfile.style.display = 'none';
       mainProfile.style.opacity = '1';
@@ -248,11 +252,10 @@ profileExpander.addEventListener('click', () => {
       profileExpander.style.transform = 'scale(1)';
       mainContainer.style.opacity='1';
 
-    }, 250); // Wait for the animation to complete before hiding the element
+    }, 500); // Wait for the animation to complete before hiding the element
 
     isVisible = false;
-  }
-});
+  }})
 
 function openForm() {
   document.getElementById('editProfileForm').classList.remove('d-none');
@@ -301,7 +304,7 @@ body {
 }
 
 .main-container-active{
-    background-color:#eee;
+    background-color:#DEDEDE;
     height:100vh;
     width:100vw;
     z-index:10000;
@@ -310,8 +313,8 @@ body {
 }
 
 .profile {
-  width: 5rem;
-  height: 5rem;
+  width: 4rem;
+  height: 4rem;
   display: block;
   border-radius: 50%;
   position: fixed;
@@ -329,6 +332,11 @@ body {
 
 .edit {
   cursor: pointer;
+}
+
+.formText{
+  color:#000000;
+  font-weight: 600;
 }
 
 .internship {
