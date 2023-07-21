@@ -11,10 +11,10 @@ if (isset($_GET["page"])) {
 } else {
     $page = 1;
 }
-
+$id = isset($_GET['id']) ? $_GET['id'] : 1;
 $per_page_record = 10; // limit
 $start_from = ($page - 1) * $per_page_record;
-$data_search = "SELECT * FROM applications LIMIT $start_from, $per_page_record";
+$data_search = "SELECT * FROM applications where announcement_id = $id LIMIT $start_from, $per_page_record";
 $query = mysqli_query($db_connection, $data_search);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -53,9 +53,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 while($row = mysqli_fetch_assoc($query)){
                     $id = $row['id'];
                     $name = $row['student_name'];
-                    $resume = $row['cv_file'];
-                    $resumeLink ="../student/CV_Uploads/" . $resume; 
+                    $resume = $row['resume'];
+                    $resumeLink = "view_resume.php?id=$id";
                     $action = $row['action'];
+                    
                 ?>
                 <tr class="table-light">
                     <th class="pt-3 text-center text-danger" scope="row">
@@ -65,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <?php echo $name; ?>
                     </td>
                     <td class="pt-3 text-center">
-                        <a href="<?php echo $resumeLink; ?>" target="_blank" class="btn btn-primary" role="button">
+                        <a href=" <?php echo $resumeLink; ?>" target="_blank" class="btn btn-primary" role="button">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
                                     <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
                                     <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />

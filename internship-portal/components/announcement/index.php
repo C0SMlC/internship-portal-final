@@ -1,3 +1,9 @@
+<?php
+//require "../../connect/connect.php";
+
+// $query = "select * from new_announcement";
+// mysqli_query($db_connection, $query);
+?>
 <div class="announcement">
     <div class="announcementTitle">
         <p>Important Announcements:-</p>
@@ -8,10 +14,18 @@
                 <b>
                     &#x25CF;
                 </b>
+                <!-- <a href="../../pages/Internship/index.php?id=<?php echo $announcement_id; ?>">
+                    $announcement_title
+                    <strong>Click to view !</strong>
+                </a> -->
+                <b>
+                    &#x25CF;
+                </b>
                 <a href="../../pages/Internship/index.php">
                     XYZ PVT LTD requires interns for it's IT department.
                     <strong>Click to view !</strong>
                 </a>
+
             </li>
             <li>
                 <b>

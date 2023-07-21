@@ -164,35 +164,14 @@ CREATE TABLE IF NOT EXISTS `applications` (
   `contact_no` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
   `student_location` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `cv_file` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `resume` longblob NOT NULL,
   `application_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `action` varchar(10) COLLATE utf8mb4_general_ci NOT NULL,
   `announcement_id` int NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`),
-  UNIQUE KEY `id_2` (`id`),
   KEY `announcement_id` (`announcement_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `applications`
---
-
-INSERT INTO `applications` (`id`, `student_name`, `company_name`, `admission_no`, `contact_no`, `student_location`, `cv_file`, `application_date`, `action`, `announcement_id`) VALUES
-(1, 'Jane A', 'XYZPvtLtd', '', '98765432210', 'Panvel', 'Jane A_XYZPvtLtd_2000PE0400.pdf', '2023-07-01 06:14:50', 'Rejected', 0),
-(3, 'Sanu', 'XYZPvtLtd', '', '1234567890', 'Uran', 'Sanu_XYZPvtLtd_2000PE0400.pdf', '2023-07-03 10:23:07', 'Approved', 0),
-(4, 'Apu', 'XYZPvtLtd', '', '1234567890', 'Panvel', 'Apu_XYZPvtLtd_2000PE0400.pdf', '2023-07-04 07:21:25', 'Rejected', 0),
-(5, 'Mitu', 'XYZPvtLtd', '2020PE0558', '1234567890', 'Panvel', 'Mitu_XYZPvtLtd_2000PE0400.pdf', '2023-07-07 15:53:13', 'Rejected', 0),
-(6, 'manali', 'XYZPvtLtd', '22222PE050', '1234567890', 'Uran', 'manali_XYZPvtLtd_2000PE0400.pdf', '2023-07-11 08:49:20', 'Approved', 0),
-(7, 'dd', '', '2022PE4134', '12345678890', 'Panvel', 'dd__2022PE4134.pdf', '2023-07-13 11:05:07', 'Rejected', 0),
-(8, 'ss', '', '2023PE0802', '1234567890', 'panel', 'ss__2023PE0802.pdf', '2023-07-13 11:09:39', '', 0),
-(9, 'mm', '', '2022PE2323', '1234567890', 'Panvel', 'mm__2022PE2323.pdf', '2023-07-13 11:22:05', '', 0),
-(10, 'nn', '', '2021PE0706', '1234567890', 'Panvel', 'nn__2021PE0706.pdf', '2023-07-13 11:45:57', '', 0),
-(11, 'mno', '', '2020PE7777', '1234567890', 'Panvel', 'mno__2020PE7777.pdf', '2023-07-13 19:10:29', '', 0),
-(12, 'gg', '', '234', '123456789', 'Panvel', 'gg__234.pdf', '2023-07-13 19:11:39', '', 0),
-(13, 'tt', '', '123', '123', 'Panvel', 'tt__123.pdf', '2023-07-14 14:50:59', '', 0),
-(14, 'rr', '', '123', '123', 'Panvel', 'rr__123.pdf', '2023-07-14 15:01:44', '', 0),
-(15, 'ww', 'web development', '123', '123', 'abc', 'ww_web development_123.pdf', '2023-07-14 15:40:32', '', 0);
-
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 -- --------------------------------------------------------
 
 --
