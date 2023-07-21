@@ -1,7 +1,7 @@
 <?php
 //require "../../connect/connect.php";
 
-// $query = "select * from new_announcement";
+// $query = "select * from new_annoucement";
 // mysqli_query($db_connection, $query);
 ?>
 <div class="announcement">

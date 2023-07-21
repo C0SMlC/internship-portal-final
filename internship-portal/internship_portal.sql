@@ -175,7 +175,7 @@ CREATE TABLE IF NOT EXISTS `applications` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `new_announcement`
+-- Table structure for table `new_annoucement`
 --
 
 DROP TABLE IF EXISTS `new_annoucement`;
