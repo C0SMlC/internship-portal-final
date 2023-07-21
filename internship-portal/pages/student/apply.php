@@ -38,11 +38,11 @@ if (isset($_POST['submit'])) {
     // Check if a file is selected
     if (isset($resume) && $resume['error'] === UPLOAD_ERR_OK) {
         
+        // Specify the target directory to store the uploaded files
+        $uploadFolder = "./CV_Uploads/";
 
         //original filename
         $originalFilename = $resume['name'];
-
-        
 
         // Generate a unique filename based on the given format
         $filename = $userName . "_" . $announcementTitle . "_" . $admissionNo . ".pdf";
@@ -53,20 +53,24 @@ if (isset($_POST['submit'])) {
         //convert the file contents to base64
         $pdfUrl = "data:application/pdf;base64," . base64_encode($fileContents);
 
-      
-        $sql = "INSERT INTO applications (student_name, admission_no, contact_no, student_location, cv_file,  application_date, company_name, announcement_id, resume) VALUES (?, ?, ?, ?, ?, NOW(), ?, ?, ?)";
-        $stmt = $db_connection->prepare($sql);
-        $stmt->bind_param("ssssssis", $userName, $admissionNo, $contact, $studentLocation, $filename, $announcementTitle, $id, $pdfUrl);
-        $stmt->execute();
-        $stmt->close();
+     
+        // Move the uploaded file to the target directory
+        if (move_uploaded_file($resume['tmp_name'], $uploadFolder . $filename)) {
+           
+            $sql = "INSERT INTO applications (student_name, admission_no, contact_no, student_location, cv_file,  application_date, company_name, announcement_id, resume) VALUES (?, ?, ?, ?, ?, NOW(), ?, ?, ?)";
+            $stmt = $db_connection->prepare($sql);
+            $stmt->bind_param("ssssssis", $userName, $admissionNo, $contact, $studentLocation, $filename, $announcementTitle, $id, $pdfUrl);
+            $stmt->execute();
+            $stmt->close();
 
-        // Display success message
-        $successMessage = "Successfully applied for $announcementTitle.<br>You have successfully registered for $announcementTitle. Please keep checking your email inbox for further updates.";
-    } else {
-        
-        $errorMessage = "Please select a valid PDF file.";
-        }}
-    
+                // Display success message
+            $successMessage = "Successfully applied for $announcementTitle.<br>You have successfully registered for $announcementTitle. Please keep checking your email inbox for further updates.";
+        } else {
+            
+            $errorMessage = "Please select a valid PDF file.";
+            }}}
+      
+
 // Close the database connection
 $db_connection->close();
 ?>
