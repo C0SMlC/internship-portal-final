@@ -5,16 +5,16 @@ $favicon = "../../assets/favicon.ico";
 include_once("../../components/head.php");
 require "../../connect/connect.php";
 
-if (isset($_GET['id'])) {
+if(isset($_GET['id'])) {
     // Retrieve the ID from the URL
     $id = $_GET['id'];
 
     // Query to fetch the specific announcement based on the ID
-    $query = "SELECT * FROM new_announcement WHERE announcement_id = '$id'";
+    $query = "SELECT * FROM new_annoucement WHERE announcement_id = '$id'";
     $result = mysqli_query($db_connection, $query);
 
     // Check if a row is found
-    if (mysqli_num_rows($result) > 0) {
+    if(mysqli_num_rows($result) > 0) {
         $row = mysqli_fetch_assoc($result);
 
         // Extract the information from the row
@@ -31,37 +31,48 @@ if (isset($_GET['id'])) {
         $stipend = $row["stipend"];
         $perks = $row["perks"];
 
-        if ($_SERVER['REQUEST_METHOD'] == "POST") {
-            $announcement_title = $_POST['announcement_title'];
-            $description = $_POST['description'];
-            $skills_required = $_POST['skills_required'];
-            $location = $_POST['location'];
-            $start_date = $_POST['start_date'];
-            $duration = $_POST['duration'];
-            $branch = $_POST['branch'];
-            $work_type = $_POST['work_type'];
-            $stipend_type = $_POST['stipend_type'];
-            $stipend = $_POST['stipend'];
-            $work_location = $_POST['work_location'];
-            $perks = $_POST['perks'];
-
-            $query = "UPDATE new_announcement SET announcement_title = '$announcement_title', description = '$description', duration = '$duration', start_date = '$start_date', skills_required = '$skills_required', branch = '$branch', location = '$location', work_type = '$work_type', work_location = '$work_location', stipend_type = '$stipend_type', stipend = '$stipend', perks = '$perks' WHERE announcement_id = '$id'";
-            if (mysqli_query($db_connection, $query)) {
+        if ($_SERVER['REQUEST_METHOD'] == "POST" && !empty($_POST['announcement_title']) && !empty($_POST['description']) && !empty($_POST['skills_required']) && !empty($_POST['location']) && !empty($_POST['start_date']) && !empty($_POST['duration']) && !empty($_POST['branch']) && !empty($_POST['work_type']) && !empty($_POST['stipend_type']) && !empty($_POST['work_location']) && !empty($_POST['perks'])) {
+                $announcement_title = $_POST['announcement_title'];
+                $description = $_POST['description'];
+                $skills_required = $_POST['skills_required'];
+                $location = $_POST['location'];
+                $start_date = $_POST['start_date'];
+                $duration = $_POST['duration'];
+                $branch = implode(",",$_POST['branch']);
+                $work_type = $_POST['work_type'];
+                $stipend_type = $_POST['stipend_type'];
+                $stipend = $_POST['stipend'];
+                $work_location = $_POST['work_location'];
+                $perks = $_POST['perks'];
+            
+                $query = "UPDATE new_annoucement SET announcement_title = '$announcement_title', description = '$description', duration = '$duration', start_date = '$start_date', skills_required = '$skills_required', branch = '$branch', location = '$location', work_type = '$work_type', work_location = '$work_location', stipend_type = '$stipend_type', stipend = '$stipend', perks = '$perks' WHERE announcement_id = '$id'";
+                if(mysqli_query($db_connection, $query))
+                {
+                    echo true;
+                    exit;
+                }else{
+                    echo "error". mysqli_error($db_connection);
+                }
                 header("Location: /internship-portal-final/internship-portal/pages/Internship/index.php");
                 die;
+               
+            
             }
-        } // The if statement was not closed properly. I've moved the closing brace here.
 
+      
     } else {
         // No announcement found with the specified ID, handle accordingly
         echo "Announcement not found.";
         die;
     }
-} else {
-    // ID parameter not present in the URL, handle accordingly
-    echo "Invalid request.";
-    die;
+// } else {
+//     // ID parameter not present in the URL, handle accordingly
+//     echo "Invalid request.";
+//     die;
 }
+
+
+
 
 ?>
 
@@ -226,6 +237,10 @@ if (isset($_GET['id'])) {
             </form>
         </div>
     </div>
+
+
+
+
 
 </body>
 

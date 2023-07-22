@@ -48,7 +48,7 @@ if(isset($_GET['id'])) {
     <?php
     include_once("../../components/navbar/index.php");
     ?>
-    <div class="container my-2 greet">
+    <!-- <div class="container my-2 greet">
         <p>Apply for Internship</p>
     </div>
     <div class="alert alert-success container col-8" role="alert">
@@ -68,7 +68,7 @@ if(isset($_GET['id'])) {
             To apply for this internship please upload your previous completion certificate or contact TPO. 
         </p>
        
-    </div>
+    </div> -->
     <div class="container my-3 text-justify" id="content">
         <div class="bg-light p-5 rounded">
 
@@ -211,7 +211,7 @@ if(isset($_GET['id'])) {
                     </svg>
                 </a>
             </div>
-            <br>
+            <!-- <br>
             <div class="col d-flex align-items-center justify-content-center">
                 <a href="../student/apply.php?id=<?php echo $id; ?>" class="btn btn-primary btn-lg col col-lg-3 col-md-4 col-sm-6 d-flex align-items-center justify-content-evenly" role="button" aria-disabled="true">
                     <div>
@@ -222,7 +222,7 @@ if(isset($_GET['id'])) {
                         <path fill-rule="evenodd" d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0v-5z" />
                     </svg>
                 </a>
-            </div>
+            </div> -->
             <!-- <br> -->
             <!-- <div class="col d-flex align-items-center justify-content-center">
                 <button href="../student/apply.php" class="btn btn-warning btn-lg col col-lg-3 col-md-4 col-sm-6 d-flex align-items-center justify-content-evenly" disabled role="button" aria-disabled="true">

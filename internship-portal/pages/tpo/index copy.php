@@ -25,7 +25,7 @@ if(isset($_GET['announcement_title'])) {
     $announcement_title = $_GET['announcement_title'];
 
     // Query to fetch the specific announcement based on the company name
-    $query = "SELECT * FROM new_announcement WHERE announcement_title = '$announcement_title'";
+    $query = "SELECT * FROM new_annoucement WHERE announcement_title = '$announcement_title'";
 
     $result = mysqli_query($db_connection, $query);
     if (!$result) {

@@ -23,7 +23,7 @@ if ($conn->connect_error) {
 
 // Retrieve data from the database
 $search = isset($_GET["search"]) ? $_GET["search"] : '';
-$sql = "SELECT * FROM new_announcement WHERE (announcement_id LIKE '%$search%' OR announcement_title LIKE '%$search%')";
+$sql = "SELECT * FROM new_annoucement WHERE (announcement_id LIKE '%$search%' OR announcement_title LIKE '%$search%')";
 $result = $conn->query($sql);
 if (!$result) {
     die("Query execution failed: " . $conn->error);
