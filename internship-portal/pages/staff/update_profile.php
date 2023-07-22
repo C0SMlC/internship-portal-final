@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['fullName']) && isset($
 
     echo "<script>
     function goToHomeScreen() {
-        window.location.href = 'http://localhost/internship-portal-final/internship-portal/pages/student'; // Replace with your home screen URL
+        window.location.href = 'http://localhost/internship-portal-final/internship-portal/pages/staff'; // Replace with your home screen URL
     }
     </script>";
 

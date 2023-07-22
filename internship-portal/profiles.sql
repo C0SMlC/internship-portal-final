@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS `student` (
   `s_name` varchar(128) NOT NULL,
   `s_email` varchar(128) NOT NULL,
   `s_age` int NOT NULL,
-  `s_mobile` int NOT NULL,
+  `s_mobile` bigint NOT NULL,
   `s_address` varchar(128) NOT NULL,
   PRIMARY KEY (`s_id`),
   UNIQUE KEY `s_email` (`s_email`),

@@ -1,6 +1,6 @@
 <?php
 require 'connect.php';
-$update = update_data($con);
+$update = get_student_data($con);
 $profileImageUrl = "demo.png";
 ?>
     <div class="main-container ">
@@ -189,70 +189,30 @@ $profileImageUrl = "demo.png";
           <h5 class="card-title">Edit Profile</h5>
         </div>
         <div class="card-body form-card-body">
-          <form method = "post" action = "update_profile.php">
-            <div class="mb-3">
-              <label for="fullName" class="form-label">Full Name</label>
-              <input
-                type="text"
-                class="form-control"
-                id="fullName"
-                name="fullName"
-                value = "<?php echo $update['s_name']; ?>"
-                required
-              />
-            </div>
-            <div class="mb-3">
-              <label for="email" class="form-label">Email</label>
-              <input
-                type="email"
-                class="form-control"
-                id="email"
-                name="email"
-                value="<?php echo $update['s_email']; ?>"
-                required
-              />
-            </div>
-            <div class="mb-3">
-              <label for="age" class="form-label">Age</label>
-              <input
-                type="number"
-                class="form-control"
-                id="age"
-                name="age"
-                value="<?php echo $update['s_age']; ?>"
-                required
-              />
-            </div>
-            <div class="mb-3">
-              <label for="mobile" class="form-label">Mobile</label>
-              <input
-                type="tel"
-                class="form-control"
-                id="mobile"
-                name="mobile"
-                value = "<?php echo $update['s_mobile']; ?>"
-                required
-              />
-            </div>
-            <div class="mb-3">
-              <label for="address" class="form-label">Address</label>
-              <textarea
-                class="form-control"
-                id="address"
-                name="address"
-                value = "<?php echo $update['s_address']; ?>"
-                required
-              ><?php echo $update['s_address']; ?></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary">Save</button>
-            <button
-              type="button"
-              class="btn btn-secondary"
-              onclick="closeForm()"
-            >
-              Cancel
-            </button>
-          </form>
+        <form method="post" action="update_profile.php">
+          <div class="mb-3">
+            <label for="fullName" class="form-label">Full Name</label>
+            <input type="text" class="form-control" id="fullName" name="fullName" value="<?php echo $update['s_name']; ?>" required />
+          </div>
+          <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" name="email" value="<?php echo $update['s_email']; ?>" required />
+          </div>
+          <div class="mb-3">
+            <label for="age" class="form-label">Age</label>
+            <input type="number" class="form-control" id="age" name="age" value="<?php echo $update['s_age']; ?>" required />
+          </div>
+          <div class="mb-3">
+            <label for="mobile" class="form-label">Mobile</label>
+            <input type="tel" class="form-control" id="mobile" name="mobile" value="<?php echo $update['s_mobile']; ?>" required />
+          </div>
+          <div class="mb-3">
+            <label for="address" class="form-label">Address</label>
+            <textarea class="form-control" id="address" name="address" required><?php echo $update['s_address']; ?></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Save</button>
+          <button type="button" class="btn btn-secondary" onclick="closeForm()">Cancel</button>
+        </form>
         </div>
       </div>
     </div>
