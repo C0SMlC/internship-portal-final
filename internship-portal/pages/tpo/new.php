@@ -3,7 +3,7 @@ $title = "Dashboard";
 $style = "./styles/global.css";
 $favicon = "../../assets/favicon.ico";
 include_once("../../components/head.php");
-require "./tpodbconnect.php";
+include_once("../../connect/connect.php");
 
 $errors = [];
 
@@ -68,11 +68,11 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
                 onsubmit="return validateForm();">
 
                 <div class="col-12">
-                    <strong for="Company" class="form-label">Company Name</strong>
+                    <strong for="announcement_title" class="form-label">Internship Title</strong>
                     <br>
                     <br>
                     <input type="text" class="form-control" spellcheck="false" required autocomplete="off" name="announcement_title"
-                        id="Company" placeholder="e.g. XYX Ltd..">
+                        id="announcement_title" placeholder="e.g. ML Internship">
                 </div>
                 <br>
 

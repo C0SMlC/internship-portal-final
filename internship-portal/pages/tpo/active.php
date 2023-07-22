@@ -3,36 +3,39 @@ $title = "Dashboard";
 $style = "./styles/global.css";
 $favicon = "../../assets/favicon.ico";
 include_once("../../components/head.php");
+include_once("../../connect/connect.php");
+// Retrieve data from the database
 
-// Database connection settings
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "internship_portal";
+$page = isset($_GET["page"]) ? $_GET["page"] : 1;
+$per_page_record = 20; // Number of records to display per page
+$start = ($page - 1) * $per_page_record;
 
+// Search functionality
+$search = isset($_GET["search"]) ? $_GET["search"] : "";
+$searchedData = [];
+// Count total records for pagination
+$total_records_sql = "SELECT COUNT(*) AS count FROM new_annoucement";
+$total_records_result = $db_connection->query($total_records_sql);
 
-
-
-// Create a database connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check the database connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+if (!$total_records_result) {
+    die("Query execution failed: " . $db_connection->error);
 }
 
-// Retrieve data from the database
+$total_records = $total_records_result->fetch_assoc()['count'];
+$total_pages = ceil($total_records / $per_page_record);
+$end = $start + $per_page_record;
+
 $search = isset($_GET["search"]) ? $_GET["search"] : '';
-$sql = "SELECT * FROM new_annoucement WHERE (announcement_id LIKE '%$search%' OR announcement_title LIKE '%$search%')";
-$result = $conn->query($sql);
+$sql = "SELECT * FROM new_annoucement WHERE (announcement_id LIKE '%$search%' OR announcement_title LIKE '%$search%') LIMIT $start, $per_page_record";
+$result = $db_connection->query($sql);
 if (!$result) {
-    die("Query execution failed: " . $conn->error);
+    die("Query execution failed: " . $db_connection->error);
 }
 //$sql = "SELECT * FROM feedback WHERE status = 'approved' AND (id LIKE '%$search%' OR announcement_title LIKE '%$search%')";
 //$result = $conn->query($sql);
 
 // Close the database connection
-$conn->close();
+$db_connection->close();
 ?>
 
 <body>
@@ -89,6 +92,26 @@ $conn->close();
 </table>
         <br>
         <!-- Pagination code here -->
+        <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            <li class="page-item <?php if ($page < 2) echo "disabled"; ?>">
+                <a class="page-link" href="./active.php?page=<?php echo $page - 1; ?>&search=<?php echo $search; ?>" tabindex="-1">Previous</a>
+            </li>
+            <?php
+            for ($i = 1; $i <= $total_pages; $i++) {
+                if ($i == $page) {
+                    $pagLink = "<li class='page-item active'><a class='page-link' href='./active.php?page=$i&search=$search'>" . $i . "</a></li>";
+                } else {
+                    $pagLink = "<li class='page-item'><a class='page-link' href='./active.php?page=$i&search=$search'>" . $i . "</a></li>";
+                }
+                echo $pagLink;
+            }
+            ?>
+            <li class="page-item <?php if ($page == $total_pages) echo "disabled"; ?>">
+                <a class="page-link" href="./active.php?page=<?php if ($page < $total_pages) echo $page + 1; ?>&search=<?php echo $search; ?>">Next</a>
+            </li>
+        </ul>
+    </nav>
     </div>
 </body>
 
