@@ -74,7 +74,7 @@ $db_connection->close();
                         echo "<tr>";
                         echo "<td>" . $row["ID"] . "</td>";
                         echo "<td>" . $row["CompanyName"] . "</td>";
-                        echo "<td>" . $row["name"] . "</td>";
+                        echo "<td>" . $row["StudentName"] . "</td>";
                         echo "<td>" . $row["Location"] . "</td>";
                         echo "<td>" . $row["ActionDate"] . "</td>";
                         //echo "<td>" . $row["approvedOn"] . "</td>";

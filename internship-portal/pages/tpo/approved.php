@@ -54,47 +54,70 @@ $db_connection->close();
     </div>
     <div class="container mt-2 table-responsive-sm">
         <table class="table table-bordered table-light table-sm">
-            <thead class="thead-light text-center">
-                <tr>
-                    <th scope="col">ID</th>
+    <thead class="thead-light text-center">
+        <tr>
+            <!-- ... -->
+            <th scope="col">ID</th>
                     <th scope="col">Company Name</th>
                     <th scope="col">Student Name</th>
                     <th scope="col">Student Location</th>
                     <th scope="col">Application Date</th>
                     <!--<th scope="col">Approved On</th>-->
                     <th scope="col">Comment</th>
-                    <th scope="col">Download</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                if ($result->num_rows > 0) {
-                    while ($row = $result->fetch_assoc()) {
-                        // Output row data
-                        echo "<tr>";
-                        echo "<td>" . $row["ID"] . "</td>";
+                    <th scope="col">View Letter</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                // Output row data
+                echo "<tr>";
+                // ... (existing code to display table data)
+                                        echo "<td>" . $row["ID"] . "</td>";
                         echo "<td>" . $row["CompanyName"] . "</td>";
-                        echo "<td>" . $row["name"] . "</td>";
+                        echo "<td>" . $row["StudentName"] . "</td>";
                         echo "<td>" . $row["Location"] . "</td>";
                         echo "<td>" . $row["ActionDate"] . "</td>";
                         //echo "<td>" . $row["approvedOn"] . "</td>";
                         echo "<td>" . $row["Comment"] . "</td>";
-                        echo "<td class='pt-3 text-center'>
-                            <a href='#' target='_blank' class='btn btn-warning'>
-                                <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-eye-fill' viewBox='0 0 16 16'>
-                                    <path d='M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z' />
-                                    <path d='M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z' />
-                                </svg>
-                            </a>
-                        </td>";
-                        echo "</tr>";
-                    }
-                } else {
-                    echo "<tr><td colspan='10'>No records found.</td></tr>";
-                }
-                ?>
-            </tbody>
-        </table>
+
+                echo "<td class='pt-3 text-center'>";
+               // echo "<a href='./letter.php?ID=" . $row["ID"] . "' target='_blank' class='btn btn-warning'>";
+                if (!empty($row["StudentName"])) {
+            echo "<td class='pt-3 text-center'>";
+            echo "<a href='./letter.php?ID=" . $row["ID"] . "' target='_blank' class='btn btn-warning'>";
+            echo "<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-eye-fill' viewBox='0 0 16 16'>";
+            echo "<path d='M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z' />";
+            echo "<path d='M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z' />";
+            echo "</svg>";
+            echo "</a>";
+            echo "</td>";
+        } else {
+            echo "<td class='pt-3 text-center'>";
+            echo "<a href='./group_letter.php?ID=" . $row["ID"] . "' target='_blank' class='btn btn-warning'>";
+            echo "<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-eye-fill' viewBox='0 0 16 16'>";
+            echo "<path d='M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z' />";
+            echo "<path d='M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z' />";
+            echo "</svg>";
+            echo "</a>";
+            echo "</td>";
+        }
+                // echo "<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-eye-fill' viewBox='0 0 16 16'>";
+                // echo "<path d='M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z' />";
+                // echo "<path d='M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z' />";
+                // echo "</svg>";
+                // echo "</a>";
+                // echo "</td>";
+                echo "</tr>";
+            }
+        } else {
+            echo "<tr><td colspan='10'>No records found.</td></tr>";
+        }
+        ?>
+    </tbody>
+</table>
         <br>
         <!-- Pagination code here -->
         <nav aria-label="Page navigation example">

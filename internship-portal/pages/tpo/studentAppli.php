@@ -112,6 +112,15 @@ $end = $start + $per_page_record;
                 ?>
             </tbody>
         </table>
+        <div class="container mt-2 table-responsive-sm">
+    <?php if (count($searchedData) > 0) : ?>
+        <table class="table table-bordered table-light table-sm">
+            <!-- ... (table headers and rows) ... -->
+        </table>
+    <?php else : ?>
+        <p>No records found.</p>
+    <?php endif; ?>
+</div>
     </div>
     <nav aria-label="Page navigation example">
         <ul class="pagination justify-content-center">
