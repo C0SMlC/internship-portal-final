@@ -18,9 +18,7 @@
                     $announcement_title
                     <strong>Click to view !</strong>
                 </a> -->
-                <b>
-                    &#x25CF;
-                </b>
+                
                 <a href="../../pages/Internship/index.php">
                     XYZ PVT LTD requires interns for it's IT department.
                     <strong>Click to view !</strong>
