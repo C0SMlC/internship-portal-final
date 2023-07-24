@@ -40,7 +40,6 @@ mysqli_close($db_connection);
         <ol>
             <?php foreach ($announcements as $announcement): ?>
             <li>
-                <b>&#x25CF;</b>
                 <a href="../../pages/Internship/index.php?id=<?php echo $announcement['announcement_id']; ?>">
                     <?php echo $announcement['announcement_title']; ?> requires interns for its <?php echo $announcement['branch']; ?> branch
                     <strong>Click to view !</strong>
