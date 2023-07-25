@@ -85,8 +85,13 @@ if ($result->num_rows > 0) {
     $pdf->SetRightMargin(25);
     $pdf->SetTopMargin(25);
 
+    // Add a new page
     $pdf->AddPage();
-    $pdf->SetFont('Times', '');
+
+    // Set font
+    $pdf->SetFont('Times', '', 12);
+
+    // Write content to the PDF
     $pdf->Cell(70, 20, "Ref. No.: " . $refrenceNumber, 0, 0, "L");
     $pdf->Cell(90, 20, "Date: " . $date, 0, 1, "R");
     $pdf->SetFont('Times', 'B');
@@ -135,8 +140,8 @@ if ($result->num_rows > 0) {
 
     $pdf->Cell(0, 10, "Yours faithfully,", 0, 1, "L");
 
-    // Output the PDF file as inline display
-    $pdf->Output("I", "Intern_Application_" . $groupID);
+    // Output the PDF file for download
+    $pdf->Output('I', 'Intern_Application_' . $groupID . '.pdf');
 }
 ?>
 
