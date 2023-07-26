@@ -3,34 +3,49 @@ $title = "Dashboard";
 $style = "./styles/global.css";
 $favicon = "../../assets/favicon.ico";
 include_once("../../components/head.php");
+include_once("../../connect/connect.php");
 
-//pagination part
-//connect db here
-// include "../../connect/connect.php";
-// if (isset($_GET["page"])) {
-//     $page = $_GET["page"];
-// } else {
-//     $page = 1;
-// }
-// $per_page_record = 10; // limit
-// $start_from = ($page - 1) * $per_page_record;
-// // $data_search = "SELECT * FROM userregisdata LIMIT $start_from, $per_page_record";//db query here
-// $data_search = "";
-// $query = mysqli_query($conn, $data_search);
+// Retrieve data from the database
+$search = isset($_GET["search"]) ? $_GET["search"] : '';
+
+$page = isset($_GET["page"]) ? $_GET["page"] : 1;
+$per_page_record = 20; // Number of records to display per page
+$start = ($page - 1) * $per_page_record;
+
+// Search functionality
+$search = isset($_GET["search"]) ? $_GET["search"] : "";
+$searchedData = [];
+// Count total records for pagination
+$total_records_sql = "SELECT COUNT(*) AS count FROM internship_applications WHERE Status = 'approved' AND (ID LIKE '%$search%' OR CompanyName LIKE '%$search%')";
+$total_records_result = $db_connection->query($total_records_sql);
+
+if (!$total_records_result) {
+    die("Query execution failed: " . $db_connection->error);
+}
+
+$total_records = $total_records_result->fetch_assoc()['count'];
+$total_pages = ceil($total_records / $per_page_record);
+$end = $start + $per_page_record;
+
+$sql = "SELECT * FROM internship_applications WHERE Status = 'approved' AND (ID LIKE '%$search%' OR CompanyName LIKE '%$search%') LIMIT $start, $per_page_record";
+$result = $db_connection->query($sql);
+
+if (!$result) {
+    die("Query execution failed: " . $db_connection->error);
+}
+
+// Close the database connection
+$db_connection->close();
 ?>
-<?php
-require './auth.php';
-?>
+
 <body>
-    <?php
-    include_once("../../components/navbar/index.php");
-    ?>
+    <?php include_once("../../components/navbar/index.php"); ?>
     <div class="container my-2 greet">
         <p>Approved Applications</p>
         <!-- Search Button -->
-        <form class="row g-3">
+        <form class="row g-3" method="GET">
             <div class="col-auto">
-                <input class="form-control" id="search" placeholder="ID or Company Name">
+                <input class="form-control" id="search" name="search" placeholder="ID or Company Name" value="<?php echo $search; ?>">
             </div>
             <div class="col-auto">
                 <button type="submit" class="btn btn-primary mb-3">Search</button>
@@ -38,146 +53,94 @@ require './auth.php';
         </form>
     </div>
     <div class="container mt-2 table-responsive-sm">
-        <table class="table table-bordered table-dark table-sm">
-            <thead class="thead-light text-center">
-                <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Company</th>
-                    <th scope="col">Applied On</th>
-                    <th scope="col">Start Date</th>
-                    <th scope="col">End Date</th>
-                    <th scope="col">Type</th>
-                    <th scope="col">Class</th>
-                    <th scope="col">Approved On</th>
+        <table class="table table-bordered table-light table-sm">
+    <thead class="thead-light text-center">
+        <tr>
+            <!-- ... -->
+            <th scope="col">ID</th>
+                    <th scope="col">Company Name</th>
+                    <th scope="col">Student Name</th>
+                    <th scope="col">Student Location</th>
+                    <th scope="col">Application Date</th>
+                    <!--<th scope="col">Approved On</th>-->
                     <th scope="col">Comment</th>
-                    <th scope="col">Download</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr class="table-light">
-                    <th class="pt-3 text-center" scope="row">
-                        14
-                    </th>
-                    <td class="pt-3">
-                        Mark Industries pvt. ltd
-                    </td>
-                    <td class="pt-3 text-center">
-                        18/10/2022
-                    </td>
-                    <td class="pt-3 text-center">
-                        18/10/2022
-                    </td>
-                    <td class="pt-3 text-center">
-                        18/10/2022
-                    </td>
-                    <td class="pt-3 text-center">
-                        WFH
-                    </td>
-                    <td class="pt-3 text-center">
-                        SE-ECS
-                    </td>
-                    <td class="pt-3 text-center ">
-                        18/10/2022
-                    </td>
-                    <td class="pt-3 text-center ">
-                        Please collect the approval letter from office
-                    </td>
-                    <td class="py-3 ">
-                        <div class="d-flex justify-content-center align-items-center">
-                            <a href="../../components/internshipLetter/index.php" target="_blank" class="btn btn-primary" role="button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
-                                    <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
-                                    <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" />
-                                </svg></a>
-                        </div>
+                    <th scope="col">View Letter</th>
 
-                    </td>
-                </tr>
-                <tr class="table-light">
-                    <th class="pt-3 text-center" scope="row">
-                        14
-                    </th>
-                    <td class="pt-3">
-                        Mark Industries pvt. ltd
-                    </td>
-                    <td class="pt-3 text-center">
-                        18/10/2022
-                    </td>
-                    <td class="pt-3 text-center">
-                        18/10/2022
-                    </td>
-                    <td class="pt-3 text-center">
-                        18/10/2022
-                    </td>
-                    <td class="pt-3 text-center">
-                        WFH
-                    </td>
-                    <td class="pt-3 text-center">
-                        SE-ECS
-                    </td>
-                    <td class="pt-3 text-center ">
-                        18/10/2022
-                    </td>
-                    <td class="pt-3 text-center ">
-                        Please collect the approval letter from office
-                    </td>
-                    <td class="py-3 ">
-                        <div class="d-flex justify-content-center align-items-center">
-                            <a href="../../components/internshipLetter/index.php" class="btn btn-primary" role="button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
-                                    <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
-                                    <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" />
-                                </svg></a>
-                        </div>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                // Output row data
+                echo "<tr>";
+                // ... (existing code to display table data)
+                                        echo "<td>" . $row["ID"] . "</td>";
+                        echo "<td>" . $row["CompanyName"] . "</td>";
+                        echo "<td>" . $row["StudentName"] . "</td>";
+                        echo "<td>" . $row["Location"] . "</td>";
+                        echo "<td>" . $row["ActionDate"] . "</td>";
+                        //echo "<td>" . $row["approvedOn"] . "</td>";
+                        echo "<td>" . $row["Comment"] . "</td>";
 
-                    </td>
-                </tr>
-
-            </tbody>
-        </table>
+                echo "<td class='pt-3 text-center'>";
+               // echo "<a href='./letter.php?ID=" . $row["ID"] . "' target='_blank' class='btn btn-warning'>";
+                if (!empty($row["StudentName"])) {
+            echo "<td class='pt-3 text-center'>";
+            echo "<a href='./letter.php?ID=" . $row["ID"] . "' target='_blank' class='btn btn-warning'>";
+            echo "<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-eye-fill' viewBox='0 0 16 16'>";
+            echo "<path d='M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z' />";
+            echo "<path d='M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z' />";
+            echo "</svg>";
+            echo "</a>";
+            echo "</td>";
+        } else {
+            echo "<td class='pt-3 text-center'>";
+            echo "<a href='./group_letter.php?ID=" . $row["ID"] . "' target='_blank' class='btn btn-warning'>";
+            echo "<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-eye-fill' viewBox='0 0 16 16'>";
+            echo "<path d='M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z' />";
+            echo "<path d='M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z' />";
+            echo "</svg>";
+            echo "</a>";
+            echo "</td>";
+        }
+                // echo "<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-eye-fill' viewBox='0 0 16 16'>";
+                // echo "<path d='M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z' />";
+                // echo "<path d='M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z' />";
+                // echo "</svg>";
+                // echo "</a>";
+                // echo "</td>";
+                echo "</tr>";
+            }
+        } else {
+            echo "<tr><td colspan='10'>No records found.</td></tr>";
+        }
+        ?>
+    </tbody>
+</table>
         <br>
+        <!-- Pagination code here -->
         <nav aria-label="Page navigation example">
-            <ul class="pagination justify-content-center">
-                <li class="page-item <?php //if ($page < 2) echo "disabled" 
-                                        ?>">
-                    <a class="page-link" href="previous.php?page=<?php //echo $page - 1; 
-                                                                    ?>" tabindex="-1">Previous</a>
-                </li>
-                <?php
-                //$row_search = "SELECT COUNT(*) FROM userregisdata";
-                //count from db query
-                // $rs_result = mysqli_query($conn, $row_search);
-                // $row = mysqli_fetch_row($rs_result);
-                // $total_records = $row[0];
-                // $total_pages = ceil($total_records / $per_page_record);
-                // $start = $page;
-                // if ($page < $total_pages - 2) {
-                //     $end = $page + 2;
-                // } else {
-                //     $start = $total_pages - 2;
-                //     $end = $total_pages;
-                // }
-                //
-                //temporary start and end
-                $start = 1;
-                $end = 3;
-                //
-                //
-                for ($i = $start; $i <= $end; $i++) {
-                    if ($i == $page) {
-                        $pagLink = "<li class='page-item active'><a class='page-link'  href='previous.php?page=$i'>" . $i . "</a></li>";
-                    } else {
-                        $pagLink = "<li class='page-item'><a class='page-link'  href='previous.php?page=$i'>" . $i . "</a></li>";
-                    };
-                    echo $pagLink;
+        <ul class="pagination justify-content-center">
+            <li class="page-item <?php if ($page < 2) echo "disabled"; ?>">
+                <a class="page-link" href="./approved.php?page=<?php echo $page - 1; ?>&search=<?php echo $search; ?>" tabindex="-1">Previous</a>
+            </li>
+            <?php
+            for ($i = 1; $i <= $total_pages; $i++) {
+                if ($i == $page) {
+                    $pagLink = "<li class='page-item active'><a class='page-link' href='./approved.php?page=$i&search=$search'>" . $i . "</a></li>";
+                } else {
+                    $pagLink = "<li class='page-item'><a class='page-link' href='./approved.php?page=$i&search=$search'>" . $i . "</a></li>";
                 }
-                ?>
-                <li class="page-item <?php //if ($page == $total_pages) echo "disabled" 
-                                        ?>">
-                    <a class="page-link" href="previous.php?page=<?php //if ($page < $total_pages) echo $page + 1; 
-                                                                    ?>">Next</a>
-                </li>
-            </ul>
-        </nav>
+                echo $pagLink;
+            }
+            ?>
+            <li class="page-item <?php if ($page == $total_pages) echo "disabled"; ?>">
+                <a class="page-link" href="./approved.php?page=<?php if ($page < $total_pages) echo $page + 1; ?>&search=<?php echo $search; ?>">Next</a>
+            </li>
+        </ul>
+    </nav>
     </div>
-    </body>
+</body>
 
 </html>

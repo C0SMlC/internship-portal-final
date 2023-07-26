@@ -5,6 +5,7 @@ $refrenceNumber = "PCE/B1/383/2022-23";
 $date = "13/09/2022";
 $applicationID = "16";
 $academicYear = "2022-23";
+$semester="2";
 $company = "BARC";
 $companyaddress = "BARC Training School, Anushakti Nagar, Mumbai-400 088 (MH)";
 $coordinator = "The Office In-charge, Practical Training/Project work, HRDD, BARC";
@@ -38,7 +39,7 @@ $pdf->Cell(80, 15, "Permission for Internship Training.", 0, 1, "L");
 $pdf->SetFont('Times', '');
 $pdf->Cell(70, 15, "Dear Sir,", 0, 1, "L");
 
-$pdf->Write(8, "With reference to the above subject, the following students of Final Year Computer Engineering would like to undertake internship training in your esteemed organization:");
+$pdf->Write(8, "With reference to the above subject, the following students of semester ".$semester.", ".$discipline. " would like to undertake internship training in your esteemed organization:");
 $pdf->Cell(0, 10, "", 0, 1);
 $pdf->SetLeftMargin(35);
 $pdf->SetFont('Times', 'B');

@@ -67,17 +67,6 @@ include_once("../../components/head.php");
         </div>
     </div>
     <hr>
-    <div class="container my-2 greet">
-        <p>Letter</p>
-    </div>
-    <div class="container text-center">
-        <div class="row mx-auto">
-            <div class="col-6 mt-3">
-                <a href="./letterAddress.php" class="btn btn-warning btn-lg col-md-12 p-sm-4" role="button">Generate
-                    Letter</a>
-            </div>
-        </div>
-    </div>
     <br>
     <br>
     <br>

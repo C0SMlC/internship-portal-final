@@ -1,19 +1,21 @@
 <?php
+require 'connect.php';
+$update = get_student_data($con);
 $profileImageUrl = "demo.png";
 ?>
-    <div class="main-container">
+    <div class="main-container ">
       <div class="profile"></div>
       <div class="profile-conainer">
-        <div class="container py-5">
+        <div class="container pt-5">
           <div class="row">
             <div class="col">
               <nav
                 aria-label="breadcrumb"
-                class="rounded-3 p-3 mb-4 vh custom-breadcrumb"
+                class="rounded-3 p-3 mb-5 vh custom-breadcrumb"
               >
                 <ol class="breadcrumb mb-0">
                   <li class="breadcrumb-item text-white">
-                    <a href="#">Home</a>
+                    <a class="home" href='#'>Home</a>
                   </li>
                   <li class="breadcrumb-item active" aria-current="page">
                     User Profile
@@ -33,59 +35,60 @@ $profileImageUrl = "demo.png";
                     class="rounded-circle img-fluid"
                     style="width: 150px"
                   />
-                  <h5 class="my-3">John Smith</h5>
+                  <h5 class="my-3"><?php echo $update['s_name']; ?></h5>
                   <p class="text-muted mb-1">Upload Image</p>
                 </div>
               </div>
-              <div class="card mb-4">
+              <div class="card mb-4 px-4">
                 <div class="card-body">
                   <!-- Profile Details -->
                   <div class="row">
-                    <div class="col-sm-3">
+                    <div class="col-4">
                       <p class="mb-0">Full Name</p>
                     </div>
-                    <div class="col-sm-9">
-                      <p class="text-muted mb-0">Johnatan Smith</p>
+                    <div class="col-8">
+                      <p class="formText mb-0"><?php echo $update['s_name']; ?></p>
                     </div>
                   </div>
                   <hr />
                   <div class="row">
-                    <div class="col-sm-3">
+                    <div class="col-4">
                       <p class="mb-0">Email</p>
                     </div>
-                    <div class="col-sm-9">
-                      <p class="text-muted mb-0">example@example.com</p>
+                    <div class="col-8">
+                      <p class="formText mb-0"><?php echo $update['s_email']; ?></p>
                     </div>
                   </div>
                   <hr />
                   <div class="row">
-                    <div class="col-sm-3">
+                    <div class="col-4">
                       <p class="mb-0">Age</p>
                     </div>
-                    <div class="col-sm-9">
-                      <p class="text-muted mb-0">20</p>
+                    <div class="col-8">
+                      <p class="formText mb-0"><?php echo $update['s_age']; ?></p>
                     </div>
                   </div>
                   <hr />
                   <div class="row">
-                    <div class="col-sm-3">
+                    <div class="col-4">
                       <p class="mb-0">Mobile</p>
                     </div>
-                    <div class="col-sm-9">
-                      <p class="text-muted mb-0">(098) 765-4321</p>
+                    <div class="col-8">
+                      <p class="formText mb-0"><?php echo $update['s_mobile']; ?></p>
                     </div>
                   </div>
                   <hr />
                   <div class="row">
-                    <div class="col-sm-3">
+                    <div class="col-4">
                       <p class="mb-0">Address</p>
                     </div>
-                    <div class="col-sm-9">
-                      <p class="text-muted mb-0">Bay Area, San Francisco, CA</p>
+                    <div class="col-8">
+                      <p class="formText mb-0"><?php echo $update['s_address']; ?></p>
                     </div>
                   </div>
                 </div>
               </div>
+
               <!-- Edit Profile Link -->
               <div class="edit-profile">
                 <a href="#" class="edit-profile-link" onclick="openForm()"
@@ -96,26 +99,26 @@ $profileImageUrl = "demo.png";
 
             <!-- Dashboard -->
             <div class="col-lg-8">
-              <h2 class="mb-4">Dashboard</h2>
+              <h2 class="mb-4 font-weight-bold">Dashboard</h2>
               <div class="card mb-3">
                 <div class="card-body py-4">
                   <div class="panel">
                     <div class="internship internship-applied">
                       <p class="internship-text">Applied</p>
-                      <p>5</p>
+                      <p>10</p>
                     </div>
                     <div class="internship internhsip-accepted">
                       <p class="internship-text">Accepted</p>
-                      <p>5</p>
+                      <p>7</p>
                     </div>
                     <div class="internship internship-rejected">
                       <p class="internship-text">Rejected</p>
-                      <p>5</p>
+                      <p>3</p>
                     </div>
                   </div>
                 </div>
               </div>
-              <h2 class="mt-5 mb-5">Internship Details</h2>
+              <h2 class="mt-5 mb-4 font-weight-bold">Internship Details</h2>
               <div class="internship-detail row py-2">
                 <div class="card mb-2">
                   <h5 class="card-header">Name Of Internship</h5>
@@ -186,65 +189,30 @@ $profileImageUrl = "demo.png";
           <h5 class="card-title">Edit Profile</h5>
         </div>
         <div class="card-body form-card-body">
-          <form>
-            <div class="mb-3">
-              <label for="fullName" class="form-label">Full Name</label>
-              <input
-                type="text"
-                class="form-control"
-                id="fullName"
-                name="fullName"
-                required
-              />
-            </div>
-            <div class="mb-3">
-              <label for="email" class="form-label">Email</label>
-              <input
-                type="email"
-                class="form-control"
-                id="email"
-                name="email"
-                required
-              />
-            </div>
-            <div class="mb-3">
-              <label for="age" class="form-label">Age</label>
-              <input
-                type="number"
-                class="form-control"
-                id="age"
-                name="age"
-                required
-              />
-            </div>
-            <div class="mb-3">
-              <label for="mobile" class="form-label">Mobile</label>
-              <input
-                type="tel"
-                class="form-control"
-                id="mobile"
-                name="mobile"
-                required
-              />
-            </div>
-            <div class="mb-3">
-              <label for="address" class="form-label">Address</label>
-              <textarea
-                class="form-control"
-                id="address"
-                name="address"
-                required
-              ></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary">Save</button>
-            <button
-              type="button"
-              class="btn btn-secondary"
-              onclick="closeForm()"
-            >
-              Cancel
-            </button>
-          </form>
+        <form method="post" action="update_profile.php">
+          <div class="mb-3">
+            <label for="fullName" class="form-label">Full Name</label>
+            <input type="text" class="form-control" id="fullName" name="fullName" value="<?php echo $update['s_name']; ?>" required />
+          </div>
+          <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" name="email" value="<?php echo $update['s_email']; ?>" required />
+          </div>
+          <div class="mb-3">
+            <label for="age" class="form-label">Age</label>
+            <input type="number" class="form-control" id="age" name="age" value="<?php echo $update['s_age']; ?>" required />
+          </div>
+          <div class="mb-3">
+            <label for="mobile" class="form-label">Mobile</label>
+            <input type="tel" class="form-control" id="mobile" name="mobile" value="<?php echo $update['s_mobile']; ?>" required />
+          </div>
+          <div class="mb-3">
+            <label for="address" class="form-label">Address</label>
+            <textarea class="form-control" id="address" name="address" required><?php echo $update['s_address']; ?></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Save</button>
+          <button type="button" class="btn btn-secondary" onclick="closeForm()">Cancel</button>
+        </form>
         </div>
       </div>
     </div>
@@ -257,48 +225,50 @@ $profileImageUrl = "demo.png";
 <script>
 
 const profileExpander = document.querySelector('.profile');
+const hideProfile = document.querySelector('.home')
 const mainProfile = document.querySelector('.profile-conainer');
 const mainContainer = document.querySelector('.main-container');
+const announcement = document.querySelector('.announcement');
 
 let isVisible = false;
 
 profileExpander.addEventListener('click', () => {
   if (!isVisible) {
     isVisible = true;
-
     mainContainer.classList.add('main-container-active')
     mainContainer.style.display = 'block';
     mainProfile.style.display = 'block';
     mainProfile.style.opacity = '0';
     profileExpander.style.opacity = '0';
     profileExpander.style.transform = 'scale(0)';
-    profileExpander.style.backgroundImage =
-      'url("https://api.iconify.design/material-symbols/close.svg")';
+    profileExpander.style.backgroundImage ='none';
+    announcement.style.display = 'none';
 
     setTimeout(() => {
       mainProfile.style.opacity = '1';
-      profileExpander.style.opacity = '1';
-      profileExpander.style.transform = 'scale(1)';
     }, 250); // Delay of 10 milliseconds before changing the opacity
-  } else {
-    mainContainer.style.opacity='0';
+  } 
+});
+
+hideProfile.addEventListener('click', () => {
+  if (isVisible) {
     profileExpander.style.transform = 'scale(0)';
-    profileExpander.style.backgroundImage = 'url("demo.png")';
-    
+    mainContainer.style.opacity='0';
+    announcement.style.display = 'block';
 
     setTimeout(() => {
+      profileExpander.style.backgroundImage = 'url("demo.png")';
       mainContainer.classList.remove('main-container-active')
       mainProfile.style.display = 'none';
       mainProfile.style.opacity = '1';
-      profileExpander.style.opacity = '1';
       profileExpander.style.transform = 'scale(1)';
+      profileExpander.style.opacity = '1';
       mainContainer.style.opacity='1';
 
-    }, 250); // Wait for the animation to complete before hiding the element
+    },500); // Wait for the animation to complete before hiding the element
 
     isVisible = false;
-  }
-});
+  }});
 
 function openForm() {
   document.getElementById('editProfileForm').classList.remove('d-none');
@@ -322,7 +292,7 @@ body {
   height: 100%;
   position: relative;
   font-size: 100%;
-  background-color: #;
+  background-color:#eee;
 }
 
 .main-container {
@@ -330,7 +300,7 @@ body {
 }
 
 .main-container-active{
-    background-color:#eee;
+   background-color:#DEDEDE;
     height:100vh;
     width:100vw;
     z-index:10000;
@@ -352,13 +322,13 @@ body {
 }
 
 .profile {
-  width: 5rem;
-  height: 5rem;
+  width: 4rem;
+  height: 4rem;
   display: block;
   border-radius: 50%;
   position: fixed;
   bottom: 10%;
-  right: 5%;
+  right: 3%;
   cursor: pointer;
   z-index: 100;
 
@@ -372,6 +342,11 @@ body {
 
 .edit {
   cursor: pointer;
+}
+
+.formText{
+  color:#000000;
+  font-weight: 600;
 }
 
 .internship {
@@ -461,4 +436,3 @@ body {
   }
 }
 </style>
-

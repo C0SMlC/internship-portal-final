@@ -1,5 +1,7 @@
 <?php
-$profileImageUrl = "demo.png";
+require 'connect.php';
+$update = update_data($con);
+$profileImageUrl='demo.png'
 ?>
 
 <div class="main-container">
@@ -13,12 +15,11 @@ $profileImageUrl = "demo.png";
               class="rounded-3 p-3 mb-4 vh custom-breadcrumb"
             >
               <ol class="breadcrumb mb-0">
-                <li class="breadcrumb-item text-white"><a href="#">Home</a></li>
+                <li class="breadcrumb-item text-white"><a href="#" class="home">Home</a></li>
                 <li class="breadcrumb-item active" aria-current="page">
                   User Profile
                 </li>
               </ol>
-              -
             </nav>
           </div>
         </div>
@@ -33,79 +34,78 @@ $profileImageUrl = "demo.png";
                   class="rounded-circle img-fluid"
                   style="width: 150px"
                 />
-                <h5 class="my-3">John Smith</h5>
+                <h5 class="my-3"><?php echo $update['fac_name']; ?></h5>
                 <p class="text-muted mb-1">Upload Image</p>
               </div>
             </div>
-            <div class="card mb-4">
+            <div class="card mb-4 px-6">
               <div class="card-body">
                 <!-- Profile Details -->
                 <div class="row">
-                  <div class="col-sm-3">
-                    <p class="mb-0">Full Name</p>
+                  <div class="col-4">
+                    <p class="mb-0">Full Name :</p>
                   </div>
-                  <div class="col-sm-9">
-                    <p class="text-muted mb-0">Johnatan Smith</p>
-                  </div>
-                </div>
-                <hr />
-                <div class="row">
-                  <div class="col-sm-3">
-                    <p class="mb-0">Email</p>
-                  </div>
-                  <div class="col-sm-9">
-                    <p class="text-muted mb-0">example@example.com</p>
+                  <div class="col-8">
+                    <p class=" mb-0 formText"><?php echo $update['fac_name']; ?></p>
                   </div>
                 </div>
                 <hr />
                 <div class="row">
-                  <div class="col-sm-3">
-                    <p class="mb-0">Age</p>
+                  <div class="col-4">
+                    <p class="mb-0">Email :</p>
                   </div>
-                  <div class="col-sm-9">
-                    <p class="text-muted mb-0">20</p>
-                  </div>
-                </div>
-                <hr />
-                <div class="row">
-                  <div class="col-sm-3">
-                    <p class="mb-0">Mobile</p>
-                  </div>
-                  <div class="col-sm-9">
-                    <p class="text-muted mb-0">(098) 765-4321</p>
+                  <div class="col-8">
+                    <p class="mb-0 formText"><?php echo $update['fac_email']; ?></p>
                   </div>
                 </div>
                 <hr />
                 <div class="row">
-                  <div class="col-sm-3">
-                    <p class="mb-0">Address</p>
+                  <div class="col-4">
+                    <p class="mb-0">Age :</p>
                   </div>
-                  <div class="col-sm-9">
-                    <p class="text-muted mb-0">Bay Area, San Francisco, CA</p>
+                  <div class="col-8">
+                    <p class="mb-0 formText"><?php echo $update['fac_age']; ?></p>
+                  </div>
+                </div>
+                <hr />
+                <div class="row">
+                  <div class="col-4">
+                    <p class="mb-0">Mobile :</p>
+                  </div>
+                  <div class="col-8">
+                    <p class="mb-0 formText"><?php echo $update['fac_mobile']; ?></p>
+                  </div>
+                </div>
+                <hr />
+                <div class="row">
+                  <div class="col-4">
+                    <p class="mb-0">Address :</p>
+                  </div>
+                  <div class="col-8">
+                    <p class="mb-0 formText"><?php echo $update['fac_address']; ?></p>
                   </div>
                 </div>
               </div>
               <!-- Edit Profile Link -->
               <div class="edit-profile mb-5">
-                <a href="#" class="edit-profile-link mt-4" onclick="openForm()"
-                  >Edit</a
-                >
+                <a href="#" class="edit-profile-link mt-4" onclick="openForm()">Edit</a>
               </div>
             </div>
+
           </div>
 
           <!-- Dashboard -->
           <div class="col-lg-8">
-            <div class="d-flex align-items-center justify-content-between mb-5">
-              <h2>Internship Details</h2>
+            <div class="d-flex align-items-center justify-content-between mt-4 mb-3">
+              <h2>Previous Internship Details</h2>
               <a href="./new.php" type="button" class="btn btn-primary">Publish</a>
             </div>
 
             <div class="internship-detail row py-2">
-              <div class="card mb-2">
-                <h5 class="card-header">Name Of Internship</h5>
+              <div class="card mb-4 ">
+                <h5 class="card-header">PSP PVT LIMITED, NEW MUMBAI</h5>
                 <div class="card-body">
-                  <h5 class="card-title">Position</h5>
+                  <h5 class="card-title">Full Stack Developer</h5>
                   <p class="card-text mt-3">
                     With supporting text below as a natural lead-in to
                     additional content.
@@ -113,15 +113,15 @@ $profileImageUrl = "demo.png";
                   <p>Published On : 20/01/2022</p>
                   <div class="d-flex internship-date">
                     <p>Students Applied :</p>
-                    <p class="ms-2 status">69</p>
+                    <p class="ms-2 status">10</p>
                   </div>
                 </div>
               </div>
 
-              <div class="card mb-2">
-                <h5 class="card-header">Name Of Internship</h5>
+              <div class="card mb-4">
+                <h5 class="card-header">PSP PVT LIMITED, NEW MUMBAI</h5>
                 <div class="card-body">
-                  <h5 class="card-title">Position</h5>
+                  <h5 class="card-title">Full Stack Developer</h5>
                   <p class="card-text mt-3">
                     With supporting text below as a natural lead-in to
                     additional content.
@@ -129,14 +129,14 @@ $profileImageUrl = "demo.png";
                   <p>Published On : 20/01/2022</p>
                   <div class="d-flex internship-date">
                     <p>Students Applied :</p>
-                    <p class="ms-2 status">69</p>
+                    <p class="ms-2 status">10</p>
                   </div>
                 </div>
               </div>
-              <div class="card mb-2">
-                <h5 class="card-header">Name Of Internship</h5>
+              <div class="card mb-4">
+                <h5 class="card-header">PSP PVT LIMITED, NEW MUMBAI</h5>
                 <div class="card-body">
-                  <h5 class="card-title">Position</h5>
+                  <h5 class="card-title">Full Stack Developer</h5>
                   <p class="card-text mt-3">
                     With supporting text below as a natural lead-in to
                     additional content.
@@ -144,14 +144,14 @@ $profileImageUrl = "demo.png";
                   <p>Published On : 20/01/2022</p>
                   <div class="d-flex internship-date">
                     <p>Students Applied :</p>
-                    <p class="ms-2 status">69</p>
+                    <p class="ms-2 status">10</p>
                   </div>
                 </div>
               </div>
-              <div class="card mb-2">
-                <h5 class="card-header">Name Of Internship</h5>
+              <div class="card mb-4">
+                <h5 class="card-header">PSP PVT LIMITED, NEW MUMBAI</h5>
                 <div class="card-body">
-                  <h5 class="card-title">Position</h5>
+                  <h5 class="card-title">Full Stack Developer</h5>
                   <p class="card-text mt-3">
                     With supporting text below as a natural lead-in to
                     additional content.
@@ -159,7 +159,7 @@ $profileImageUrl = "demo.png";
                   <p>Published On : 20/01/2022</p>
                   <div class="d-flex internship-date">
                     <p>Students Applied :</p>
-                    <p class="ms-2 status">69</p>
+                    <p class="ms-2 status">10</p>
                   </div>
                 </div>
               </div>
@@ -170,69 +170,38 @@ $profileImageUrl = "demo.png";
     </section>
 
     <!-- Edit Profile Form -->
-    <div class="edit-profile-form card d-none" id="editProfileForm">
-      <div class="card-header">
+ <div class="edit-profile-form card d-none" id="editProfileForm">
+      <div class="card-header mt-5 mb-5">
         <h5 class="card-title">Edit Profile</h5>
       </div>
-      <div class="card-body form-card-body">
-        <form>
+      <div class="card-body">
+        <form  method="post" action="update_profile.php">
           <div class="mb-3">
             <label for="fullName" class="form-label">Full Name</label>
-            <input
-              type="text"
-              class="form-control"
-              id="fullName"
-              name="fullName"
-              required
-            />
+            <input type="text" class="form-control" id="fullName" name="fullName" value=" <?php echo $update['fac_name']; ?>" required>
           </div>
           <div class="mb-3">
             <label for="email" class="form-label">Email</label>
-            <input
-              type="email"
-              class="form-control"
-              id="email"
-              name="email"
-              required
-            />
+            <input type="email" class="form-control" id="email" name="email" value=" <?php echo $update['fac_email']; ?>" required>
           </div>
           <div class="mb-3">
             <label for="age" class="form-label">Age</label>
-            <input
-              type="number"
-              class="form-control"
-              id="age"
-              name="age"
-              required
-            />
+            <input type="number" class="form-control" id="age" name="age" value= "<?php echo $update['fac_age']; ?>" required>
           </div>
           <div class="mb-3">
             <label for="mobile" class="form-label">Mobile</label>
-            <input
-              type="tel"
-              class="form-control"
-              id="mobile"
-              name="mobile"
-              required
-            />
+            <input type="text" class="form-control" id="mobile" name="mobile" value="<?php echo $update['fac_mobile']; ?>" required>
           </div>
           <div class="mb-3">
             <label for="address" class="form-label">Address</label>
-            <textarea
-              class="form-control"
-              id="address"
-              name="address"
-              required
-            ></textarea>
+            <input type="text" class="form-control" id="address" name="address" value="<?php echo $update['fac_address']; ?>" required>
           </div>
           <button type="submit" class="btn btn-primary">Save</button>
-          <button type="button" class="btn btn-secondary" onclick="closeForm()">
-            Cancel
-          </button>
+          <button  class="btn btn-primary" id="closeForm" onclick="closeForm(event)">Cancel</button>
+
         </form>
       </div>
     </div>
-
 </div>
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
@@ -242,6 +211,9 @@ $profileImageUrl = "demo.png";
 const profileExpander = document.querySelector('.profile');
 const mainProfile = document.querySelector('.profile-conainer');
 const mainContainer = document.querySelector('.main-container');
+const hideProfile = document.querySelector('.home')
+const announcement = document.querySelector('.announcement');
+
 
 let isVisible = false;
 
@@ -255,21 +227,24 @@ profileExpander.addEventListener('click', () => {
     mainProfile.style.opacity = '0';
     profileExpander.style.opacity = '0';
     profileExpander.style.transform = 'scale(0)';
-    profileExpander.style.backgroundImage =
-      'url("https://api.iconify.design/material-symbols/close.svg")';
+    profileExpander.style.backgroundImage ='none';
+    announcement.style.display = 'none';
 
     setTimeout(() => {
       mainProfile.style.opacity = '1';
-      profileExpander.style.opacity = '1';
-      profileExpander.style.transform = 'scale(1)';
     }, 250); // Delay of 10 milliseconds before changing the opacity
-  } else {
-    mainContainer.style.opacity='0';
-    profileExpander.style.transform = 'scale(0)';
-    profileExpander.style.backgroundImage = 'url("demo.png")';
-    
+  } 
+});
 
+hideProfile.addEventListener('click', () => {
+  if (isVisible) {
+    profileExpander.style.transform = 'scale(0)';
+    mainContainer.style.opacity='0';
+    announcement.style.display = 'block';
+    
+    
     setTimeout(() => {
+      profileExpander.style.backgroundImage = 'url("demo.png")';
       mainContainer.classList.remove('main-container-active')
       mainProfile.style.display = 'none';
       mainProfile.style.opacity = '1';
@@ -277,19 +252,23 @@ profileExpander.addEventListener('click', () => {
       profileExpander.style.transform = 'scale(1)';
       mainContainer.style.opacity='1';
 
-    }, 250); // Wait for the animation to complete before hiding the element
+    }, 500); // Wait for the animation to complete before hiding the element
 
     isVisible = false;
-  }
-});
+  }})
 
 function openForm() {
   document.getElementById('editProfileForm').classList.remove('d-none');
 }
 
-function closeForm() {
+function closeForm(event) {
+  event.preventDefault(); // Prevent form submission
+
+
   document.getElementById('editProfileForm').classList.add('d-none');
+  return false;
 }
+
 </script>
 
 <style>
@@ -325,7 +304,7 @@ body {
 }
 
 .main-container-active{
-    background-color:#eee;
+    background-color:#DEDEDE;
     height:100vh;
     width:100vw;
     z-index:10000;
@@ -334,8 +313,8 @@ body {
 }
 
 .profile {
-  width: 5rem;
-  height: 5rem;
+  width: 4rem;
+  height: 4rem;
   display: block;
   border-radius: 50%;
   position: fixed;
@@ -343,8 +322,7 @@ body {
   right: 5%;
   cursor: pointer;
   z-index: 100;
-
-  background-image:url('<?php echo $profileImageUrl; ?>');
+  background-image: url('demo.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -354,6 +332,11 @@ body {
 
 .edit {
   cursor: pointer;
+}
+
+.formText{
+  color:#000000;
+  font-weight: 600;
 }
 
 .internship {
@@ -449,4 +432,11 @@ body {
   color: #fafafa;
 }
 
+.card-title, .form-label{
+  color: #666;
+}
+
+.form-control{
+  width:450px;
+}
 </style>
