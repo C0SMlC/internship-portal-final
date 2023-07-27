@@ -11,16 +11,18 @@ $profileImageUrl = "demo.png";
             <div class="col">
               <nav
                 aria-label="breadcrumb"
-                class="rounded-3 p-3 mb-5 vh custom-breadcrumb"
-              >
-                <ol class="breadcrumb mb-0">
-                  <li class="breadcrumb-item text-white">
-                    <a class="home" href='#'>Home</a>
-                  </li>
-                  <li class="breadcrumb-item active" aria-current="page">
-                    User Profile
-                  </li>
-                </ol>
+                class="rounded-3 p-3 mb-5 vh custom-breadcrumb">
+<ol class="breadcrumb mb-0">
+  <li class="breadcrumb-item text-white">
+    <a class="home" href="#">Home</a>
+  </li>
+  <li class="breadcrumb-item active" aria-current="page">
+    User Profile
+  </li>
+  <li class="breadcrumb-item">
+    <a class="logout" href="logout.php">Logout</a>
+  </li>
+</ol>
               </nav>
             </div>
           </div>
