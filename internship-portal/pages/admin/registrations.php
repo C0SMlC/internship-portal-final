@@ -11,10 +11,11 @@ if (isset($_GET["page"])) {
 } else {
     $page = 1;
 }
+$id = isset($_GET['id']) ? $_GET['id'] : null;
 
 $per_page_record = 10; // limit
 $start_from = ($page - 1) * $per_page_record;
-$data_search = "SELECT * FROM applications LIMIT $start_from, $per_page_record";
+$data_search = "SELECT * FROM applications WHERE announcement_id = $id LIMIT $start_from, $per_page_record";
 $query = mysqli_query($con, $data_search);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

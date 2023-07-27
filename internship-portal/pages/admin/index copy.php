@@ -3,18 +3,33 @@ $title = "Dashboard";
 $style = "./index.css";
 $favicon = "../../assets/favicon.ico";
 include_once("../../components/head.php");
-require "config.php";
+//require "./tpodbconnect.php";
+session_start();
+session_regenerate_id(true);
+//
+define('DB_SERVER', 'localhost:4306');
+define('DB_USERNAME', 'root');
+define('DB_PASSWORD', '');
+define('DB_NAME', 'internship_portal');
 
-if(isset($_GET['company_name'])) {
+// Try connecting to the Database
+$db_connection = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+
+// Check the connection
+if ($db_connection === false) {
+    die('Error: Cannot connect');
+}
+
+if(isset($_GET['announcement_title'])) {
     // Retrieve the company name from the URL
-    $company_name = $_GET['company_name'];
+    $announcement_title = $_GET['announcement_title'];
 
     // Query to fetch the specific announcement based on the company name
-    $query = "SELECT * FROM new_annoucement WHERE announcement_title = '$company_name'";
+    $query = "SELECT * FROM new_annoucement WHERE announcement_title = '$announcement_title'";
 
-    $result = mysqli_query($con, $query);
+    $result = mysqli_query($db_connection, $query);
     if (!$result) {
-        die('Query execution error: ' . mysqli_error($con));
+        die('Query execution error: ' . mysqli_error($db_connection));
     }
 
     // Check if a row is found
@@ -22,7 +37,7 @@ if(isset($_GET['company_name'])) {
         $row = mysqli_fetch_assoc($result);
 
         // Extract the information from the row
-        $company_name = $row["company_name"];
+        $announcement_title = $row["announcement_title"];
         $description = $row["description"];
         $duration = $row["duration"];
         $start_date = $row["start_date"];
@@ -54,7 +69,7 @@ if(isset($_GET['company_name'])) {
         <p>Apply for Internship</p>
     </div>
     <div class="alert alert-success container col-8" role="alert">
-        <h2 class="alert-heading">Successfully applied for <//?php echo $company_name ?> pvt ltd.</h2>
+        <h2 class="alert-heading">Successfully applied for <//?php echo $announcement_title ?> pvt ltd.</h2>
         <hr>
         <p>You have successfully registered for 
             <b>XYZ pvt ltd</b> . Please keep checking your mes email inbox for further updates. 
@@ -75,7 +90,7 @@ if(isset($_GET['company_name'])) {
         <div class="bg-light p-5 rounded">
 
 
-            <p class="h3 "><?php echo $company_name; ?></p>
+            <p class="h3 "><?php echo $announcement_title; ?></p>
             <br>
             <p class="lead">
             <?php echo $description; ?>
@@ -87,7 +102,7 @@ if(isset($_GET['company_name'])) {
                 </p>
                 <p class="lead">
                     <small>
-                    <?php echo $company_name; ?>
+                    <?php echo $announcement_title; ?>
                     </small>
                 </p>
             </div>
