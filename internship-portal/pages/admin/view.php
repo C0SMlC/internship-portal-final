@@ -5,12 +5,12 @@ $favicon = "../../assets/favicon.ico";
 include_once("../../components/head.php");
 require "config.php";
 
-if(isset($_GET['announcement_title'])) {
+if(isset($_GET['id'])) {
     // Retrieve the company name from the URL
-    $announcement_title = $_GET['announcement_title'];
+    $id = $_GET['id'];
 
     // Query to fetch the specific announcement based on the company name
-    $query = "SELECT * FROM new_annoucement1 WHERE announcement_title = '$announcement_title'";
+    $query = "SELECT * FROM new_annoucement WHERE announcement_id = '$id'";
 
     $result = mysqli_query($con, $query);
     if (!$result) {
@@ -240,7 +240,7 @@ if(isset($_GET['announcement_title'])) {
         <div class="response-box">
             <div style="text-align: center;">
                 
-                <a href="./active.php" class="btn btn-primary btn-sm col-md-2 p-sm-4" role="button">Go Back</a>
+                <a href="./previous.php" class="btn btn-primary btn-sm col-md-2 p-sm-4" role="button">Go Back</a>
             </div>
         </div>
     </div>

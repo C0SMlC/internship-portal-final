@@ -200,7 +200,7 @@ $result = display_data();
                                 ?>
                                     <td><?php echo $row['ID']; ?></td>
                                     <td><?php echo $row['CompanyName']; ?></td>
-                                    <td><?php echo $row['created_at']; ?></td>
+                                    <td><?php echo $row['ActionDate']; ?></td>
                                     <td><?php echo $row['startDate']; ?></td>
                                     <td><?php echo $row['endDate']; ?></td>
                                     <!-- <td><?php echo $row['type']; ?></td>
