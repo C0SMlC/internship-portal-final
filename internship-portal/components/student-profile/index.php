@@ -2,6 +2,38 @@
 require 'connect.php';
 $update = get_student_data($con);
 $profileImageUrl = "demo.png";
+
+// Replace 'your_host', 'your_username', 'your_password', and 'your_database' with your actual database credentials
+$con = mysqli_connect('localhost', 'root', '', 'internship_portal');
+
+if (mysqli_connect_errno()) {
+    echo "Failed to connect to MySQL: " . mysqli_connect_error();
+    exit();
+}
+
+// Function to fetch dashboard data
+function getDashboardData($con) {
+    $dashboardData = array(
+        'applied' => 0,
+        'accepted' => 0,
+        'rejected' => 0,
+    );
+
+    $query = "SELECT COUNT(*) as count, Status FROM new_annoucement GROUP BY Status";
+    $result = mysqli_query($con, $query);
+
+    while ($row = mysqli_fetch_assoc($result)) {
+        $status = strtolower($row['Status']);
+        if (array_key_exists($status, $dashboardData)) {
+            $dashboardData[$status] = $row['count'];
+        }
+    }
+
+    return $dashboardData;
+}
+
+// Fetch data from the database
+$dashboardData = getDashboardData($con);
 ?>
     <div class="main-container ">
       <div class="profile"></div>
@@ -100,25 +132,30 @@ $profileImageUrl = "demo.png";
             </div>
 
             <!-- Dashboard -->
-            <div class="col-lg-8">
-              <h2 class="mb-4 font-weight-bold">Dashboard</h2>
-              <div class="card mb-3">
-                <div class="card-body py-4">
-                  <div class="panel">
-                    <div class="internship internship-applied">
-                      <p class="internship-text">Applied</p>
-                      <p>10</p>
-                    </div>
-                    <div class="internship internhsip-accepted">
-                      <p class="internship-text">Accepted</p>
-                      <p>7</p>
-                    </div>
-                    <div class="internship internship-rejected">
-                      <p class="internship-text">Rejected</p>
-                      <p>3</p>
-                    </div>
-                  </div>
-                </div>
+<!-- Modified part with dynamic dashboard data -->
+<div class="col-lg-8">
+  <h2 class="mb-4 font-weight-bold">Dashboard</h2>
+  <div class="card mb-3">
+    <div class="card-body py-4">
+      <div class="panel">
+        <!-- Applied Internships -->
+        <div class="internship internship-applied">
+          <p class="internship-text">Applied</p>
+          <p><?php echo $dashboardData['applied']; ?></p>
+        </div>
+        <!-- Accepted Internships -->
+        <div class="internship internhsip-accepted">
+          <p class="internship-text">Accepted</p>
+          <p><?php echo $dashboardData['accepted']; ?></p>
+        </div>
+        <!-- Rejected Internships -->
+        <div class="internship internship-rejected">
+          <p class="internship-text">Rejected</p>
+          <p><?php echo $dashboardData['rejected']; ?></p>
+        </div>
+      </div>
+    </div>
+
               </div>
               <h2 class="mt-5 mb-4 font-weight-bold">Internship Details</h2>
               <div class="internship-detail row py-2">
