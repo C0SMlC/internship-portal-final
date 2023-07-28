@@ -206,7 +206,7 @@ if(isset($_GET['id'])) {
                 </p>
             </div>
             <br>
-            <div class="col d-flex align-items-center justify-content-center">
+            <!-- <div class="col d-flex align-items-center justify-content-center">
                 <a href="../staff/edit.php?id=<?php echo $id; ?>" class="btn btn-warning btn-lg col col-lg-2 col-md-4 col-sm-6 d-flex align-items-center justify-content-evenly" role="button" aria-disabled="true">
                     <div>
                         Edit
@@ -216,7 +216,7 @@ if(isset($_GET['id'])) {
                     </svg>
                 </a>
             </div>
-            <br>
+            <br> -->
             <div class="col d-flex align-items-center justify-content-center">
                 <a href="../student/apply.php?id=<?php echo $id; ?>" class="btn btn-primary btn-lg col col-lg-3 col-md-4 col-sm-6 d-flex align-items-center justify-content-evenly" role="button" aria-disabled="true">
                     <div>

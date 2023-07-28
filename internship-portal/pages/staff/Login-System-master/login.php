@@ -9,8 +9,7 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] == TRUE) {
 }
 
 # Include connection
-// require_once "./config.php";
-require_once "./login_config.php";
+require_once "./config.php";
 
 # Define variables and initialize with empty values
 $user_login_err = $user_password_err = $login_err = "";
@@ -104,10 +103,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 
 <body>
-  <?php include_once("../../../components/navbar/index.php"); ?>
-
   <div class="container">
-    <div class="row min-vh-100 justify-content-center mt-4">
+    <div class="row min-vh-100 justify-content-center align-items-center">
       <div class="col-lg-5">
         <?php
         if (!empty($login_err)) {

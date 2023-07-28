@@ -12,10 +12,11 @@ $coordinator = "The Office In-charge, Practical Training/Project work, HRDD, BAR
 $numInterns = 4; // Change this to the number of interns in the group
 $start_date = "09/10/2022";
 $end_date = "09/01/2023";
-$internNames = array("Pratik Sunil Pendurkar", "Mohammad Faizan Mulla", "Ashish Faizan", "John Dope"); // Change these to the names of the interns
+$internNames = array("Pratik Sunil Pendurkar", "Mohammad Faizan Mulla", "Mrunali", "Prasad"); // Change these to the names of the interns
 $degree = "Bachelor of Engineering";
 $degreeYears = "4 Years";
 $discipline = "Computer Engineering";
+
 
 $pdf = new FPDF('P', 'mm', 'Letter');
 $pdf->SetLeftMargin(25);

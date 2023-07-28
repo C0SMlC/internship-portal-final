@@ -4,13 +4,12 @@ session_start();
 
 # Check if user is already logged in, If yes then redirect him to index page
 if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] == TRUE) {
-  echo "<script>" . "window.location.href='./'" . "</script>";
+  echo "<script>" . "window.location.href='./index.php'" . "</script>";
   exit;
 }
 
 # Include connection
-// require_once "./config.php";
-require_once "./login_config.php";
+require_once "./config.php";
 
 # Define variables and initialize with empty values
 $user_login_err = $user_password_err = $login_err = "";
@@ -33,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   # Validate credentials 
   if (empty($user_login_err) && empty($user_password_err)) {
     # Prepare a select statement
-    $sql = "SELECT id, username, password FROM users WHERE username = ? OR email = ?";
+    $sql = "SELECT fac_id, fac_name, password FROM faculty_panel WHERE fac_name = ? OR fac_email = ?";
 
     if ($stmt = mysqli_prepare($link, $sql)) {
       # Bind variables to the statement as parameters
@@ -62,7 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               $_SESSION["loggedin"] = TRUE;
 
               # Redirect user to index page
-              echo "<script>" . "window.location.href='./'" . "</script>";
+              echo "<script>" . "window.location.href='./index.php?id={$id}'" . "</script>";
               exit;
             } else {
               # If password is incorrect show an error message
@@ -104,10 +103,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 
 <body>
-  <?php include_once("../../../components/navbar/index.php"); ?>
-
   <div class="container">
-    <div class="row min-vh-100 justify-content-center mt-4">
+    <div class="row min-vh-100 justify-content-center align-items-center">
       <div class="col-lg-5">
         <?php
         if (!empty($login_err)) {

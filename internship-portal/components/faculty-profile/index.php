@@ -1,7 +1,25 @@
 <?php
 require 'connect.php';
 $update = update_data($con);
-$profileImageUrl='demo.png'
+$profileImageUrl='demo.png';
+
+$fac_id = $_SESSION['id'];
+
+
+//$userEmail = $update['fac_email'];
+$query = "SELECT new_annoucement.announcement_title, new_annoucement.description, new_annoucement.published_on, new_annoucement.user_id, count(applications.id) as students_applied FROM new_annoucement 
+Left join applications  on  new_annoucement.announcement_id = applications.announcement_id 
+WHERE new_annoucement.user_id = '$fac_id'
+Group by new_annoucement.announcement_id";
+$result = mysqli_query($con, $query);
+
+$announcements = array();
+if ($result && mysqli_num_rows($result) > 0) {
+    while ($row = mysqli_fetch_assoc($result)) {
+        $announcements[] = $row;
+    }
+}
+
 ?>
 
 <div class="main-container">
@@ -19,6 +37,7 @@ $profileImageUrl='demo.png'
                 <li class="breadcrumb-item active" aria-current="page">
                   User Profile
                 </li>
+                <li class="breadcrumb-item text-white"><a href="./logout.php" class="logout">Logout</a></li>
               </ol>
             </nav>
           </div>
@@ -102,23 +121,25 @@ $profileImageUrl='demo.png'
             </div>
 
             <div class="internship-detail row py-2">
-              <div class="card mb-4 ">
-                <h5 class="card-header">PSP PVT LIMITED, NEW MUMBAI</h5>
-                <div class="card-body">
-                  <h5 class="card-title">Full Stack Developer</h5>
-                  <p class="card-text mt-3">
-                    With supporting text below as a natural lead-in to
-                    additional content.
-                  </p>
-                  <p>Published On : 20/01/2022</p>
-                  <div class="d-flex internship-date">
-                    <p>Students Applied :</p>
-                    <p class="ms-2 status">10</p>
-                  </div>
-                </div>
-              </div>
+            <?php foreach ($announcements as $announcement) : ?>
 
-              <div class="card mb-4">
+              <div class="card mb-4 ">
+                <h5 class="card-header"><?php echo $announcement['announcement_title']; ?></h5>
+                <div class="card-body">
+                  <!-- <h5 class="card-title">Full Stack Developer</h5> -->
+                  <p class="card-text mt-3">
+                    <?php echo $announcement['description']; ?>
+                  </p>
+                  <p>Published On : <?php echo $announcement['published_on']; ?></p>
+                  <div class="d-flex internship-date">
+                    <p>Students Applied :</p>
+                    <p class="ms-2 status"><?php echo $announcement['students_applied']; ?></p>
+                  </div>
+                </div>
+              </div>
+              <?php endforeach; ?>
+
+              <!-- <div class="card mb-4">
                 <h5 class="card-header">PSP PVT LIMITED, NEW MUMBAI</h5>
                 <div class="card-body">
                   <h5 class="card-title">Full Stack Developer</h5>
@@ -162,7 +183,7 @@ $profileImageUrl='demo.png'
                     <p class="ms-2 status">10</p>
                   </div>
                 </div>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>

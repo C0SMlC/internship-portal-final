@@ -183,7 +183,7 @@ if(isset($_GET['id'])) {
                     <strong>
                     <?php echo $stipend; ?>
                     </strong>
-                    <strong>/ Month</strong>
+                    <strong><?php echo $stipend_type; ?> </strong>
 
                 </p>
             </div>

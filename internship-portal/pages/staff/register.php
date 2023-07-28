@@ -1,23 +1,13 @@
 <?php
 # Include connection
-require_once "./login_config.php";
-// include_once("../../../components/navbar/index.php"); 
+require_once "./config.php";
 
 # Define variables and initialize with empty values
-$fullname_err = $username_err = $email_err = $password_err = "";
-$fullname = $username = $email = $password = "";
+$username_err = $email_err = $password_err = "";
+$username = $email = $password = "";
 
 # Processing form data when form is submitted
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-  # Validate Full Name
-  if (empty(trim($_POST["fullname"]))) {
-    $fullname_err = "Please enter your full name.";
-  } else {
-    $fullname = trim($_POST["fullname"]);
-  }
-
   # Validate username
   if (empty(trim($_POST["username"]))) {
     $username_err = "Please enter a username.";
@@ -27,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       $username_err = "Username can only contain letters, numbers and symbols like '@', '_', or '-'.";
     } else {
       # Prepare a select statement
-      $sql = "SELECT id FROM users WHERE username = ?";
+      $sql = "SELECT fac_id FROM faculty_panel WHERE fac_name = ?";
 
       if ($stmt = mysqli_prepare($link, $sql)) {
         # Bind variables to the statement as parameters
@@ -64,7 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       $email_err = "Please enter a valid email address.";
     } else {
       # Prepare a select statement
-      $sql = "SELECT id FROM users WHERE email = ?";
+      $sql = "SELECT fac_id FROM faculty_panel WHERE fac_email = ?";
 
       if ($stmt = mysqli_prepare($link, $sql)) {
         # Bind variables to the statement as parameters
@@ -103,27 +93,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   }
 
   # Check input errors before inserting data into database
-  if (empty($fullname_err) && empty($username_err) && empty($email_err) && empty($password_err)) {
+  if (empty($username_err) && empty($email_err) && empty($password_err)) {
     # Prepare an insert statement
-    $sql = "INSERT INTO users(fullname, username, email, password) VALUES (?, ?, ?, ?)";
+    $sql = "INSERT INTO faculty_panel(fac_name, fac_email, password) VALUES (?, ?, ?)";
 
     if ($stmt = mysqli_prepare($link, $sql)) {
-      # Bind variables to the prepared statement as parameters
-      mysqli_stmt_bind_param($stmt, "ssss", $param_fullname, $param_username, $param_email, $param_password);
+      # Bind varibales to the prepared statement as parameters
+      mysqli_stmt_bind_param($stmt, "sss", $param_username, $param_email, $param_password);
 
       # Set parameters
-      $param_fullname = $fullname;
       $param_username = $username;
       $param_email = $email;
       $param_password = password_hash($password, PASSWORD_DEFAULT);
 
       # Execute the prepared statement
       if (mysqli_stmt_execute($stmt)) {
-        echo "<script>alert('Registration completed successfully. Login to continue.');</script>";
-        echo "<script>window.location.href='./login.php';</script>";
+        echo "<script>" . "alert('Registeration completed successfully. Login to continue.');" . "</script>";
+        echo "<script>" . "window.location.href='./login.php';" . "</script>";
         exit;
       } else {
-        echo "<script>alert('Oops! Something went wrong. Please try again later.');</script>";
+        echo "<script>" . "alert('Oops! Something went wrong. Please try again later.');" . "</script>";
       }
 
       # Close statement
@@ -151,20 +140,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 
 <body>
-  <?php include_once("../../../components/navbar/index.php"); ?>
   <div class="container">
-    <div class="row min-vh-100 justify-content-center mt-4">
+    <div class="row min-vh-100 justify-content-center align-items-center">
       <div class="col-lg-5">
         <div class="form-wrap border rounded p-4">
           <h1>Sign up</h1>
           <p>Please fill this form to register</p>
           <!-- form starts here -->
           <form action="<?= htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" novalidate>
-            <div class="mb-3">
-              <label for="fullname" class="form-label">Full Name</label>
-              <input type="text" class="form-control" name="fullname" id="fullname" value="<?= $fullname; ?>">
-              <small class="text-danger"><?= $fullname_err; ?></small>
-            </div>
             <div class="mb-3">
               <label for="username" class="form-label">Username</label>
               <input type="text" class="form-control" name="username" id="username" value="<?= $username; ?>">
