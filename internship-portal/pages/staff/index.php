@@ -17,9 +17,13 @@ $favicon = "../../assets/favicon.ico";
 include_once("../../components/head.php");
 include "../../connect/connect.php";
 
-$fac_id = $_SESSION['id'];
-$fac_name = $_SESSION['username'];
-
+if(isset($_SESSION['id'
+]) && isset($_SESSION['username'])){
+    $fac_id = $_SESSION['id'];
+    $fac_name = $_SESSION['username'];
+}else{
+    header("Location:./login.php");
+}
 //$fac_id = 16;
 // $sql = "select * from faculty_panel where fac_id = $fac_id";
 // $result = mysqli_query($db_connection, $sql);

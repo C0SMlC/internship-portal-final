@@ -7,6 +7,8 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== TRUE) {
   echo "<script>" . "window.location.href='./login.php';" . "</script>";
   exit;
 }
+
+
 ?>
 
 <!DOCTYPE html>
