@@ -51,6 +51,9 @@ if(isset($_GET['id'])) {
     <div class="container my-2 greet">
         <p>Apply for Internship</p>
     </div>
+<!-- <div class="container my-2 greet">
+        <p>Apply for Internship</p>
+    </div>
     <div class="alert alert-success container col-8" role="alert">
         <h2 class="alert-heading">Successfully applied for XYZ pvt ltd.</h2>
         <hr>
@@ -67,6 +70,8 @@ if(isset($_GET['id'])) {
             <br>
             To apply for this internship please upload your previous completion certificate or contact TPO. 
         </p>
+       
+    </div> -->
        
     </div>
     <div class="container my-3 text-justify" id="content">

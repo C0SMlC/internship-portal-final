@@ -3,20 +3,8 @@ $title = "Dashboard";
 $style = "./styles/global.css";
 $favicon = "../../assets/favicon.ico";
 include_once("../../components/head.php");
+include_once("../../connect/connect.php");
 
-// Database connection parameters
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "internship_portal";
-
-// Create a database connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check the connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
 
 $page = isset($_GET["page"]) ? $_GET["page"] : 1;
 $per_page_record = 20; // Number of records to display per page
@@ -28,15 +16,15 @@ $searchedData = [];
 
 // Fetch data from the database table
 if (!empty($search)) {
-    $sql = "SELECT id, announcement_title, student_name, admission_no, contact_no, student_location, application_date, resume FROM applications WHERE id LIKE '%$search%' OR announcement_title LIKE '%$search%' LIMIT $start, $per_page_record";
+    $sql = "SELECT ID, CompanyName, CompanyLocation, startDate, endDate, branch, semester, Stipend, Location FROM internship_applications WHERE ID LIKE '%$search%' OR CompanyName LIKE '%$search%' LIMIT $start, $per_page_record";
 } else {
-    $sql = "SELECT id, announcement_title, student_name, admission_no, contact_no, student_location, application_date, resume FROM applications LIMIT $start, $per_page_record";
+    $sql = "SELECT ID, CompanyName, CompanyLocation, startDate, endDate, branch, semester, Stipend, Location FROM internship_applications LIMIT $start, $per_page_record";
 }
 
-$result = $conn->query($sql);
+$result = $db_connection->query($sql);
 
 if (!$result) {
-    die("Query execution failed: " . $conn->error);
+    die("Query execution failed: " . $db_connection->error);
 }
 
 if ($result->num_rows > 0) {
@@ -46,11 +34,11 @@ if ($result->num_rows > 0) {
 }
 
 // Count total records for pagination
-$total_records_sql = "SELECT COUNT(*) AS count FROM applications";
-$total_records_result = $conn->query($total_records_sql);
+$total_records_sql = "SELECT COUNT(*) AS count FROM internship_applications";
+$total_records_result = $db_connection->query($total_records_sql);
 
 if (!$total_records_result) {
-    die("Query execution failed: " . $conn->error);
+    die("Query execution failed: " . $db_connection->error);
 }
 
 $total_records = $total_records_result->fetch_assoc()['count'];
@@ -66,7 +54,7 @@ $end = $start + $per_page_record;
         <!-- Search Button -->
         <form class="row g-3" method="GET">
             <div class="col-auto">
-                <input class="form-control" id="search" name="search" placeholder="ID or Company Name" value="<?php echo $search; ?>">
+                <input class="form-control" ID="search" name="search" placeholder="ID or Company Name" value="<?php echo $search; ?>">
             </div>
             <div class="col-auto">
                 <button type="submit" class="btn btn-primary mb-3">Search</button>
@@ -82,71 +70,75 @@ $end = $start + $per_page_record;
             <thead class="thead-light text-center">
                 <tr>
                     <th scope="col">ID</th>
-                    <th scope="col">Company</th>
-                    <th scope="col">Student Name</th>
-                    <th scope="col">Admission No</th>
-                    <th scope="col">Contact No</th>
+                    <th scope="col">Company Name</th>
+                    <th scope="col">Company Location</th>
+                    <th scope="col">Start Date</th>
+                    <th scope="col">End Date</th>
+                    <th scope="col">Branch</th>
+                    <th scope="col">Semester</th>
                     <th scope="col">Student Location</th>
-                    <th scope="col">Application Date</th>
-                    <th scope="col">Resume</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
                 foreach ($searchedData as $student) {
-                    $id = $student['id'];
-                    $announcement_title = $student['announcement_title'];
-                    $student_name = $student['student_name'];
-                    $admission_no = $student['admission_no'];
-                    $contact_no = $student['contact_no'];
-                    $student_location = $student['student_location'];
-                    $application_date = $student['application_date'];
-                    $resume = $student['resume'];
+                    $ID = $student['ID'];
+                    $CompanyName = $student['CompanyName'];
+                    $CompanyLocation = $student['CompanyLocation'];
+                    $startDate = $student['startDate'];
+                    $endDate = $student['endDate'];
+                    $branch = $student['branch'];
+                    $semester = $student['semester'];
+                    $Location = $student['Location'];
 
                     // Convert the longblob data to PDF file
-                    $pdfUrl = "data:application/pdf;base64," . base64_encode($resume);
+                    //$pdfUrl = "data:application/pdf;base64," . base64_encode($resume);
 
                     // Display student information
                     echo "<tr>";
-                    echo "<td class='pt-3 text-center fw-bold'><a href='decision.php?id={$id}' style='text-decoration: none; color: #00008B; font-weight:bold;'>{$id}</a></td>";
-                    echo "<td class='pt-3'><a href='index copy.php?announcement_title={$announcement_title}' style='text-decoration: none; color: #00008B; font-weight:bold;'>{$announcement_title}</a></td>";
+                    echo "<td class='pt-3 text-center fw-bold'><a href='decision.php?ID={$ID}' style='text-decoration: none; color: #00008B; font-weight:bold;'>{$ID}</a></td>";
+                    //echo "<td class='pt-3'><a href='index copy.php?announcement_title={$CompanyName}' style='text-decoration: none; color: #00008B; font-weight:bold;'>{$CompanyName}</a></td>";
                     //echo "<td><a href='./index copy.php?announcement_title=" . urlencode($row["announcement_title"]) . "' class='company-link'>" . $row["announcement_title"] . "</a></td>";
-                    echo "<td class='pt-3 text-center'>{$student_name}</td>";
-                    echo "<td class='pt-3 text-center'>{$admission_no}</td>";
-                    echo "<td class='pt-3 text-center'>{$contact_no}</td>";
-                    echo "<td class='pt-3 text-center'>{$student_location}</td>";
-                    echo "<td class='pt-3 text-center'>{$application_date}</td>";
-                    echo "<td class='pt-3 text-center'>
-                            <a href='view_resume.php?id={$id}' target='_blank' class='btn btn-warning'>
-                                <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-eye-fill' viewBox='0 0 16 16'>
-                                    <path d='M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z' />
-                                    <path d='M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z' />
-                                </svg>
-                            </a>
-                        </td>";
+                    echo "<td class='pt-3 text-center'>{$CompanyName}</td>";
+                    echo "<td class='pt-3 text-center'>{$CompanyLocation}</td>";
+                    echo "<td class='pt-3 text-center'>{$startDate}</td>";
+                    echo "<td class='pt-3 text-center'>{$endDate}</td>";
+                    echo "<td class='pt-3 text-center'>{$branch}</td>";
+                    echo "<td class='pt-3 text-center'>{$semester}</td>";
+                    echo "<td class='pt-3 text-center'>{$Location}</td>";
+                            
                     echo "</tr>";
                 }
                 ?>
             </tbody>
         </table>
+        <div class="container mt-2 table-responsive-sm">
+    <?php if (count($searchedData) > 0) : ?>
+        <table class="table table-bordered table-light table-sm">
+            <!-- ... (table headers and rows) ... -->
+        </table>
+    <?php else : ?>
+        <p>No records found.</p>
+    <?php endif; ?>
+</div>
     </div>
     <nav aria-label="Page navigation example">
         <ul class="pagination justify-content-center">
             <li class="page-item <?php if ($page < 2) echo "disabled"; ?>">
-                <a class="page-link" href="previous.php?page=<?php echo $page - 1; ?>&search=<?php echo $search; ?>" tabindex="-1">Previous</a>
+                <a class="page-link" href="./studentAppli.php?page=<?php echo $page - 1; ?>&search=<?php echo $search; ?>" tabindex="-1">Previous</a>
             </li>
             <?php
             for ($i = 1; $i <= $total_pages; $i++) {
                 if ($i == $page) {
-                    $pagLink = "<li class='page-item active'><a class='page-link' href='previous.php?page=$i&search=$search'>" . $i . "</a></li>";
+                    $pagLink = "<li class='page-item active'><a class='page-link' href='./studentAppli.php?page=$i&search=$search'>" . $i . "</a></li>";
                 } else {
-                    $pagLink = "<li class='page-item'><a class='page-link' href='previous.php?page=$i&search=$search'>" . $i . "</a></li>";
+                    $pagLink = "<li class='page-item'><a class='page-link' href='./studentAppli.php?page=$i&search=$search'>" . $i . "</a></li>";
                 }
                 echo $pagLink;
             }
             ?>
             <li class="page-item <?php if ($page == $total_pages) echo "disabled"; ?>">
-                <a class="page-link" href="previous.php?page=<?php if ($page < $total_pages) echo $page + 1; ?>&search=<?php echo $search; ?>">Next</a>
+                <a class="page-link" href="./studentAppli.php?page=<?php if ($page < $total_pages) echo $page + 1; ?>&search=<?php echo $search; ?>">Next</a>
             </li>
         </ul>
     </nav>
@@ -185,5 +177,5 @@ $end = $start + $per_page_record;
 
 <?php
 // Close the database connection
-$conn->close();
+$db_connection->close();
 ?>

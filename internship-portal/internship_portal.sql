@@ -193,11 +193,12 @@ CREATE TABLE IF NOT EXISTS `new_annoucement` (
   `stipend` text COLLATE utf8mb4_general_ci NOT NULL,
   `work_location` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
   `perks` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `user_id` varchar(80) COLLATE utf8mb4_general_ci NOT NULL,
+  `email` varchar(80) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `user_id` int NOT NULL,
   `published_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `status` varchar(128) COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`announcement_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `new_annoucement`

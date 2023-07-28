@@ -38,7 +38,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="container my-2 greet">
         <p>Registered Applicants</p>
     </div>
+    
     <div class="container mt-5">
+        <div class="d-flex flex-column">
+            <div class="col text-end">
+                <a href="previous.php" class="btn btn-primary mb-3">Back</a> <!-- Add the back button -->
+            </div>
         <table class="table table-bordered table-dark table-sm">
             <thead class="thead-light text-center">
                 <tr>
@@ -95,6 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ?>
             </tbody>
         </table>
+        </div>
         <br>
         <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-center">

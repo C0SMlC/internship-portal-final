@@ -34,6 +34,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
+
+function getStatusMessage($status) {
+    return "<p class='status-message' style='color: " . (($status === 'Active') ? 'green' : 'red') . "'>$status</p>";
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $announcementId = $_POST['announcement_id'] ?? null;
+    $status = $_POST["status_$announcementId"] ?? null;
+
+    if ($announcementId !== null && $status !== null) {
+        $updateQuery = "UPDATE new_annoucement SET status = '$status' WHERE announcement_id = $announcementId";
+        mysqli_query($db_connection, $updateQuery);
+      //  echo getStatusMessage($status);
+       // exit; // Terminate the script here since we only need to echo the status message
+       $announcementTitleQuery = "SELECT announcement_title FROM new_annoucement WHERE announcement_id = $announcementId";
+       $titleResult = mysqli_query($db_connection, $announcementTitleQuery);
+       $row = mysqli_fetch_assoc($titleResult);
+       $announcementTitle = $row['announcement_title'];
+
+       // Prepare the success message
+       $successMessage = "Status updated successfully for announcement ($announcement_id) '$announcementTitle' to '$status'.";
+
+       // Append the success message as a URL parameter to be passed during redirection
+       header("Location: /internship-portal-final/internship-portal/pages/staff/previous.php?success_message=" . urlencode($successMessage));
+       exit;
+   }
+}
   
 ?>
 
@@ -48,15 +75,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <p>Previous Announcements</p>
         <!-- Search Button -->
         <form class="row g-3" method = "GET">
-                    <div class="col-auto">
-                        <input class="form-control" id="search" placeholder="ID or Company Name" name = 'search'>
-                    </div>
-                    <div class="col-auto">
-                        <button type="submit" class="btn btn-primary mb-3">Search</button>
-                    </div>
-                </form>
+            <div class="col-auto">
+                <input class="form-control" id="search" placeholder="ID or Company Name" name = 'search'>
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary mb-3">Search</button>
+            </div>
+            <div class="col text-end">
+            <a href="index.php" class="btn btn-primary mb-3">Back</a> <!-- Add the back button -->
+        </div>
+        </form> 
     </div>
     <div class="container mt-2">
+        <?php
+        // Display success message if available
+        if (isset($_GET['success_message'])) {
+            echo '<div class="alert alert-success">' . $_GET['success_message'] . '</div>';
+        }
+        ?>
         <table class="table table-bordered table-dark table-sm">
             <thead class="thead-light text-center">
                 <tr>
@@ -108,8 +144,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </td>
                     <th class="pt-3 text-center text-success">
                         <?php if ($status) : ?>
-                            <p style="color: <?php echo ($status === 'Active') ? 'green' : 'red'; ?>">
-                            <?php echo $status; ?></p>
+                            
+                            <?php echo getStatusMessage($status); ?>
+                            <!-- Display current status and the form for changing status -->
+                            <form class="action-form" action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>" method="POST">
+                                <input type="hidden" name="announcement_id" value="<?php echo $announcement_id; ?>">
+                                <select name="status_<?php echo $announcement_id; ?>">
+                                    <option value="Active" <?php echo ($status === 'Active') ? 'selected' : ''; ?>>Active</option>
+                                    <option value="Inactive" <?php echo ($status === 'Inactive') ? 'selected' : ''; ?>>Inactive</option>
+                                </select>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </form>
                         <?php else : ?>
                             <form class="action-form" action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>" method="POST">
                                 <input type="hidden" name="announcement_id" value="<?php echo $announcement_id; ?>">
@@ -219,43 +264,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 
     <script>
-        // Hide the submit button and show the approved/rejected message
-        function showActionMessage(form, status) {
-            const select = form.querySelector('select');
-            const submitButton = form.querySelector('button[type="submit"]');
-            select.disabled = true;
-            submitButton.disabled = true;
-            submitButton.style.display = 'none';
-            select.style.display = 'none';
-            const message = document.createElement('p');
-            message.textContent = status;
-            message.style.color = (status === 'Active') ? 'green' : 'red';
-            form.appendChild(message);
-        }
-
-        // Add event listeners to each form
-        const forms = document.querySelectorAll('.action-form');
-        forms.forEach(form => {
-            form.addEventListener('submit', function(e) {
+        // Use jQuery to handle the AJAX request and update status message
+        $(document).ready(function() {
+            $('.action-form').submit(function(e) {
                 e.preventDefault();
 
-                const select = this.querySelector('select');
-                const status = select.value;
+                const form = $(this);
+                const announcementId = form.find('input[name="announcement_id"]').val();
+                const statusSelect = form.find('select[name^="status"]');
+                const status = statusSelect.val();
 
                 // Send AJAX request to update the action in the database
-                const xhr = new XMLHttpRequest();
-                xhr.open('POST', this.action, true);
-                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-                        // Request completed successfully
-                        showActionMessage(form, status);
+                $.post({
+                    url: form.attr('action'),
+                    data: {
+                        announcement_id: announcementId,
+                        [`status_${announcementId}`]: status
+                    },
+                    success: function(response) {
+                        // Update status message
+                        form.find('.status-message').remove(); // Remove existing message if any
+                        form.before(response);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
                     }
-                };
-                xhr.send('status_' + this.querySelector('input[name="announcement_id"]').value + '=' + status);
+                });
             });
         });
     </script>
+
 </body>
 
 </html>

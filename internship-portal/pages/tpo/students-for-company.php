@@ -20,7 +20,7 @@ $companyName = isset($_GET["announcement_title"]) ? $_GET["announcement_title"] 
 $sql = "SELECT student_name, admission_no , contact_no
         FROM applications
         
-        WHERE announcement_title = '$companyName' and action = 'Approved' ";
+        WHERE announcement_title = '$companyName' ";
 
 $result = $conn->query($sql);
 

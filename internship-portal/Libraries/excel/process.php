@@ -14,28 +14,15 @@ if ($companyNameResult && mysqli_num_rows($companyNameResult) > 0) {
     $companyName = $companyData['company_name'];
 }
 
-// Filter the CSV data
-function filterData(&$str)
-{
-    $str = preg_replace("/\t/", "\\t", $str);
-    $str = preg_replace("/\r?\n/", "\\n", $str);
-    if (strstr($str, '"')) $str = '"' . str_replace('"', '""', $str) . '"';
-}
-
 // Fetch records from the database
-$data_search = "SELECT id, student_name, company_name, admission_no, contact_no, student_location, action, cv_file FROM `applications` WHERE announcement_id = $id";
+$data_search = "SELECT id, student_name, company_name, admission_no, contact_no, student_location, action, cv_file, resume FROM `applications` WHERE announcement_id = $id";
 $query = mysqli_query($db_connection, $data_search);
 
 // Check if the query executed successfully
 if ($query) {
-    // CSV file name for download
-    $fileName = $companyName . "_applicants_" . date('Y-m-d') . ".csv";
-
-    // Column names
-    $fields = array('ID', 'Applicant Name', 'Admission No', 'Contact No', 'Location', 'Resume Link', 'Company Name', 'Action');
-
-    // Display column names as the first row
-    $csvData = implode(",", array_values($fields)) . "\n";
+    // HTML content to create the Excel file
+    $html = '<table>';
+    $html .= '<tr><th>ID</th><th>Applicant Name</th><th>Admission No</th><th>Contact No</th><th>Location</th><th>Resume Link</th><th>Company Name</th><th>Action</th></tr>';
 
     if (mysqli_num_rows($query) > 0) {
         // Output each row of the data
@@ -49,36 +36,39 @@ if ($query) {
             $filename = $row['cv_file'];
             $action = $row['action'];
 
-            // Generate the resume link using a placeholder URL
-            $resumeLink = "http://localhost/internship-portal-final/internship-portal/pages/student/CV_Uploads/" . $filename; // Update with your local server URL or temporary URL
+            // Generate the resume link using the actual URL to the resume file
+            $resumeLink ="http://localhost/internship-portal-final/internship-portal/pages/student/CV_Uploads/" . $filename; // Replace this with the actual URL
 
             // Create a clickable hyperlink for the resume link
             $resumeLinkHtml = '<a href="' . $resumeLink . '" target="_blank">View Resume</a>';
 
-            // Write the data to the CSV file
-            $lineData = array(
-                $id,
-                $studentName,
-                $admissionNo,
-                $contactNo,
-                $location,
-                $resumeLinkHtml,
-                $companyName,
-                $action
-            );
-            array_walk($lineData, 'filterData');
-            $csvData .= implode(",", array_values($lineData)) . "\n";
+            // Append the data to the HTML table
+            $html .= '<tr>';
+            $html .= '<td>' . $id . '</td>';
+            $html .= '<td>' . $studentName . '</td>';
+            $html .= '<td>' . $admissionNo . '</td>';
+            $html .= '<td>' . $contactNo . '</td>';
+            $html .= '<td>' . $location . '</td>';
+            $html .= '<td>' . $resumeLinkHtml . '</td>';
+            $html .= '<td>' . $companyName . '</td>';
+            $html .= '<td>' . $action . '</td>';
+            $html .= '</tr>';
         }
     } else {
-        $csvData .= 'No records found...' . "\n";
+        // If no data found, show a message
+        $html .= '<tr><td colspan="8">No records found...</td></tr>';
     }
 
-    // Headers for download
-    header("Content-Type: text/csv");
-    header("Content-Disposition: attachment; filename=\"$fileName\"");
+    $html .= '</table>';
 
-    // Render CSV data
-    echo $csvData;
+    // Set headers to force download
+    header('Content-Type: application/vnd.ms-excel');
+    header('Content-Disposition: attachment; filename="' . $companyName . '_applicants_' . date('Y-m-d') . '.xls"');
+    header('Pragma: no-cache');
+    header('Expires: 0');
+
+    // Render HTML content as Excel file
+    echo $html;
 } else {
     echo "Query execution failed.";
 }

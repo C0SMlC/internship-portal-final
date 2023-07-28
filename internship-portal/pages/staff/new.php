@@ -1,9 +1,36 @@
 <?php
+# Initialize session
+session_start();
+
 $title = "Dashboard";
 $style = "./styles/global.css";
 $favicon = "../../assets/favicon.ico";
 include_once("../../components/head.php");
-require "../../connect/connect.php";
+//require "../../connect/connect.php";
+$dbhost = "localhost";
+$dbuser = "root";
+$dbpassword = "";
+$dbname = "internship_portal";
+
+if (!$db_connection = mysqli_connect($dbhost, $dbuser, $dbpassword, $dbname)) {
+    die("Failed to connect");
+}
+
+//$username = $_SESSION['username'];
+$fac_id = $_SESSION['id'];
+
+
+// Retrieve the announcement title from the new_annoucement table
+$sql = "SELECT fac_email FROM faculty_panel WHERE fac_id = $fac_id";
+$result = $db_connection->query($sql);
+if ($result) {
+    $row = mysqli_fetch_assoc($result);
+    $fac_email = $row['fac_email'];
+} else {
+    echo "Error: " . mysqli_error($db_connection); 
+}
+// var_dump($fac_id);
+// var_dump($fac_email);
 
 if ($_SERVER['REQUEST_METHOD'] == "POST" && !empty($_POST['announcement_title']) && !empty($_POST['description']) && !empty($_POST['skills_required']) && !empty($_POST['location']) && !empty($_POST['start_date']) && !empty($_POST['duration']) && !empty($_POST['branch']) && !empty($_POST['work_type']) && !empty($_POST['stipend_type']) && !empty($_POST['work_location']) && !empty($_POST['perks'])) {
     $announcement_title = $_POST['announcement_title'];
@@ -19,11 +46,15 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && !empty($_POST['announcement_title'])
     $work_location = $_POST['work_location'];
     $perks = $_POST['perks'];
 
-    $query = "insert into new_annoucement(announcement_title,description, skills_required, location, start_date, duration, branch, work_type, stipend_type, stipend, work_location, perks ) values('$announcement_title', ' $description', '$skills_required', '$location', '$start_date', '$duration', '$branch', '$work_type', '$stipend_type', '$stipend', '$work_location', '$perks') ";
+    
+
+    $query = "insert into new_annoucement(announcement_title,description, skills_required, location, start_date, duration, branch, work_type, stipend_type, stipend, work_location, perks, user_id, email ) values('$announcement_title', ' $description', '$skills_required', '$location', '$start_date', '$duration', '$branch', '$work_type', '$stipend_type', '$stipend', '$work_location', '$perks', '$fac_id', '$fac_email') ";
     if(mysqli_query($db_connection, $query))
     {
-        return true;
-        die;
+        
+        header("Location: /internship-portal-final/internship-portal/pages/staff/index.php");
+        echo 'Successfully submitted';
+        
     }else{
         echo "error". mysqli_error($db_connection);
     }
@@ -161,11 +192,11 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && !empty($_POST['announcement_title'])
                     <br>
 
                     <label class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="stipend_type" value="Paid" />
+                        <input class="form-check-input" type="radio" name="stipend_type" value="Lumpsum" />
                         <span class="form-check-label"> Lumpsum (After Internship Duration)</span>
                     </label>
                     <label class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="stipend_type" value="UnPaid" />
+                        <input class="form-check-input" type="radio" name="stipend_type" value="Monthly" />
                         <span class="form-check-label"> Monthly </span>
                     </label>
                     <label class="form-check form-check-inline">

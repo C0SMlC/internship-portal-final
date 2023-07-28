@@ -3,6 +3,7 @@ $title = "Dashboard";
 $style = "./styles/global.css";
 $favicon = "../../assets/favicon.ico";
 include_once("../../components/head.php");
+include_once("../../connect/connect.php");
 
 // Require the PhpSpreadsheet library
 require_once 'C:\wamp64\www\internship-portal-final\InternshipPortal\Google-Login\vendor\autoload.php';
@@ -10,19 +11,7 @@ require_once 'C:\wamp64\www\internship-portal-final\InternshipPortal\Google-Logi
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
-// Database connection parameters
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "upload";
 
-// Create a database connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check the connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
 
 $page = isset($_GET["page"]) ? $_GET["page"] : 1;
 $per_page_record = 20; // Number of records to display per page

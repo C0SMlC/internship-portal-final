@@ -3,35 +3,49 @@ $title = "Dashboard";
 $style = "./styles/global.css";
 $favicon = "../../assets/favicon.ico";
 include_once("../../components/head.php");
+include_once("../../connect/connect.php");
 
-//pagination part
-//connect db here
-// include "../../connect/connect.php";
-// if (isset($_GET["page"])) {
-//     $page = $_GET["page"];
-// } else {
-//     $page = 1;
-// }
-// $per_page_record = 10; // limit
-// $start_from = ($page - 1) * $per_page_record;
-// // $data_search = "SELECT * FROM userregisdata LIMIT $start_from, $per_page_record";//db query here
-// $data_search = "";
-// $query = mysqli_query($conn, $data_search);
+// Retrieve data from the database
+$search = isset($_GET["search"]) ? $_GET["search"] : '';
+
+$page = isset($_GET["page"]) ? $_GET["page"] : 1;
+$per_page_record = 20; // Number of records to display per page
+$start = ($page - 1) * $per_page_record;
+
+// Search functionality
+$search = isset($_GET["search"]) ? $_GET["search"] : "";
+$searchedData = [];
+// Count total records for pagination
+$total_records_sql = "SELECT COUNT(*) AS count FROM internship_applications WHERE Status = 'rejected' AND (ID LIKE '%$search%' OR CompanyName LIKE '%$search%')";
+$total_records_result = $db_connection->query($total_records_sql);
+
+if (!$total_records_result) {
+    die("Query execution failed: " . $db_connection->error);
+}
+
+$total_records = $total_records_result->fetch_assoc()['count'];
+$total_pages = ceil($total_records / $per_page_record);
+$end = $start + $per_page_record;
+
+$sql = "SELECT * FROM internship_applications WHERE Status = 'rejected' AND (ID LIKE '%$search%' OR CompanyName LIKE '%$search%') LIMIT $start, $per_page_record";
+$result = $db_connection->query($sql);
+
+if (!$result) {
+    die("Query execution failed: " . $db_connection->error);
+}
+
+// Close the database connection
+$db_connection->close();
 ?>
-<?php
-require './auth.php';
-?>
+
 <body>
-    <?php
-    include_once("../../components/navbar/index.php");
-    ?>
+    <?php include_once("../../components/navbar/index.php"); ?>
     <div class="container my-2 greet">
         <p>Rejected Applications</p>
-
         <!-- Search Button -->
-        <form class="row g-3">
+        <form class="row g-3" method="GET">
             <div class="col-auto">
-                <input class="form-control" id="search" placeholder="ID or Company Name">
+                <input class="form-control" id="search" name="search" placeholder="ID or Company Name" value="<?php echo $search; ?>">
             </div>
             <div class="col-auto">
                 <button type="submit" class="btn btn-primary mb-3">Search</button>
@@ -39,129 +53,64 @@ require './auth.php';
         </form>
     </div>
     <div class="container mt-2 table-responsive-sm">
-        <table class="table table-bordered table-dark table-sm">
+        <table class="table table-bordered table-light table-sm">
             <thead class="thead-light text-center">
                 <tr>
                     <th scope="col">ID</th>
-                    <th scope="col">Company</th>
-                    <th scope="col">Applied On</th>
-                    <th scope="col">Start Date</th>
-                    <th scope="col">End Date</th>
-                    <th scope="col">Type</th>
-                    <th scope="col">Class</th>
-                    <th scope="col">Rejected On</th>
+                    <th scope="col">Company Name</th>
+                    <th scope="col">Student Name</th>
+                    <th scope="col">Student Location</th>
+                    <th scope="col">Application Date</th>
+                    <!--<th scope="col">Approved On</th>-->
                     <th scope="col">Comment</th>
+                    
                 </tr>
             </thead>
             <tbody>
-                <tr class="table-light">
-                    <th class="pt-3 text-center" scope="row">
-                        14
-                    </th>
-                    <td class="pt-3">
-                        Mark Industries pvt. ltd
-                    </td>
-                    <td class="pt-3 text-center">
-                        18/10/2022
-                    </td>
-                    <td class="pt-3 text-center">
-                        18/10/2022
-                    </td>
-                    <td class="pt-3 text-center">
-                        18/10/2022
-                    </td>
-                    <td class="pt-3 text-center">
-                        WFH
-                    </td>
-                    <td class="pt-3 text-center">
-                        SE-ECS
-                    </td>
-                    <td class="pt-3 text-center ">
-                        18/10/2022
-                    </td>
-                    <td class="pt-3 text-center ">
-                        Working Date comes during examination
-                    </td>
-
-                </tr>
-                <tr class="table-light">
-                    <th class="pt-3 text-center" scope="row">
-                        14
-                    </th>
-                    <td class="pt-3">
-                        Mark Industries pvt. ltd
-                    </td>
-                    <td class="pt-3 text-center">
-                        18/10/2022
-                    </td>
-                    <td class="pt-3 text-center">
-                        18/10/2022
-                    </td>
-                    <td class="pt-3 text-center">
-                        18/10/2022
-                    </td>
-                    <td class="pt-3 text-center">
-                        WFH
-                    </td>
-                    <td class="pt-3 text-center">
-                        SE-ECS
-                    </td>
-                    <td class="pt-3 text-center ">
-                        18/10/2022
-                    </td>
-                    <td class="pt-3 text-center ">
-                        Working Date comes during examination
-                    </td>
-
-                </tr>
-
+                <?php
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        // Output row data
+                        echo "<tr>";
+                        echo "<td>" . $row["ID"] . "</td>";
+                        echo "<td>" . $row["CompanyName"] . "</td>";
+                        echo "<td>" . $row["StudentName"] . "</td>";
+                        echo "<td>" . $row["Location"] . "</td>";
+                        echo "<td>" . $row["ActionDate"] . "</td>";
+                        //echo "<td>" . $row["approvedOn"] . "</td>";
+                        echo "<td>" . $row["Comment"] . "</td>";
+                       
+                        echo "</tr>";
+                    }
+                } else {
+                    echo "<tr><td colspan='10'>No records found.</td></tr>";
+                }
+                ?>
             </tbody>
         </table>
         <br>
+        <!-- Pagination code here -->
         <nav aria-label="Page navigation example">
-            <ul class="pagination justify-content-center">
-                <li class="page-item <?php //if ($page < 2) echo "disabled" 
-                                        ?>">
-                    <a class="page-link" href="previous.php?page=<?php //echo $page - 1; 
-                                                                    ?>" tabindex="-1">Previous</a>
-                </li>
-                <?php
-                //$row_search = "SELECT COUNT(*) FROM userregisdata";
-                //count from db query
-                // $rs_result = mysqli_query($conn, $row_search);
-                // $row = mysqli_fetch_row($rs_result);
-                // $total_records = $row[0];
-                // $total_pages = ceil($total_records / $per_page_record);
-                // $start = $page;
-                // if ($page < $total_pages - 2) {
-                //     $end = $page + 2;
-                // } else {
-                //     $start = $total_pages - 2;
-                //     $end = $total_pages;
-                // }
-                //
-                //temporary start and end
-                $start = 1;
-                $end = 3;
-                //
-                //
-                for ($i = $start; $i <= $end; $i++) {
-                    if ($i == $page) {
-                        $pagLink = "<li class='page-item active'><a class='page-link'  href='previous.php?page=$i'>" . $i . "</a></li>";
-                    } else {
-                        $pagLink = "<li class='page-item'><a class='page-link'  href='previous.php?page=$i'>" . $i . "</a></li>";
-                    };
-                    echo $pagLink;
+        <ul class="pagination justify-content-center">
+            <li class="page-item <?php if ($page < 2) echo "disabled"; ?>">
+                <a class="page-link" href="./rejected.php?page=<?php echo $page - 1; ?>&search=<?php echo $search; ?>" tabindex="-1">Previous</a>
+            </li>
+            <?php
+            for ($i = 1; $i <= $total_pages; $i++) {
+                if ($i == $page) {
+                    $pagLink = "<li class='page-item active'><a class='page-link' href='./rejected.php?page=$i&search=$search'>" . $i . "</a></li>";
+                } else {
+                    $pagLink = "<li class='page-item'><a class='page-link' href='./rejected.php?page=$i&search=$search'>" . $i . "</a></li>";
                 }
-                ?>
-                <li class="page-item <?php //if ($page == $total_pages) echo "disabled" 
-                                        ?>">
-                    <a class="page-link" href="previous.php?page=<?php //if ($page < $total_pages) echo $page + 1; 
-                                                                    ?>">Next</a>
-                </li>
-            </ul>
-        </nav>
+                echo $pagLink;
+            }
+            ?>
+            <li class="page-item <?php if ($page == $total_pages) echo "disabled"; ?>">
+                <a class="page-link" href="./rejected.php?page=<?php if ($page < $total_pages) echo $page + 1; ?>&search=<?php echo $search; ?>">Next</a>
+            </li>
+        </ul>
+    </nav>
     </div>
-    </body>
+</body>
 
 </html>

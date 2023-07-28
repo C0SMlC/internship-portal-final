@@ -8,6 +8,8 @@ $title = "Dashboard";
 $style = "./styles/global.css";
 $favicon = "../../assets/favicon.ico";
 include_once("../../components/head.php");
+// include_once("login.php");
+
 ?>
 
 <!-- <?php
@@ -70,9 +72,11 @@ include_once("../../components/head.php");
     <br>
     <br>
     <br>
+<div class="row justify-content-center">
 
-
-
+    <a href="./logout.php" class="btn btn-primary" style="width:50%;">Log Out</a>
+</div>
+<br><br>
 </body>
 
 </html>

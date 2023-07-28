@@ -1,5 +1,5 @@
 <?php
-
+//session_start();
 $dbhost = "localhost";
 $dbuser = "root";
 $dbpassword = "";
@@ -9,14 +9,20 @@ if (!$con = mysqli_connect($dbhost, $dbuser, $dbpassword, $dbname)) {
     die("Failed to connect");
 }
 
+// $fac_id = isset($_GET['id']) ? $_GET['id'] : null;
+// $_SESSION['fac_id'] = $fac_id;
+//$fac_id = $_SESSION['id'];
 function update_data($con) {
+  $fac_id = $_SESSION['id'];
+ 
   // Retrieve the data from the database
-  $query = "SELECT * FROM faculty_panel WHERE fac_id = 15"; // Replace 'faculty_panel' with the actual table name
+  $query = "SELECT * FROM faculty_panel WHERE fac_id = $fac_id"; // Replace 'faculty_panel' with the actual table name
   $result = mysqli_query($con, $query);
 
   // Check if the data exists in the database
   if ($result && mysqli_num_rows($result) > 0) {
     $row = mysqli_fetch_assoc($result);
+    //$fac_email = $row['fac_email'];
     return $row;
   }
 
@@ -31,8 +37,10 @@ function update_data($con) {
 }
 
 function update_existing_data($con, $fullName, $email, $age, $mobile, $address) {
+  $fac_id = $_SESSION['id'];
+
   // Update the data in the database
-  $query = "UPDATE faculty_panel SET fac_name = '$fullName', fac_email = '$email', fac_age = '$age', fac_mobile = '$mobile', fac_address = '$address' WHERE fac_id = 15"; // Replace 'faculty_panel' with the actual table name and adjust the condition as needed
+  $query = "UPDATE faculty_panel SET fac_name = '$fullName', fac_email = '$email', fac_age = '$age', fac_mobile = '$mobile', fac_address = '$address' WHERE fac_id = $fac_id"; // Replace 'faculty_panel' with the actual table name and adjust the condition as needed
   $result = mysqli_query($con, $query);
 
   if ($result) {
