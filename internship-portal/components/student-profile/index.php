@@ -205,6 +205,11 @@ $resultApplications = mysqli_query($con, $queryApplications);
   if ($status === "Active") {
     $status = "Approved";
   }
+
+    // Replace "Inactive" with "Rejected" in status
+    if ($status === "Inactive") {
+      $status = "Rejected";
+    }
   ?>
 
     <div class="card mb-2">
@@ -225,12 +230,13 @@ $resultApplications = mysqli_query($con, $queryApplications);
           <button class="btn btn-primary" onclick="saveText(this)">Save</button>
         </div>
         <div class="d-flex">
-        <p>Status from Announcement:</p>
-        <!-- Add the "rejected" class if both statuses are "Rejected" -->
-        <p class="ms-2 status <?php echo $bothRejected ? 'rejected' : ''; ?>">
-          <?php echo $status; ?>
-        </p>
-      </div>
+  <p>Status:</p>
+  <!-- Add the "rejected" class if the status is "Rejected" -->
+  <p class="ms-2 status <?php echo $status === "Rejected" ? 'rejected' : ''; ?>">
+    <?php echo $status; ?>
+  </p>
+</div>
+
     </div>
   </div>
 
@@ -275,9 +281,12 @@ $resultApplications = mysqli_query($con, $queryApplications);
           <button class="btn btn-primary" onclick="saveText(this)">Save</button>
         </div>
         <div class="d-flex">
-          <p>Status from Applications:</p>
-          <p class="ms-2 status"><?php echo $statusApplications; ?></p>
-        </div>
+  <p>Status from Applications:</p>
+  <!-- Add the "rejected" class if the statusApplications is "Rejected" -->
+  <p class="ms-2 status <?php echo $statusApplications === "Rejected" ? 'rejected' : ''; ?>">
+    <?php echo $statusApplications; ?>
+  </p>
+</div>
       </div>
     </div>
 
@@ -288,10 +297,10 @@ $resultApplications = mysqli_query($con, $queryApplications);
 </div>
 
 <script>
-  function saveText(button) {
-    const cardBody = button.parentElement;
-    const inputBox = cardBody.querySelector("input");
-    const savedText = inputBox.value.trim();
+function saveText(button) {
+  const cardBody = button.parentElement;
+  const inputBox = cardBody.querySelector("input");
+  const savedText = inputBox.value.trim();
 
     // Here you can implement the code to save the 'savedText' to your database
     // using AJAX or other methods.
@@ -320,14 +329,18 @@ $resultApplications = mysqli_query($con, $queryApplications);
     // Optionally, you can provide some visual feedback to the user, like displaying a success message.
     alert("Text saved successfully!");
   }
-  // Replace the code that sets the status text with this:
+
+// Here, we're checking the savedText to determine if the status should be red or not
   const statusElement = cardBody.querySelector(".status");
   const bothRejected = statusElement.classList.contains("rejected");
 
   // Check if the status should be red or not
   if (savedText === "Rejected" || bothRejected) {
     statusElement.classList.add("rejected");
+  } else {
+    statusElement.classList.remove("rejected"); // Ensure the class is removed when not needed
   }
+
 
 </script>
 
@@ -337,6 +350,7 @@ $resultApplications = mysqli_query($con, $queryApplications);
   .card-text strong {
     font-weight: bold;
   }
+
 /* Add the CSS style for the "rejected" class */
 .status.rejected {
   color: red;
