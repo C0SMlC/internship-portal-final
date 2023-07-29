@@ -1,21 +1,23 @@
 <?php
-//session_start();
-// if (session_status() === PHP_SESSION_NONE) {
-//     session_start();
-// }
-//Check if the user is logged in
-// if (!isset($_SESSION['fac_id'])) {
-//     // Redirect to the login page if the user is not logged in
-//    header("Location:./login.php");
-//    // exit();
-// }
-//session_start();
+if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_start();
+}
 
 $title = "Dashboard";
 $style = "./styles/global.css";
 $favicon = "../../assets/favicon.ico";
 include_once("../../components/head.php");
-include "../../connect/connect.php";
+//include "../../connect/connect.php";
+
+//session_start();
+$dbhost = "localhost";
+$dbuser = "root";
+$dbpassword = "";
+$dbname = "internship_portal";
+
+if (!$db_connection = mysqli_connect($dbhost, $dbuser, $dbpassword, $dbname)) {
+    die("Failed to connect");
+}
 
 if(isset($_SESSION['id'
 ]) && isset($_SESSION['username'])){
