@@ -83,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
             <div class="col text-end">
             <a href="index.php" class="btn btn-primary mb-3">Back</a> <!-- Add the back button -->
-        </div>
+            </div>
         </form> 
     </div>
     <div class="container mt-2">
