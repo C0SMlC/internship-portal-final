@@ -177,9 +177,10 @@ $dashboardData = getDashboardData($con);
 
 
 <div class="panel">
-    <!-- INTERNSHIP DETAILS -->
-<!-- INTERNSHIP DETAILS -->
-</div>
+<div>
+
+<!--INTERNSHIP DETAILS-->
+
 <h2 class="mt-5 mb-4 font-weight-bold">Internship Details</h2>
 <div class="internship-detail row py-2">
   <?php
@@ -195,16 +196,21 @@ $dashboardData = getDashboardData($con);
     $name = $rowAnnouncement['announcement_title'];
     $status = $rowAnnouncement['status'];
     $position = $rowAnnouncement['skills_required'];
-  ?>
+    // Replace "Active" with "Approved" in status
+    if ($status === "Active") {
+      $status = "Approved";
+    }
+    ?>
 
     <div class="card mb-2">
       <h5 class="card-header"><?php echo $name; ?></h5>
       <div class="card-body">
         <h5 class="card-title"><?php echo $position; ?></h5>
-        <p class="card-text">
-          With supporting text below as a natural lead-in to
-          additional content.
-        </p>
+        <!-- Replace the fixed text with an input box and Save button -->
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="Enter description about your internship...">
+          <button class="btn btn-primary" onclick="saveText(this)">Save</button>
+        </div>
         <div class="d-flex">
           <p>Status from Announcement:</p>
           <p class="ms-2 status"><?php echo $status; ?></p>
@@ -220,16 +226,24 @@ $dashboardData = getDashboardData($con);
   while ($rowApplications = mysqli_fetch_assoc($resultApplications)) {
     $companyName = $rowApplications['CompanyName'];
     $statusApplications = $rowApplications['Status'];
-  ?>
+    // Replace "Active" with "Approved" in statusApplications
+    if ($statusApplications === "approved") {
+      $statusApplications = "Approved";
+    }
+    if ($statusApplications === "rejected") {
+      $statusApplications = "Rejected";
+    }
+    ?>
 
     <div class="card mb-2">
       <h5 class="card-header"><?php echo $companyName; ?></h5>
       <div class="card-body">
         <h5 class="card-title">Position</h5>
-        <p class="card-text">
-          With supporting text below as a natural lead-in to
-          additional content.
-        </p>
+        <!-- Replace the fixed text with an input box and Save button -->
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="Enter description about your internship...">
+          <button class="btn btn-primary" onclick="saveText(this)">Save</button>
+        </div>
         <div class="d-flex">
           <p>Status from Applications:</p>
           <p class="ms-2 status"><?php echo $statusApplications; ?></p>
@@ -239,6 +253,32 @@ $dashboardData = getDashboardData($con);
   <?php } ?>
 </div>
 
+<script>
+  function saveText(button) {
+    const cardBody = button.parentElement;
+    const inputBox = cardBody.querySelector("input");
+    const savedText = inputBox.value.trim();
+
+    // Here you can implement the code to save the 'savedText' to your database
+    // using AJAX or other methods.
+
+    if (savedText !== "") {
+      // Update the card-text with the saved text
+      const cardText = document.createElement("p");
+      cardText.classList.add("card-text");
+      cardText.textContent = savedText;
+
+      cardBody.appendChild(cardText);
+    }
+
+    // Remove the input box and Save button
+    cardBody.removeChild(inputBox);
+    cardBody.removeChild(button);
+
+    // Optionally, you can provide some visual feedback to the user, like displaying a success message.
+    alert("Text saved successfully!");
+  }
+</script>
 
 
 <!--
@@ -291,7 +331,6 @@ $dashboardData = getDashboardData($con);
         </div>
       </div>
   -->
-  
       <!-- Edit Profile Form -->
       <div class="edit-profile-form card d-none" id="editProfileForm">
         <div class="card-header">
