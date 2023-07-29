@@ -241,7 +241,7 @@ $dashboardData = getDashboardData($con);
 
 
 
-
+<!--
 
                 <div class="card">
                   <h5 class="card-header">Name Of Internship</h5>
@@ -290,7 +290,8 @@ $dashboardData = getDashboardData($con);
           </div>
         </div>
       </div>
-
+  -->
+  
       <!-- Edit Profile Form -->
       <div class="edit-profile-form card d-none" id="editProfileForm">
         <div class="card-header">
