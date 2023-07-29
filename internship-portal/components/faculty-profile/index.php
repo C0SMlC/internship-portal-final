@@ -46,7 +46,7 @@ if ($result && mysqli_num_rows($result) > 0) {
         </div>
         <div class="row">
           <!-- Profile Card -->
-          <div class="col-lg-4 profile-card">
+          <div class="col-lg-5 profile-card">
             <div class="card mb-4">
               <div class="card-body text-center">
                 <img
@@ -60,7 +60,7 @@ if ($result && mysqli_num_rows($result) > 0) {
               </div>
             </div>
             <div class="card mb-4 px-6">
-              <div class="card-body">
+              <div class="card-body pl-6">
                 <!-- Profile Details -->
                 <div class="row">
                   <div class="col-4">
@@ -116,20 +116,20 @@ if ($result && mysqli_num_rows($result) > 0) {
           </div>
 
           <!-- Dashboard -->
-          <div class="col-lg-8">
+          <div class="col-lg-7">
             <div class="d-flex align-items-center justify-content-between mt-4 mb-3">
               <h2>Previous Internship Details</h2>
               <a href="./new.php" type="button" class="btn btn-primary">Publish</a>
             </div>
 
             <div class="internship-detail row py-2">
-            <?php foreach ($announcements as $announcement) : ?>
+              <div class='internship-container'>
+              <?php foreach ($announcements as $announcement) : ?>
 
-              <div class="card mb-4 ">
+              <div class="card mb-2 ">
                 <h5 class="card-header"><?php echo $announcement['announcement_title']; ?></h5>
                 <div class="card-body">
-                  <!-- <h5 class="card-title">Full Stack Developer</h5> -->
-                  <p class="card-text mt-3">
+                  <p class="card-text">
                     <?php echo $announcement['description']; ?>
                   </p>
                   <p>Published On : <?php echo $announcement['published_on']; ?></p>
@@ -184,8 +184,8 @@ if ($result && mysqli_num_rows($result) > 0) {
                     <p>Students Applied :</p>
                     <p class="ms-2 status">10</p>
                   </div>
-                </div>
-              </div> -->
+                </div>-->
+              </div> 
             </div>
           </div>
         </div>
@@ -333,6 +333,7 @@ body {
     z-index:10000;
     position: absolute;
     top:0;
+    overflow:scroll;
 }
 
 .profile {
@@ -397,10 +398,14 @@ body {
 }
 
 .internship-detail {
+  height: auto;
+  /* overflow: scroll; */
+}
+
+.internship-container{
   height: 600px;
   overflow: auto;
 }
-
 .vh {
   background-color: #1b3058;
 }
@@ -452,7 +457,6 @@ body {
 .form-card-body {
   width: 500px;
   max-width: 90%;
-  color: #fafafa;
 }
 
 .card-title, .form-label{
