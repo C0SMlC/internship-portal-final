@@ -7,6 +7,28 @@ include_once("../../connect/connect.php");
 
 $errors = [];
 
+// session_start();
+
+$user_id = $_SESSION['id'];
+
+$sql="SELECT email FROM users WHERE id=$user_id";
+$result = $db_connection->query($sql);
+if($result){
+    $row=mysqli_fetch_assoc($result);
+    $u_email=$row['email'];
+}else{
+    echo ". mysqli_error($db_coonnection)";
+}
+
+
+
+
+
+
+
+
+
+
 if ($_SERVER['REQUEST_METHOD'] === "POST") {
     $announcement_title = $_POST['announcement_title'] ?? '';
     $description = $_POST['description'] ?? '';
@@ -26,14 +48,14 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
     }
 
     // Prepare the SQL statement
-    $query = "INSERT INTO new_annoucement (announcement_title, description, skills_required, location, start_date, duration, branch, work_type, stipend_type, stipend, work_location, perks) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $query = "INSERT INTO new_annoucement (announcement_title, description, skills_required, location, start_date, duration, branch, work_type, stipend_type, stipend, work_location, perks,user_id,email) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ";
 
     // Prepare the statement
     $statement = mysqli_prepare($db_connection, $query);
 
     // Bind the parameters
     $branch_string = implode(", ", $branch);
-    mysqli_stmt_bind_param($statement, "ssssssssssss", $announcement_title, $description, $skills_required, $location, $start_date, $duration, $branch_string, $work_type, $stipend_type, $stipend, $work_location, $perks);
+    mysqli_stmt_bind_param($statement, "ssssssssssssis", $announcement_title, $description, $skills_required, $location, $start_date, $duration, $branch, $work_type, $stipend_type, $stipend, $work_location, $perks, $user_id, $u_email);
 
     // Execute the statement
     if (mysqli_stmt_execute($statement)) {
