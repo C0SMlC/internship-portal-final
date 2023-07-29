@@ -34,6 +34,7 @@ USE `internship_portal`;
 DROP TABLE IF EXISTS `faculty_panel`;
 CREATE TABLE IF NOT EXISTS `faculty_panel` (
   `fac_id` int NOT NULL AUTO_INCREMENT,
+  `username` varchar(255) NOT NULL,
   `fac_name` varchar(128) NOT NULL,
   `fac_email` varchar(128) NOT NULL,
   `fac_age` int NOT NULL,

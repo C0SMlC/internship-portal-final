@@ -3,11 +3,20 @@
 require_once "./config.php";
 
 # Define variables and initialize with empty values
-$username_err = $email_err = $password_err = "";
-$username = $email = $password = "";
+$fullname_err = $username_err = $email_err = $password_err = $address_err = $age_err = $mobile_err = "";
+$fullname = $username = $email = $password = $address = $age = $mobile = "";
+
 
 # Processing form data when form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+   # Validate Full Name
+   if (empty(trim($_POST["fullname"]))) {
+    $fullname_err = "Please enter your full name.";
+  } else {
+    $fullname = trim($_POST["fullname"]);
+  }
+
   # Validate username
   if (empty(trim($_POST["username"]))) {
     $username_err = "Please enter a username.";
@@ -17,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       $username_err = "Username can only contain letters, numbers and symbols like '@', '_', or '-'.";
     } else {
       # Prepare a select statement
-      $sql = "SELECT fac_id FROM faculty_panel WHERE fac_name = ?";
+      $sql = "SELECT fac_id FROM faculty_panel WHERE username = ?";
 
       if ($stmt = mysqli_prepare($link, $sql)) {
         # Bind variables to the statement as parameters
@@ -91,20 +100,50 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       $password_err = "Password must contain at least 8 or more characters.";
     }
   }
+ 
+  if (empty(trim($_POST["address"]))) {
+    $address_err = "Please enter your address.";
+  } else {
+    $address = trim($_POST["address"]);
+  }
+
+  # Validate Age
+  if (empty(trim($_POST["age"]))) {
+    $age_err = "Please enter your age.";
+  } else {
+    $age = trim($_POST["age"]);
+    if (!ctype_digit($age) || $age < 0) {
+      $age_err = "Please enter a valid age.";
+    }
+  }
+
+  # Validate Mobile Number
+  if (empty(trim($_POST["mobile"]))) {
+    $mobile_err = "Please enter your mobile number.";
+  } else {
+    $mobile = trim($_POST["mobile"]);
+    if (!ctype_digit($mobile) || strlen($mobile) !== 10) {
+      $mobile_err = "Please enter a valid 10-digit mobile number.";
+    }
+  }
 
   # Check input errors before inserting data into database
-  if (empty($username_err) && empty($email_err) && empty($password_err)) {
+  if (empty($fullname_err) && empty($username_err) && empty($email_err) && empty($password_err) && empty($address_err) && empty($age_err) && empty($mobile_err)) {
     # Prepare an insert statement
-    $sql = "INSERT INTO faculty_panel(fac_name, fac_email, password) VALUES (?, ?, ?)";
+    $sql = "INSERT INTO faculty_panel(fac_name, username, fac_email, password, fac_address, fac_age, fac_mobile) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
     if ($stmt = mysqli_prepare($link, $sql)) {
       # Bind varibales to the prepared statement as parameters
-      mysqli_stmt_bind_param($stmt, "sss", $param_username, $param_email, $param_password);
+      mysqli_stmt_bind_param($stmt, "sssssii", $param_fullname, $param_username, $param_email, $param_password, $param_address, $param_age, $param_mobile);
 
       # Set parameters
+      $param_fullname = $fullname;
       $param_username = $username;
       $param_email = $email;
       $param_password = password_hash($password, PASSWORD_DEFAULT);
+      $param_address = $address;
+      $param_age = $age;
+      $param_mobile = $mobile;
 
       # Execute the prepared statement
       if (mysqli_stmt_execute($stmt)) {
@@ -149,6 +188,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           <!-- form starts here -->
           <form action="<?= htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" novalidate>
             <div class="mb-3">
+              <label for="fullname" class="form-label">Full Name</label>
+              <input type="text" class="form-control" name="fullname" id="fullname" value="<?= $fullname; ?>">
+              <small class="text-danger"><?= $fullname_err; ?></small>
+            </div>
+            <div class="mb-3">
               <label for="username" class="form-label">Username</label>
               <input type="text" class="form-control" name="username" id="username" value="<?= $username; ?>">
               <small class="text-danger"><?= $username_err; ?></small>
@@ -161,7 +205,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="mb-2">
               <label for="password" class="form-label">Password</label>
               <input type="password" class="form-control" name="password" id="password" value="<?= $password; ?>">
-              <small class="text-danger"><?= $password_err; ?></small>
+              <small class="text-danger"><?= $password_err; ?></small>            
+            </div>
+             <div class="mb-3">
+              <label for="address" class="form-label">Address</label>
+              <input type="text" class="form-control" name="address" id="address" value="<?= $address; ?>">
+              <small class="text-danger"><?= $address_err; ?></small>
+            </div>
+            <div class="mb-3">
+              <label for="age" class="form-label">Age</label>
+              <input type="number" class="form-control" name="age" id="age" value="<?= $age; ?>">
+              <small class="text-danger"><?= $age_err; ?></small>
+            </div>
+            <div class="mb-3">
+              <label for="mobile" class="form-label">Mobile Number</label>
+              <input type="tel" class="form-control" name="mobile" id="mobile" value="<?= $mobile; ?>">
+              <small class="text-danger"><?= $mobile_err; ?></small>
             </div>
             <div class="mb-3 form-check">
               <input type="checkbox" class="form-check-input" id="togglePassword">

@@ -1,6 +1,6 @@
 <?php
 require 'connect.php';
-$update = get_student_data($con);
+$update = get_student_data($con,$student_id);
 $profileImageUrl = "demo.png";
 
 // Replace 'your_host', 'your_username', 'your_password', and 'your_database' with your actual database credentials
@@ -11,30 +11,46 @@ if (mysqli_connect_errno()) {
     exit();
 }
 
-// Function to fetch dashboard data
 function getDashboardData($con) {
-    $dashboardData = array(
-        'applied' => 0,
-        'accepted' => 0,
-        'rejected' => 0,
-    );
+  $dashboardData = array(
+      'applied' => array(
+          'approved' => 0,
+          'rejected' => 0,
+      ),
+      'approved' => 0,
+      'rejected' => 0,
+  );
 
-    $query = "SELECT COUNT(*) as count, Status FROM new_annoucement GROUP BY Status";
-    $result = mysqli_query($con, $query);
+  // Fetch count of 'approved' and 'rejected' internships from internship_applications table
+  $query = "SELECT Status, COUNT(*) as count FROM internship_applications WHERE Status IN ('approved', 'rejected') GROUP BY Status";
+  $result = mysqli_query($con, $query);
 
-    while ($row = mysqli_fetch_assoc($result)) {
-        $status = strtolower($row['Status']);
-        if (array_key_exists($status, $dashboardData)) {
-            $dashboardData[$status] = $row['count'];
-        }
-    }
+  while ($row = mysqli_fetch_assoc($result)) {
+      $status = strtolower($row['Status']);
+      if (array_key_exists($status, $dashboardData['applied'])) {
+          $dashboardData['applied'][$status] = $row['count'];
+      }
+  }
 
-    return $dashboardData;
+  // Fetch count of 'approved' and 'rejected' internships from applications table and update 'applied' count
+  $query = "SELECT Action, COUNT(*) as count FROM applications WHERE Action IN ('approved', 'rejected') GROUP BY Action";
+  $result = mysqli_query($con, $query);
+
+  while ($row = mysqli_fetch_assoc($result)) {
+      $action = strtolower($row['Action']);
+      if (array_key_exists($action, $dashboardData['applied'])) {
+          $dashboardData['applied'][$action] += $row['count'];
+      }
+  }
+
+  return $dashboardData;
 }
+
 
 // Fetch data from the database
 $dashboardData = getDashboardData($con);
 ?>
+
     <div class="main-container ">
       <div class="profile"></div>
       <div class="profile-conainer">
@@ -44,17 +60,17 @@ $dashboardData = getDashboardData($con);
               <nav
                 aria-label="breadcrumb"
                 class="rounded-3 p-3 mb-5 vh custom-breadcrumb">
-<ol class="breadcrumb mb-0">
-  <li class="breadcrumb-item text-white">
-    <a class="home" href="#">Home</a>
-  </li>
-  <li class="breadcrumb-item active" aria-current="page">
-    User Profile
-  </li>
-  <li class="breadcrumb-item">
-    <a class="logout" href="logout.php">Logout</a>
-  </li>
-</ol>
+                  <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item text-white">
+                      <a class="home" href="#">Home</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">
+                      User Profile
+                    </li>
+                    <li class="breadcrumb-item">
+                      <a class="logout" href="./Login-System-master/logout.php">Logout</a>
+                    </li>
+                  </ol>
               </nav>
             </div>
           </div>
@@ -131,48 +147,217 @@ $dashboardData = getDashboardData($con);
               </div>
             </div>
 
-            <!-- Dashboard -->
-<!-- Modified part with dynamic dashboard data -->
+
+<!-- Dashboard -->
 <div class="col-lg-8">
   <h2 class="mb-4 font-weight-bold">Dashboard</h2>
   <div class="card mb-3">
     <div class="card-body py-4">
-      <div class="panel">
-        <!-- Applied Internships -->
-        <div class="internship internship-applied">
-          <p class="internship-text">Applied</p>
-          <p><?php echo $dashboardData['applied']; ?></p>
+    <div class="panel">
+      <!-- Applied Internships -->
+      <div class="internship internship-applied">
+        <p class="internship-text">Applied</p>
+        <p><?php echo $dashboardData['applied']['approved'] + $dashboardData['applied']['rejected']; ?></p>
+      </div>
+      <!-- Approved Internships -->
+      <div class="internship internship-approved">
+        <p class="internship-text">Approved</p>
+        <p><?php echo $dashboardData['applied']['approved']; ?></p>
+      </div>
+      <!-- Rejected Internships -->
+      <div class="internship internship-rejected">
+        <p class="internship-text">Rejected</p>
+        <p><?php echo $dashboardData['applied']['rejected']; ?></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<div class="panel">
+<div>
+
+
+<!--INTERNSHIP DETAILS-->
+<h2 class="mt-5 mb-4 font-weight-bold">Internship Details</h2>
+<div class="internship-detail row py-2">
+  <?php
+// Fetch data from the 'new_announcement' table
+$queryAnnouncement = "SELECT announcement_title, status FROM new_annoucement";
+$resultAnnouncement = mysqli_query($con, $queryAnnouncement);
+
+// Fetch data from the 'internship_applications' table
+$queryApplications = "SELECT CompanyName, Status FROM internship_applications";
+$resultApplications = mysqli_query($con, $queryApplications);
+
+  $firstCardBold = true; // Set a flag to track the first card
+
+  while ($rowAnnouncement = mysqli_fetch_assoc($resultAnnouncement)) {
+    $name = $rowAnnouncement['announcement_title'];
+    $status = $rowAnnouncement['status'];
+
+  // Combine both statuses and check if they are both "Rejected"
+  $bothRejected = $status === "Rejected" && $statusApplications === "Rejected";
+
+  // Replace "Active" with "Approved" in status
+  if ($status === "Active") {
+    $status = "Approved";
+  }
+
+    // Replace "Inactive" with "Rejected" in status
+    if ($status === "Inactive") {
+      $status = "Rejected";
+    }
+  ?>
+
+    <div class="card mb-2">
+      <h5 class="card-header"><?php echo $name; ?></h5>
+      <div class="card-body">
+        <div class="input-group mb-3">
+          <?php
+            $inputClass = $firstCardBold ? 'form-control font-weight-bold' : 'form-control';
+            // Apply the bold class to the first card's input box
+            // and a regular class for other cards' input boxes
+          ?>
+          <input type="text" class="<?php echo $inputClass; ?>" placeholder="Enter your position in your internship...">
+          <button class="btn btn-primary" onclick="saveText(this)">Save</button>
         </div>
-        <!-- Accepted Internships -->
-        <div class="internship internhsip-accepted">
-          <p class="internship-text">Accepted</p>
-          <p><?php echo $dashboardData['accepted']; ?></p>
+        <!-- Replace the fixed text with an input box and Save button -->
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="Enter description about your internship...">
+          <button class="btn btn-primary" onclick="saveText(this)">Save</button>
         </div>
-        <!-- Rejected Internships -->
-        <div class="internship internship-rejected">
-          <p class="internship-text">Rejected</p>
-          <p><?php echo $dashboardData['rejected']; ?></p>
+        <div class="d-flex">
+  <p>Status from Announcement:</p>
+  <!-- Add the "rejected" class if the status is "Rejected" -->
+  <p class="ms-2 status <?php echo $status === "Rejected" ? 'rejected' : ''; ?>">
+    <?php echo $status; ?>
+  </p>
+</div>
+
+    </div>
+  </div>
+
+  <?php
+  // After the first card, set the flag to false to avoid bold style for other cards
+  $firstCardBold = false;
+} ?>
+
+  <?php
+  // Reset the data pointer in the 'internship_applications' result set to the beginning
+  mysqli_data_seek($resultApplications, 0);
+
+  $firstCardBold = true; // Reset the flag for the second loop
+
+  while ($rowApplications = mysqli_fetch_assoc($resultApplications)) {
+    $companyName = $rowApplications['CompanyName'];
+    $statusApplications = $rowApplications['Status'];
+    // Replace "Active" with "Approved" in statusApplications
+    if ($statusApplications === "approved") {
+      $statusApplications = "Approved";
+    }
+    if ($statusApplications === "rejected") {
+      $statusApplications = "Rejected";
+    }
+    ?>
+
+    <div class="card mb-2">
+      <h5 class="card-header"><?php echo $companyName; ?></h5>
+      <div class="card-body">
+        <div class="input-group mb-3">
+          <?php
+            $inputClass = $firstCardBold ? 'form-control font-weight-bold' : 'form-control';
+            // Apply the bold class to the first card's input box
+            // and a regular class for other cards' input boxes
+          ?>
+          <input type="text" class="<?php echo $inputClass; ?>" placeholder="Enter your position in your internship...">
+          <button class="btn btn-primary" onclick="saveText(this)">Save</button>
         </div>
+        <!-- Replace the fixed text with an input box and Save button -->
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="Enter description about your internship...">
+          <button class="btn btn-primary" onclick="saveText(this)">Save</button>
+        </div>
+        <div class="d-flex">
+  <p>Status from Applications:</p>
+  <!-- Add the "rejected" class if the statusApplications is "Rejected" -->
+  <p class="ms-2 status <?php echo $statusApplications === "Rejected" ? 'rejected' : ''; ?>">
+    <?php echo $statusApplications; ?>
+  </p>
+</div>
       </div>
     </div>
 
-              </div>
-              <h2 class="mt-5 mb-4 font-weight-bold">Internship Details</h2>
-              <div class="internship-detail row py-2">
-                <div class="card mb-2">
-                  <h5 class="card-header">Name Of Internship</h5>
-                  <div class="card-body">
-                    <h5 class="card-title">Position</h5>
-                    <p class="card-text">
-                      With supporting text below as a natural lead-in to
-                      additional content.
-                    </p>
-                    <div class="d-flex">
-                      <p>Status :</p>
-                      <p class="ms-2 status">Accepted</p>
-                    </div>
-                  </div>
-                </div>
+    <?php
+    // After the first card, set the flag to false to avoid bold style for other cards
+    $firstCardBold = false;
+  } ?>
+</div>
+
+<script>
+function saveText(button) {
+  const cardBody = button.parentElement;
+  const inputBox = cardBody.querySelector("input");
+  const savedText = inputBox.value.trim();
+
+    // Here you can implement the code to save the 'savedText' to your database
+    // using AJAX or other methods.
+
+    if (savedText !== "") {
+      // Update the card-text with the saved text
+      const cardText = document.createElement("p");
+      cardText.classList.add("card-text");
+
+      // Make the saved text bold for the first card
+      if (cardBody.querySelector(".font-weight-bold")) {
+        const boldText = document.createElement("strong");
+        boldText.textContent = savedText;
+        cardText.appendChild(boldText);
+      } else {
+        cardText.textContent = savedText;
+      }
+
+      cardBody.appendChild(cardText);
+    }
+
+    // Remove the input box and Save button
+    cardBody.removeChild(inputBox);
+    cardBody.removeChild(button);
+
+    // Optionally, you can provide some visual feedback to the user, like displaying a success message.
+    alert("Text saved successfully!");
+  }
+
+// Here, we're checking the savedText to determine if the status should be red or not
+  const statusElement = cardBody.querySelector(".status");
+  const bothRejected = statusElement.classList.contains("rejected");
+
+  // Check if the status should be red or not
+  if (savedText === "Rejected" || bothRejected) {
+    statusElement.classList.add("rejected");
+  } else {
+    statusElement.classList.remove("rejected"); // Ensure the class is removed when not needed
+  }
+
+
+</script>
+
+
+<style>
+  /* Style the bold text */
+  .card-text strong {
+    font-weight: bold;
+  }
+
+/* Add the CSS style for the "rejected" class */
+.status.rejected {
+  color: red;
+}
+</style>
+
+<!--
 
                 <div class="card">
                   <h5 class="card-header">Name Of Internship</h5>
@@ -184,7 +369,7 @@ $dashboardData = getDashboardData($con);
                     </p>
                     <div class="d-flex">
                       <p>Status :</p>
-                      <p class="ms-2 status">Accepted</p>
+                      <p class="ms-2 status">approved</p>
                     </div>
                   </div>
                 </div>
@@ -198,7 +383,7 @@ $dashboardData = getDashboardData($con);
                     </p>
                     <div class="d-flex">
                       <p>Status :</p>
-                      <p class="ms-2 status">Accepted</p>
+                      <p class="ms-2 status">approved</p>
                     </div>
                   </div>
                 </div>
@@ -212,7 +397,7 @@ $dashboardData = getDashboardData($con);
                     </p>
                     <div class="d-flex">
                       <p>Status :</p>
-                      <p class="ms-2 status">Accepted</p>
+                      <p class="ms-2 status">approved</p>
                     </div>
                   </div>
                 </div>
@@ -221,7 +406,7 @@ $dashboardData = getDashboardData($con);
           </div>
         </div>
       </div>
-
+  -->
       <!-- Edit Profile Form -->
       <div class="edit-profile-form card d-none" id="editProfileForm">
         <div class="card-header">

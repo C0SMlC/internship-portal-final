@@ -59,10 +59,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               # Store data in session variables
               $_SESSION["id"] = $id;
               $_SESSION["username"] = $username;
-              $_SESSION["loggedin"] = TRUE;
+              $_SESSION["loggedin"] = true;
 
               # Redirect user to index page
-              echo "<script>" . "window.location.href='./'" . "</script>";
+              echo "<script>" . "window.location.href='../index.php'" . "</script>";
               exit;
             } else {
               # If password is incorrect show an error message
