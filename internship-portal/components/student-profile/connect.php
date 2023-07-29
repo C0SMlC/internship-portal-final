@@ -8,7 +8,7 @@ if (!$con = mysqli_connect($dbhost, $dbuser, $dbpassword, $dbname)) {
     die("Failed to connect");
 }
 
-function get_student_data($con, $studentId = 15) {
+function get_student_data($con, $studentId) {
   $query = "SELECT * FROM student WHERE s_id = $studentId";
   $result = mysqli_query($con, $query);
 

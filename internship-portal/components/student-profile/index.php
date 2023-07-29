@@ -1,6 +1,6 @@
 <?php
 require 'connect.php';
-$update = get_student_data($con);
+$update = get_student_data($con,$student_id);
 $profileImageUrl = "demo.png";
 
 // Replace 'your_host', 'your_username', 'your_password', and 'your_database' with your actual database credentials
@@ -44,17 +44,17 @@ $dashboardData = getDashboardData($con);
               <nav
                 aria-label="breadcrumb"
                 class="rounded-3 p-3 mb-5 vh custom-breadcrumb">
-<ol class="breadcrumb mb-0">
-  <li class="breadcrumb-item text-white">
-    <a class="home" href="#">Home</a>
-  </li>
-  <li class="breadcrumb-item active" aria-current="page">
-    User Profile
-  </li>
-  <li class="breadcrumb-item">
-    <a class="logout" href="logout.php">Logout</a>
-  </li>
-</ol>
+                  <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item text-white">
+                      <a class="home" href="#">Home</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">
+                      User Profile
+                    </li>
+                    <li class="breadcrumb-item">
+                      <a class="logout" href="./Login-System-master/logout.php">Logout</a>
+                    </li>
+                  </ol>
               </nav>
             </div>
           </div>

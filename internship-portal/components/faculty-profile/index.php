@@ -37,7 +37,9 @@ if ($result && mysqli_num_rows($result) > 0) {
                 <li class="breadcrumb-item active" aria-current="page">
                   User Profile
                 </li>
-                <li class="breadcrumb-item text-white"><a href="./logout.php" class="logout">Logout</a></li>
+                <li class="breadcrumb-item">
+                      <a class="logout" href="./Login-System-master/logout.php">Logout</a>
+                </li>
               </ol>
             </nav>
           </div>
