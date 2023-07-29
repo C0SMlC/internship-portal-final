@@ -10,7 +10,16 @@ $favicon = "../../assets/favicon.ico";
 include_once("../../components/head.php");
 // include_once("login.php");
 
-?>
+
+// if(isset($_SESSION['id'
+// ]) && isset($_SESSION['username'])){
+//     $fac_id = $_SESSION['id'];
+//     $fac_name = $_SESSION['username'];
+// }else{
+//     header("Location:./login.php");
+// }
+
+// ?>
 
 <!-- <?php
 // require './auth.php';
@@ -77,6 +86,9 @@ include_once("../../components/head.php");
     <a href="./logout.php" class="btn btn-primary" style="width:50%;">Log Out</a>
 </div>
 <br><br>
+
+
+
 </body>
 
 </html>

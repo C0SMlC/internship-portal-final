@@ -3,6 +3,6 @@
     if(!$con){
         die('Connection Failed'.mysqli_error($con));
     }else{
-        echo "Connected";
+        echo "";
     }
 ?>
