@@ -179,6 +179,7 @@ $dashboardData = getDashboardData($con);
 <div class="panel">
 <div>
 
+
 <!--INTERNSHIP DETAILS-->
 <h2 class="mt-5 mb-4 font-weight-bold">Internship Details</h2>
 <div class="internship-detail row py-2">
@@ -212,12 +213,18 @@ $dashboardData = getDashboardData($con);
             // and a regular class for other cards' input boxes
           ?>
           <input type="text" class="<?php echo $inputClass; ?>" placeholder="Enter your position in your internship...">
-          <button class="btn btn-primary" onclick="saveText(this)">Save</button>
+          <div class="input-group-append">
+            <button class="btn btn-primary edit-btn" style="display: none;" onclick="editText(this)">Edit</button>
+            <button class="btn btn-primary save-btn" onclick="saveText(this)">Save</button>
+          </div>
         </div>
         <!-- Replace the fixed text with an input box and Save button -->
         <div class="input-group mb-3">
           <input type="text" class="form-control" placeholder="Enter description about your internship...">
-          <button class="btn btn-primary" onclick="saveText(this)">Save</button>
+          <div class="input-group-append">
+            <button class="btn btn-primary edit-btn" style="display: none;" onclick="editText(this)">Edit</button>
+            <button class="btn btn-primary save-btn" onclick="saveText(this)">Save</button>
+          </div>
         </div>
         <div class="d-flex">
           <p>Status from Announcement:</p>
@@ -259,12 +266,18 @@ $dashboardData = getDashboardData($con);
             // and a regular class for other cards' input boxes
           ?>
           <input type="text" class="<?php echo $inputClass; ?>" placeholder="Enter your position in your internship...">
-          <button class="btn btn-primary" onclick="saveText(this)">Save</button>
+          <div class="input-group-append">
+            <button class="btn btn-primary edit-btn" style="display: none;" onclick="editText(this)">Edit</button>
+            <button class="btn btn-primary save-btn" onclick="saveText(this)">Save</button>
+          </div>
         </div>
         <!-- Replace the fixed text with an input box and Save button -->
         <div class="input-group mb-3">
           <input type="text" class="form-control" placeholder="Enter description about your internship...">
-          <button class="btn btn-primary" onclick="saveText(this)">Save</button>
+          <div class="input-group-append">
+            <button class="btn btn-primary edit-btn" style="display: none;" onclick="editText(this)">Edit</button>
+            <button class="btn btn-primary save-btn" onclick="saveText(this)">Save</button>
+          </div>
         </div>
         <div class="d-flex">
           <p>Status from Applications:</p>
@@ -281,7 +294,7 @@ $dashboardData = getDashboardData($con);
 
 <script>
   function saveText(button) {
-    const cardBody = button.parentElement;
+    const cardBody = button.parentElement.parentElement;
     const inputBox = cardBody.querySelector("input");
     const savedText = inputBox.value.trim();
 
@@ -302,24 +315,39 @@ $dashboardData = getDashboardData($con);
         cardText.textContent = savedText;
       }
 
+      // Hide the input box and Save button
+      inputBox.style.display = "none";
+      button.style.display = "none";
+
+      // Show the Edit button
+      cardBody.querySelector(".edit-btn").style.display = "inline-block";
+
+      // Append the updated card-text
       cardBody.appendChild(cardText);
+    } else {
+      // Optionally, you can provide some validation or feedback if the saved text is empty.
+      alert("Please enter some text before saving.");
     }
+  }
 
-    // Remove the input box and Save button
-    cardBody.removeChild(inputBox);
-    cardBody.removeChild(button);
+  function editText(button) {
+    const cardBody = button.parentElement.parentElement;
+    const inputBox = cardBody.querySelector("input");
 
-    // Optionally, you can provide some visual feedback to the user, like displaying a success message.
-    alert("Text saved successfully!");
+    // Show the input box and Save button
+    inputBox.style.display = "block";
+    cardBody.querySelector(".save-btn").style.display = "inline-block";
+
+    // Hide the Edit button
+    button.style.display = "none";
+
+    // Remove the card-text
+    const cardText = cardBody.querySelector(".card-text");
+    cardBody.removeChild(cardText);
   }
 </script>
 
-<style>
-  /* Style the bold text */
-  .card-text strong {
-    font-weight: bold;
-  }
-</style>
+
 
 
 <!--
