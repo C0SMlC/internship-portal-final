@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   # Validate credentials 
   if (empty($user_login_err) && empty($user_password_err)) {
     # Prepare a select statement
-    $sql = "SELECT fac_id, fac_name, password FROM faculty_panel WHERE fac_name = ? OR fac_email = ?";
+    $sql = "SELECT fac_id, username, password FROM faculty_panel WHERE username = ? OR fac_email = ?";
 
     if ($stmt = mysqli_prepare($link, $sql)) {
       # Bind variables to the statement as parameters
@@ -61,7 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               $_SESSION["loggedin"] = TRUE;
 
               # Redirect user to index page
-              echo "<script>" . "window.location.href='./index.php?id={$id}'" . "</script>";
+              echo "<script>" . "window.location.href='./index.php'" . "</script>";
               exit;
             } else {
               # If password is incorrect show an error message

@@ -1,5 +1,8 @@
 <?php
-//session_start();
+if (session_status() == PHP_SESSION_NONE) {
+  session_start();
+}
+
 $dbhost = "localhost";
 $dbuser = "root";
 $dbpassword = "";
@@ -9,9 +12,7 @@ if (!$con = mysqli_connect($dbhost, $dbuser, $dbpassword, $dbname)) {
     die("Failed to connect");
 }
 
-// $fac_id = isset($_GET['id']) ? $_GET['id'] : null;
-// $_SESSION['fac_id'] = $fac_id;
-//$fac_id = $_SESSION['id'];
+
 function update_data($con) {
   $fac_id = $_SESSION['id'];
  

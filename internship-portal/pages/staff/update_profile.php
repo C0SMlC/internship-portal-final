@@ -11,9 +11,12 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['fullName']) && isset($
 
    if (update_existing_data($con, $fullName, $email, $age, $mobile, $address)) {
     echo "Data updated successfully.";
-    echo "<a onclick=\"goToHomeScreen()\" style=\"cursor: pointer; color: blue;\">Go back to Home Screen</a>";
+    header("Location:./index.php");
+    //echo "<a onclick=\"goToHomeScreen()\" style=\"cursor: pointer; color: blue;\">Go back to Home Screen</a>";
     } else {
     echo "Failed to update data.";
+    echo "<a onclick=\"goToHomeScreen()\" style=\"cursor: pointer; color: blue;\">Go back to Home Screen</a>";
+
     }
 
     echo "<script>
