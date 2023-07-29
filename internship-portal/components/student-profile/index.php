@@ -180,22 +180,22 @@ $dashboardData = getDashboardData($con);
 <div>
 
 <!--INTERNSHIP DETAILS-->
-
 <h2 class="mt-5 mb-4 font-weight-bold">Internship Details</h2>
 <div class="internship-detail row py-2">
   <?php
   // Fetch data from the 'new_announcement' table
-  $queryAnnouncement = "SELECT announcement_title, status, skills_required FROM new_annoucement";
+  $queryAnnouncement = "SELECT announcement_title, status FROM new_annoucement";
   $resultAnnouncement = mysqli_query($con, $queryAnnouncement);
 
   // Fetch data from the 'internship_applications' table
   $queryApplications = "SELECT CompanyName, Status FROM internship_applications";
   $resultApplications = mysqli_query($con, $queryApplications);
 
+  $firstCardBold = true; // Set a flag to track the first card
+
   while ($rowAnnouncement = mysqli_fetch_assoc($resultAnnouncement)) {
     $name = $rowAnnouncement['announcement_title'];
     $status = $rowAnnouncement['status'];
-    $position = $rowAnnouncement['skills_required'];
     // Replace "Active" with "Approved" in status
     if ($status === "Active") {
       $status = "Approved";
@@ -205,7 +205,15 @@ $dashboardData = getDashboardData($con);
     <div class="card mb-2">
       <h5 class="card-header"><?php echo $name; ?></h5>
       <div class="card-body">
-        <h5 class="card-title"><?php echo $position; ?></h5>
+        <div class="input-group mb-3">
+          <?php
+            $inputClass = $firstCardBold ? 'form-control font-weight-bold' : 'form-control';
+            // Apply the bold class to the first card's input box
+            // and a regular class for other cards' input boxes
+          ?>
+          <input type="text" class="<?php echo $inputClass; ?>" placeholder="Enter your position in your internship...">
+          <button class="btn btn-primary" onclick="saveText(this)">Save</button>
+        </div>
         <!-- Replace the fixed text with an input box and Save button -->
         <div class="input-group mb-3">
           <input type="text" class="form-control" placeholder="Enter description about your internship...">
@@ -217,11 +225,17 @@ $dashboardData = getDashboardData($con);
         </div>
       </div>
     </div>
-  <?php } ?>
+
+    <?php
+    // After the first card, set the flag to false to avoid bold style for other cards
+    $firstCardBold = false;
+  } ?>
 
   <?php
   // Reset the data pointer in the 'internship_applications' result set to the beginning
   mysqli_data_seek($resultApplications, 0);
+
+  $firstCardBold = true; // Reset the flag for the second loop
 
   while ($rowApplications = mysqli_fetch_assoc($resultApplications)) {
     $companyName = $rowApplications['CompanyName'];
@@ -238,7 +252,15 @@ $dashboardData = getDashboardData($con);
     <div class="card mb-2">
       <h5 class="card-header"><?php echo $companyName; ?></h5>
       <div class="card-body">
-        <h5 class="card-title">Position</h5>
+        <div class="input-group mb-3">
+          <?php
+            $inputClass = $firstCardBold ? 'form-control font-weight-bold' : 'form-control';
+            // Apply the bold class to the first card's input box
+            // and a regular class for other cards' input boxes
+          ?>
+          <input type="text" class="<?php echo $inputClass; ?>" placeholder="Enter your position in your internship...">
+          <button class="btn btn-primary" onclick="saveText(this)">Save</button>
+        </div>
         <!-- Replace the fixed text with an input box and Save button -->
         <div class="input-group mb-3">
           <input type="text" class="form-control" placeholder="Enter description about your internship...">
@@ -250,7 +272,11 @@ $dashboardData = getDashboardData($con);
         </div>
       </div>
     </div>
-  <?php } ?>
+
+    <?php
+    // After the first card, set the flag to false to avoid bold style for other cards
+    $firstCardBold = false;
+  } ?>
 </div>
 
 <script>
@@ -266,7 +292,15 @@ $dashboardData = getDashboardData($con);
       // Update the card-text with the saved text
       const cardText = document.createElement("p");
       cardText.classList.add("card-text");
-      cardText.textContent = savedText;
+
+      // Make the saved text bold for the first card
+      if (cardBody.querySelector(".font-weight-bold")) {
+        const boldText = document.createElement("strong");
+        boldText.textContent = savedText;
+        cardText.appendChild(boldText);
+      } else {
+        cardText.textContent = savedText;
+      }
 
       cardBody.appendChild(cardText);
     }
@@ -279,6 +313,13 @@ $dashboardData = getDashboardData($con);
     alert("Text saved successfully!");
   }
 </script>
+
+<style>
+  /* Style the bold text */
+  .card-text strong {
+    font-weight: bold;
+  }
+</style>
 
 
 <!--
