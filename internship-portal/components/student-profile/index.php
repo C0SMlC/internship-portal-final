@@ -184,24 +184,28 @@ $dashboardData = getDashboardData($con);
 <h2 class="mt-5 mb-4 font-weight-bold">Internship Details</h2>
 <div class="internship-detail row py-2">
   <?php
-  // Fetch data from the 'new_announcement' table
-  $queryAnnouncement = "SELECT announcement_title, status FROM new_annoucement";
-  $resultAnnouncement = mysqli_query($con, $queryAnnouncement);
+// Fetch data from the 'new_announcement' table
+$queryAnnouncement = "SELECT announcement_title, status FROM new_annoucement";
+$resultAnnouncement = mysqli_query($con, $queryAnnouncement);
 
-  // Fetch data from the 'internship_applications' table
-  $queryApplications = "SELECT CompanyName, Status FROM internship_applications";
-  $resultApplications = mysqli_query($con, $queryApplications);
+// Fetch data from the 'internship_applications' table
+$queryApplications = "SELECT CompanyName, Status FROM internship_applications";
+$resultApplications = mysqli_query($con, $queryApplications);
 
   $firstCardBold = true; // Set a flag to track the first card
 
   while ($rowAnnouncement = mysqli_fetch_assoc($resultAnnouncement)) {
     $name = $rowAnnouncement['announcement_title'];
     $status = $rowAnnouncement['status'];
-    // Replace "Active" with "Approved" in status
-    if ($status === "Active") {
-      $status = "Approved";
-    }
-    ?>
+
+  // Combine both statuses and check if they are both "Rejected"
+  $bothRejected = $status === "Rejected" && $statusApplications === "Rejected";
+
+  // Replace "Active" with "Approved" in status
+  if ($status === "Active") {
+    $status = "Approved";
+  }
+  ?>
 
     <div class="card mb-2">
       <h5 class="card-header"><?php echo $name; ?></h5>
@@ -221,16 +225,19 @@ $dashboardData = getDashboardData($con);
           <button class="btn btn-primary" onclick="saveText(this)">Save</button>
         </div>
         <div class="d-flex">
-          <p>Status from Announcement:</p>
-          <p class="ms-2 status"><?php echo $status; ?></p>
-        </div>
+        <p>Status from Announcement:</p>
+        <!-- Add the "rejected" class if both statuses are "Rejected" -->
+        <p class="ms-2 status <?php echo $bothRejected ? 'rejected' : ''; ?>">
+          <?php echo $status; ?>
+        </p>
       </div>
     </div>
+  </div>
 
-    <?php
-    // After the first card, set the flag to false to avoid bold style for other cards
-    $firstCardBold = false;
-  } ?>
+  <?php
+  // After the first card, set the flag to false to avoid bold style for other cards
+  $firstCardBold = false;
+} ?>
 
   <?php
   // Reset the data pointer in the 'internship_applications' result set to the beginning
@@ -313,13 +320,27 @@ $dashboardData = getDashboardData($con);
     // Optionally, you can provide some visual feedback to the user, like displaying a success message.
     alert("Text saved successfully!");
   }
+  // Replace the code that sets the status text with this:
+  const statusElement = cardBody.querySelector(".status");
+  const bothRejected = statusElement.classList.contains("rejected");
+
+  // Check if the status should be red or not
+  if (savedText === "Rejected" || bothRejected) {
+    statusElement.classList.add("rejected");
+  }
+
 </script>
+
 
 <style>
   /* Style the bold text */
   .card-text strong {
     font-weight: bold;
   }
+/* Add the CSS style for the "rejected" class */
+.status.rejected {
+  color: red;
+}
 </style>
 
 <!--
