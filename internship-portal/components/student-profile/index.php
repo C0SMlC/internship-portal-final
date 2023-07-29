@@ -230,7 +230,7 @@ $resultApplications = mysqli_query($con, $queryApplications);
           <button class="btn btn-primary" onclick="saveText(this)">Save</button>
         </div>
         <div class="d-flex">
-  <p>Status:</p>
+  <p>Status from Announcement:</p>
   <!-- Add the "rejected" class if the status is "Rejected" -->
   <p class="ms-2 status <?php echo $status === "Rejected" ? 'rejected' : ''; ?>">
     <?php echo $status; ?>
