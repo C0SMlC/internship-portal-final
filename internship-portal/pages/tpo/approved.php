@@ -4,6 +4,10 @@ $style = "./styles/global.css";
 $favicon = "../../assets/favicon.ico";
 include_once("../../components/head.php");
 include_once("../../connect/connect.php");
+// include_once("./user_id.php");
+// Retrieve data from the database
+
+
 
 // Retrieve data from the database
 $search = isset($_GET["search"]) ? $_GET["search"] : '';
@@ -103,6 +107,7 @@ $db_connection->close();
             echo "</svg>";
             echo "</a>";
             echo "</td>";
+            
         }
                 // echo "<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-eye-fill' viewBox='0 0 16 16'>";
                 // echo "<path d='M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z' />";

@@ -275,7 +275,7 @@ if(isset($_GET['announcement_title'])) {
         <div class="response-box">
             <div style="text-align: center;">
                 
-                <a href="./index.php" class="btn btn-primary btn-sm col-md-2 p-sm-4" role="button">Go Back</a>
+                <a href="./active.php" class="btn btn-primary btn-sm col-md-2 p-sm-4" role="button">Go Back</a>
             </div>
         </div>
     </div>

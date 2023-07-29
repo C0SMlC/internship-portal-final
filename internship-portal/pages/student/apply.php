@@ -4,7 +4,6 @@ $style = "./styles/global.css";
 $favicon = "../../assets/favicon.ico";
 include_once("../../components/head.php");
 
-
 include "../../connect/connect.php";
 
 // Retrieve the ID from the URL
@@ -47,29 +46,26 @@ if (isset($_POST['submit'])) {
         // Generate a filename based on the given format
         $filename = $userName . "_" . $announcementTitle . "_" . $admissionNo . ".pdf";
 
-        //Read contents of the uploadled file 
+        //Read contents of the uploaded file 
         $fileContents = file_get_contents($resume['tmp_name']);
 
         //convert the file contents to base64
         $pdfUrl = "data:application/pdf;base64," . base64_encode($fileContents);
 
-     
+
         // Move the uploaded file to the target directory
         if (move_uploaded_file($resume['tmp_name'], $uploadFolder . $filename)) {
            
-            $sql = "INSERT INTO applications (student_name, admission_no, contact_no, student_location, cv_file, application_date, company_name, announcement_id, resume) VALUES (?, ?, ?, ?, ?, NOW(), ?, ?, ?)";
+            $sql = "INSERT INTO applications (student_name, admission_no, contact_no, student_location, cv_file, application_date, company_name, resume) VALUES (?, ?, ?, ?, ?, NOW(), ?, ?)";
             $stmt = $db_connection->prepare($sql);
-            $stmt->bind_param("ssssssis", $userName, $admissionNo, $contact, $studentLocation, $filename, $announcementTitle, $id, $pdfUrl);
+            $stmt->bind_param("sssssss", $userName, $admissionNo, $contact, $studentLocation, $filename, $announcementTitle, $pdfUrl);
             $stmt->execute();
             $stmt->close();
-
-                // Display success message
-            $successMessage = "Successfully applied for $announcementTitle.<br>You have successfully registered for $announcementTitle. Please keep checking your email inbox for further updates.";
         } else {
-            
             $errorMessage = "Please select a valid PDF file.";
-            }}}
-      
+        }
+    }
+}
 
 // Close the database connection
 $db_connection->close();
@@ -141,3 +137,4 @@ $db_connection->close();
         </div>
     </div>
 </body>
+
