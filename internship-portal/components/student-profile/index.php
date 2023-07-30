@@ -21,6 +21,35 @@ function getDashboardData($con) {
       'rejected' => 0,
   );
 
+// ... (previous code)
+
+// Update status and announcement_id in applications table
+$queryUpdateStatus = "UPDATE applications SET Action = 'approved' WHERE Action = 'Active'";
+mysqli_query($con, $queryUpdateStatus);
+
+$queryUpdateStatus = "UPDATE applications SET Action = 'rejected' WHERE Action = 'Inactive'";
+mysqli_query($con, $queryUpdateStatus);
+
+// Update status in applications table based on status from new_announcement
+$queryUpdateStatus = "UPDATE applications AS a
+                      JOIN new_announcement AS na ON a.company_name = na.announcement_title
+                      SET a.Action = 
+                      CASE na.status
+                          WHEN 'Active' THEN 'approved'
+                          WHEN 'Inactive' THEN 'rejected'
+                          ELSE a.Action
+                      END";
+mysqli_query($con, $queryUpdateStatus);
+
+// ... (remaining code)
+
+
+
+// Fetch data from the 'new_announcement' table
+$queryAnnouncement = "SELECT announcement_title, status FROM new_announcement";
+$resultAnnouncement = mysqli_query($con, $queryAnnouncement);
+
+
   // Fetch count of 'approved' and 'rejected' internships from internship_applications table
   $query = "SELECT Status, COUNT(*) as count FROM internship_applications WHERE Status IN ('approved', 'rejected') GROUP BY Status";
   $result = mysqli_query($con, $query);
