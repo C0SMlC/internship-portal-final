@@ -11,7 +11,7 @@ if(isset($_GET['id'])) {
     $id = $_GET['id'];
 
     // Query to fetch the specific announcement based on the ID
-    $query = "SELECT * FROM new_announcement WHERE announcement_id = '$id'";
+    $query = "SELECT * FROM new_annoucement WHERE announcement_id = '$id'";
     $result = mysqli_query($db_connection, $query);
 
     // Check if a row is found

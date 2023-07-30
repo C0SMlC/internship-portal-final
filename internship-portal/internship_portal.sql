@@ -175,11 +175,11 @@ CREATE TABLE IF NOT EXISTS `applications` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `new_announcement`
+-- Table structure for table `new_annoucement`
 --
 
-DROP TABLE IF EXISTS `new_announcement`;
-CREATE TABLE IF NOT EXISTS `new_announcement` (
+DROP TABLE IF EXISTS `new_annoucement`;
+CREATE TABLE IF NOT EXISTS `new_annoucement` (
   `announcement_id` int NOT NULL AUTO_INCREMENT,
   `announcement_title` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `description` text COLLATE utf8mb4_general_ci NOT NULL,
@@ -201,10 +201,10 @@ CREATE TABLE IF NOT EXISTS `new_announcement` (
 ) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `new_announcement`
+-- Dumping data for table `new_annoucement`
 --
 
-INSERT INTO `new_announcement` (`announcement_id`, `announcement_title`, `description`, `skills_required`, `location`, `start_date`, `duration`, `branch`, `work_type`, `stipend_type`, `stipend`, `work_location`, `perks`, `user_id`, `published_on`, `status`) VALUES
+INSERT INTO `new_annoucement` (`announcement_id`, `announcement_title`, `description`, `skills_required`, `location`, `start_date`, `duration`, `branch`, `work_type`, `stipend_type`, `stipend`, `work_location`, `perks`, `user_id`, `published_on`, `status`) VALUES
 (1, '', '', '', '', '0000-00-00', 0, '', '', '', '', '', '', 'myadav20ecs@student.mes.ac.in', '2023-06-21 09:04:16', 'Active'),
 (2, 'ccc', '', '', 'WFH', '0000-00-00', 0, '', 'Paid', 'Paid', '2', 'WFH', 'ccxcz', 'demo@gmail.com', '2023-06-21 09:04:16', 'Inactive'),
 (3, '2222', '', '', 'WFH', '0000-00-00', 22, '', 'Paid', 'Paid', '222', 'WFH', '22', 'demo@gmail.com', '2023-06-21 09:04:16', 'Active'),

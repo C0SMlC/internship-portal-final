@@ -30,9 +30,9 @@ mysqli_query($con, $queryUpdateStatus);
 $queryUpdateStatus = "UPDATE applications SET Action = 'rejected' WHERE Action = 'Inactive'";
 mysqli_query($con, $queryUpdateStatus);
 
-// Update status in applications table based on status from new_announcement
+// Update status in applications table based on status from new_annoucement
 $queryUpdateStatus = "UPDATE applications AS a
-                      JOIN new_announcement AS na ON a.company_name = na.announcement_title
+                      JOIN new_annoucement AS na ON a.company_name = na.announcement_title
                       SET a.Action = 
                       CASE na.status
                           WHEN 'Active' THEN 'approved'
@@ -45,8 +45,8 @@ mysqli_query($con, $queryUpdateStatus);
 
 
 
-// Fetch data from the 'new_announcement' table
-$queryAnnouncement = "SELECT announcement_title, status FROM new_announcement";
+// Fetch data from the 'new_annoucement' table
+$queryAnnouncement = "SELECT announcement_title, status FROM new_annoucement";
 $resultAnnouncement = mysqli_query($con, $queryAnnouncement);
 
 
@@ -212,8 +212,8 @@ $dashboardData = getDashboardData($con);
 <div>
 
   <?php
-// Fetch data from the 'new_announcement' table
-$queryAnnouncement = "SELECT announcement_title, status FROM new_announcement";
+// Fetch data from the 'new_annoucement' table
+$queryAnnouncement = "SELECT announcement_title, status FROM new_annoucement";
 $resultAnnouncement = mysqli_query($con, $queryAnnouncement);
 
 // Fetch data from the 'internship_applications' table
