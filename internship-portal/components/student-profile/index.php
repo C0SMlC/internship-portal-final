@@ -174,15 +174,14 @@ $dashboardData = getDashboardData($con);
 </div>
 
 
-
-
-<div class="panel">
-<div>
-
-
 <!--INTERNSHIP DETAILS-->
 <h2 class="mt-5 mb-4 font-weight-bold">Internship Details</h2>
 <div class="internship-detail row py-2">
+    <div class="card mb-3">
+    <div class="panel">
+    <div class="card-body">
+<div>
+
   <?php
 // Fetch data from the 'new_announcement' table
 $queryAnnouncement = "SELECT announcement_title, status FROM new_announcement";
