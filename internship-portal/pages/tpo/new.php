@@ -31,9 +31,13 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
     // Prepare the statement
     $statement = mysqli_prepare($db_connection, $query);
 
+    // Get the user ID and email from session variables
+    $user_id = $_SESSION["id"];
+    $user_email = $_SESSION["email"];
+
     // Bind the parameters
     $branch_string = implode(", ", $branch);
-    mysqli_stmt_bind_param($statement, "ssssssssssss", $announcement_title, $description, $skills_required, $location, $start_date, $duration, $branch_string, $work_type, $stipend_type, $stipend, $work_location, $perks);
+    mysqli_stmt_bind_param($statement, "ssssssssssssss", $announcement_title, $description, $skills_required, $location, $start_date, $duration, $branch_string, $work_type, $stipend_type, $stipend, $work_location, $perks, $user_id, $user_email);
 
     // Execute the statement
     if (mysqli_stmt_execute($statement)) {
@@ -67,7 +71,8 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
             <form class="row g-3" action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>" method="POST"
                 onsubmit="return validateForm();">
 
-                <div class="col-12">
+                <!-- Rest of the form content remains unchanged -->
+                 <div class="col-12">
                     <strong for="announcement_title" class="form-label">Internship Title</strong>
                     <br>
                     <br>
@@ -229,7 +234,6 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
                         id="Perks" placeholder="e.g. Certificate, Letter Of Recommendation, Flexible timings, etc...">
                 </div>
                 <br>
-
                 <?php if (!empty($errors)) : ?>
                     <div class="alert alert-danger">
                         <ul>
