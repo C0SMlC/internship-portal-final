@@ -16,10 +16,10 @@ $per_page_record = 10; // limit
 $start_from = ($page - 1) * $per_page_record;
 if(isset($_GET['search'])){
     $search = $_GET['search'];
-    $data_search = "Select announcement_id, announcement_title, status, published_on from new_annoucement where announcement_id = '$search' OR announcement_title LIKE '%$search%' LIMIT $start_from, $per_page_record ";
+    $data_search = "Select announcement_id, announcement_title, status, published_on from new_announcement where announcement_id = '$search' OR announcement_title LIKE '%$search%' LIMIT $start_from, $per_page_record ";
 
 }else{
-    $data_search = "Select announcement_id, announcement_title, status, published_on from new_annoucement LIMIT $start_from, $per_page_record";
+    $data_search = "Select announcement_id, announcement_title, status, published_on from new_announcement LIMIT $start_from, $per_page_record";
 }
 $query = mysqli_query($con, $data_search);
 
@@ -38,7 +38,7 @@ if (!$query) {
 //             $announcement_id = substr($key, strlen('status_'));
 //             $status = $value;
 
-//             $updateQuery = "UPDATE new_annoucement1 SET status = '$status' WHERE announcement_id = $announcement_id";
+//             $updateQuery = "UPDATE new_announcement1 SET status = '$status' WHERE announcement_id = $announcement_id";
 //             mysqli_query($con, $updateQuery);
 //         }
 //     }
@@ -182,7 +182,7 @@ if (!$query) {
         <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-center">
             <?php
-                    $total_records_query = "SELECT COUNT(*) AS total FROM new_annoucement";
+                    $total_records_query = "SELECT COUNT(*) AS total FROM new_announcement";
                     $total_records_result = mysqli_query($con, $total_records_query);
                     $total_records_row = mysqli_fetch_assoc($total_records_result);
                     $total_records = $total_records_row['total'];

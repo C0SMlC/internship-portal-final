@@ -185,7 +185,7 @@ $dashboardData = getDashboardData($con);
 <div class="internship-detail row py-2">
   <?php
 // Fetch data from the 'new_announcement' table
-$queryAnnouncement = "SELECT announcement_title, status FROM new_annoucement";
+$queryAnnouncement = "SELECT announcement_title, status FROM new_announcement";
 $resultAnnouncement = mysqli_query($con, $queryAnnouncement);
 
 // Fetch data from the 'internship_applications' table

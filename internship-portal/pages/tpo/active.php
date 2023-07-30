@@ -14,7 +14,7 @@ $start = ($page - 1) * $per_page_record;
 $search = isset($_GET["search"]) ? $_GET["search"] : "";
 $searchedData = [];
 // Count total records for pagination
-$total_records_sql = "SELECT COUNT(*) AS count FROM new_annoucement";
+$total_records_sql = "SELECT COUNT(*) AS count FROM new_announcement";
 $total_records_result = $db_connection->query($total_records_sql);
 
 if (!$total_records_result) {
@@ -26,7 +26,7 @@ $total_pages = ceil($total_records / $per_page_record);
 $end = $start + $per_page_record;
 
 $search = isset($_GET["search"]) ? $_GET["search"] : '';
-$sql = "SELECT * FROM new_annoucement WHERE (announcement_id LIKE '%$search%' OR announcement_title LIKE '%$search%') LIMIT $start, $per_page_record";
+$sql = "SELECT * FROM new_announcement WHERE (announcement_id LIKE '%$search%' OR announcement_title LIKE '%$search%') LIMIT $start, $per_page_record";
 $result = $db_connection->query($sql);
 if (!$result) {
     die("Query execution failed: " . $db_connection->error);

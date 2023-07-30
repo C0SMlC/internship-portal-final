@@ -150,10 +150,10 @@ INSERT INTO `internship_certificates` (`id`, `student_id`, `certificate_type`, `
 -- --------------------------------------------------------
 
 --
--- Table structure for table `new_annoucement`
+-- Table structure for table `new_announcement`
 --
 
-CREATE TABLE `new_annoucement` (
+CREATE TABLE `new_announcement` (
   `announcement_id` int(11) NOT NULL,
   `announcement_title` varchar(255) NOT NULL,
   `description` text NOT NULL,
@@ -173,10 +173,10 @@ CREATE TABLE `new_annoucement` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `new_annoucement`
+-- Dumping data for table `new_announcement`
 --
 
-INSERT INTO `new_annoucement` (`announcement_id`, `announcement_title`, `description`, `skills_required`, `location`, `start_date`, `duration`, `branch`, `work_type`, `stipend_type`, `stipend`, `work_location`, `perks`, `user_id`, `published_on`, `status`) VALUES
+INSERT INTO `new_announcement` (`announcement_id`, `announcement_title`, `description`, `skills_required`, `location`, `start_date`, `duration`, `branch`, `work_type`, `stipend_type`, `stipend`, `work_location`, `perks`, `user_id`, `published_on`, `status`) VALUES
 (1, 'Tata', '123.', '123.', '123.', '2023-01-02', 1, 'ECS', 'Paid', 'UnPaid', '123.', 'WFH', '123.', '123.', '2023-07-17 06:05:50', ''),
 (2, 'Mahindra', '123.', '123.', '123.', '2023-01-02', 1, 'CS', 'Paid', 'UnPaid', '123.', 'WFH', '123.', '456.', '2023-07-17 06:07:27', ''),
 (3, 'Honda', '123.', '123.', '123.', '2023-01-02', 1, 'MECH', 'Paid', 'UnPaid', '123.', 'WFH', '123.', '789.', '2023-07-17 06:11:35', ''),
@@ -273,9 +273,9 @@ ALTER TABLE `internship_certificates`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `new_annoucement`
+-- Indexes for table `new_announcement`
 --
-ALTER TABLE `new_annoucement`
+ALTER TABLE `new_announcement`
   ADD PRIMARY KEY (`announcement_id`);
 
 --
@@ -337,9 +337,9 @@ ALTER TABLE `internship_certificates`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `new_annoucement`
+-- AUTO_INCREMENT for table `new_announcement`
 --
-ALTER TABLE `new_annoucement`
+ALTER TABLE `new_announcement`
   MODIFY `announcement_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --

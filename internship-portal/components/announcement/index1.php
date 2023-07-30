@@ -9,8 +9,8 @@ if (!$db_connection = mysqli_connect($dbhost, $dbuser, $dbpassword, $dbname)) {
     die("Failed to connect");
 }
 
-//$query = "SELECT * FROM new_annoucement ORDER BY announcement_id DESC LIMIT 5";
-$query = "SELECT * FROM new_annoucement where status = 'Active'";
+//$query = "SELECT * FROM new_announcement ORDER BY announcement_id DESC LIMIT 5";
+$query = "SELECT * FROM new_announcement where status = 'Active'";
 $result = mysqli_query($db_connection, $query);
 ?>
 

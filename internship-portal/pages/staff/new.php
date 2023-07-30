@@ -20,7 +20,7 @@ if (!$db_connection = mysqli_connect($dbhost, $dbuser, $dbpassword, $dbname)) {
 $fac_id = $_SESSION['id'];
 
 
-// Retrieve the announcement title from the new_annoucement table
+// Retrieve the announcement title from the new_announcement table
 $sql = "SELECT fac_email FROM faculty_panel WHERE fac_id = $fac_id";
 $result = $db_connection->query($sql);
 if ($result) {
@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && !empty($_POST['announcement_title'])
 
     
 
-    $query = "insert into new_annoucement(announcement_title,description, skills_required, location, start_date, duration, branch, work_type, stipend_type, stipend, work_location, perks, user_id, email ) values('$announcement_title', ' $description', '$skills_required', '$location', '$start_date', '$duration', '$branch', '$work_type', '$stipend_type', '$stipend', '$work_location', '$perks', '$fac_id', '$fac_email') ";
+    $query = "insert into new_announcement(announcement_title,description, skills_required, location, start_date, duration, branch, work_type, stipend_type, stipend, work_location, perks, user_id, email ) values('$announcement_title', ' $description', '$skills_required', '$location', '$start_date', '$duration', '$branch', '$work_type', '$stipend_type', '$stipend', '$work_location', '$perks', '$fac_id', '$fac_email') ";
     if(mysqli_query($db_connection, $query))
     {
         

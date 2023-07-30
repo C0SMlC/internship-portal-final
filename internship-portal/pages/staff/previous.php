@@ -16,10 +16,10 @@ $per_page_record = 10; // limit
 $start_from = ($page - 1) * $per_page_record;
 if(isset($_GET['search'])){
     $search = $_GET['search'];
-    $data_search = "Select announcement_id, announcement_title, status, published_on from new_annoucement where announcement_id = '$search' OR announcement_title LIKE '%$search%' LIMIT $start_from, $per_page_record ";
+    $data_search = "Select announcement_id, announcement_title, status, published_on from new_announcement where announcement_id = '$search' OR announcement_title LIKE '%$search%' LIMIT $start_from, $per_page_record ";
 
 }else{
-    $data_search = "Select announcement_id, announcement_title, status, published_on from new_annoucement LIMIT $start_from, $per_page_record";
+    $data_search = "Select announcement_id, announcement_title, status, published_on from new_announcement LIMIT $start_from, $per_page_record";
 }
 $query = mysqli_query($db_connection, $data_search);
 
@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $announcement_id = substr($key, strlen('status_'));
             $status = $value;
 
-            $updateQuery = "UPDATE new_annoucement SET status = '$status' WHERE announcement_id = $announcement_id";
+            $updateQuery = "UPDATE new_announcement SET status = '$status' WHERE announcement_id = $announcement_id";
             mysqli_query($db_connection, $updateQuery);
         }
     }
@@ -44,11 +44,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $status = $_POST["status_$announcementId"] ?? null;
 
     if ($announcementId !== null && $status !== null) {
-        $updateQuery = "UPDATE new_annoucement SET status = '$status' WHERE announcement_id = $announcementId";
+        $updateQuery = "UPDATE new_announcement SET status = '$status' WHERE announcement_id = $announcementId";
         mysqli_query($db_connection, $updateQuery);
       //  echo getStatusMessage($status);
        // exit; // Terminate the script here since we only need to echo the status message
-       $announcementTitleQuery = "SELECT announcement_title FROM new_annoucement WHERE announcement_id = $announcementId";
+       $announcementTitleQuery = "SELECT announcement_title FROM new_announcement WHERE announcement_id = $announcementId";
        $titleResult = mysqli_query($db_connection, $announcementTitleQuery);
        $row = mysqli_fetch_assoc($titleResult);
        $announcementTitle = $row['announcement_title'];
@@ -206,7 +206,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-center">
             <?php
-                    $total_records_query = "SELECT COUNT(*) AS total FROM new_annoucement";
+                    $total_records_query = "SELECT COUNT(*) AS total FROM new_announcement";
                     $total_records_result = mysqli_query($db_connection, $total_records_query);
                     $total_records_row = mysqli_fetch_assoc($total_records_result);
                     $total_records = $total_records_row['total'];

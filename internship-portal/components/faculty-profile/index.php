@@ -7,10 +7,10 @@ $fac_id = $_SESSION['id'];
 
 
 //$userEmail = $update['fac_email'];
-$query = "SELECT new_annoucement.announcement_title, new_annoucement.description, new_annoucement.published_on, new_annoucement.user_id, count(applications.id) as students_applied FROM new_annoucement 
-Left join applications  on  new_annoucement.announcement_id = applications.announcement_id 
-WHERE new_annoucement.user_id = '$fac_id'
-Group by new_annoucement.announcement_id";
+$query = "SELECT new_announcement.announcement_title, new_announcement.description, new_announcement.published_on, new_announcement.user_id, count(applications.id) as students_applied FROM new_announcement 
+Left join applications  on  new_announcement.announcement_id = applications.announcement_id 
+WHERE new_announcement.user_id = '$fac_id'
+Group by new_announcement.announcement_id";
 $result = mysqli_query($con, $query);
 
 $announcements = array();

@@ -14,7 +14,7 @@ if (mysqli_connect_errno()) {
 }
 
 // Query to fetch the values of attributes from the table
-$query = "SELECT announcement_id, announcement_title, branch FROM new_annoucement";
+$query = "SELECT announcement_id, announcement_title, branch FROM new_announcement";
 
 // Execute the query
 $result = mysqli_query($db_connection, $query);
