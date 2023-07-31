@@ -48,27 +48,7 @@ if(isset($_GET['id'])) {
     <?php
     include_once("../../components/navbar/index.php");
     ?>
-    <!-- <div class="container my-2 greet">
-        <p>Apply for Internship</p>
-    </div>
-    <div class="alert alert-success container col-8" role="alert">
-        <h2 class="alert-heading">Successfully applied for XYZ pvt ltd.</h2>
-        <hr>
-        <p>You have successfully registered for 
-            <b>XYZ pvt ltd</b> . Please keep checking your mes email inbox for further updates. 
-        </p>
-       
-    </div>
-    <div class="alert alert-warning container col-8" role="alert">
-        <h2 class="alert-heading">Cannot apply for this internship!</h2>
-        <hr>
-        <p> 
-            <b>Please upload your previous completion certificate.</b> 
-            <br>
-            To apply for this internship please upload your previous completion certificate or contact TPO. 
-        </p>
-       
-    </div> -->
+    
     <div class="container my-3 text-justify" id="content">
         <div class="bg-light p-5 rounded">
 

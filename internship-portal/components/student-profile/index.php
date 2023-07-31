@@ -21,6 +21,35 @@ function getDashboardData($con) {
       'rejected' => 0,
   );
 
+// ... (previous code)
+
+// Update status and announcement_id in applications table
+$queryUpdateStatus = "UPDATE applications SET Action = 'approved' WHERE Action = 'Active'";
+mysqli_query($con, $queryUpdateStatus);
+
+$queryUpdateStatus = "UPDATE applications SET Action = 'rejected' WHERE Action = 'Inactive'";
+mysqli_query($con, $queryUpdateStatus);
+
+// Update status in applications table based on status from new_annoucement
+$queryUpdateStatus = "UPDATE applications AS a
+                      JOIN new_annoucement AS na ON a.company_name = na.announcement_title
+                      SET a.Action = 
+                      CASE na.status
+                          WHEN 'Active' THEN 'approved'
+                          WHEN 'Inactive' THEN 'rejected'
+                          ELSE a.Action
+                      END";
+mysqli_query($con, $queryUpdateStatus);
+
+// ... (remaining code)
+
+
+
+// Fetch data from the 'new_annoucement' table
+$queryAnnouncement = "SELECT announcement_title, status FROM new_annoucement";
+$resultAnnouncement = mysqli_query($con, $queryAnnouncement);
+
+
   // Fetch count of 'approved' and 'rejected' internships from internship_applications table
   $query = "SELECT Status, COUNT(*) as count FROM internship_applications WHERE Status IN ('approved', 'rejected') GROUP BY Status";
   $result = mysqli_query($con, $query);
@@ -174,17 +203,16 @@ $dashboardData = getDashboardData($con);
 </div>
 
 
-
-
-<div class="panel">
-<div>
-
-
 <!--INTERNSHIP DETAILS-->
 <h2 class="mt-5 mb-4 font-weight-bold">Internship Details</h2>
 <div class="internship-detail row py-2">
+    <div class="card mb-3">
+    <div class="panel">
+    <div class="card-body">
+<div>
+
   <?php
-// Fetch data from the 'new_announcement' table
+// Fetch data from the 'new_annoucement' table
 $queryAnnouncement = "SELECT announcement_title, status FROM new_annoucement";
 $resultAnnouncement = mysqli_query($con, $queryAnnouncement);
 
