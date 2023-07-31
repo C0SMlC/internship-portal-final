@@ -26,7 +26,7 @@ $total_pages = ceil($total_records / $per_page_record);
 $end = $start + $per_page_record;
 
 $search = isset($_GET["search"]) ? $_GET["search"] : '';
-$sql = "SELECT * FROM new_annoucement WHERE status = 'active' AND (announcement_id LIKE '%$search%' OR announcement_title LIKE '%$search%') LIMIT $start, $per_page_record ";
+$sql = "SELECT * FROM new_annoucement WHERE status = 'Active' AND (announcement_id LIKE '%$search%' OR announcement_title LIKE '%$search%') LIMIT $start, $per_page_record";
 $result = $db_connection->query($sql);
 if (!$result) {
     die("Query execution failed: " . $db_connection->error);
@@ -78,10 +78,10 @@ $db_connection->close();
                 // Output row data
                 echo "<tr>";
                 echo "<td class='text-center'>" . $row["announcement_id"] . "</td>";
-                echo "<td class='text-center'><a href='./companyInfo.php?announcement_title=" . urlencode($row["announcement_title"]) . "' class='company-link'>" . $row["announcement_title"] . "</a></td>";
+                echo "<td class='text-center'><a href='./index copy.php?announcement_title=" . urlencode($row["announcement_title"]) . "' class='company-link'>" . $row["announcement_title"] . "</a></td>";
                 echo "<td class='text-center'>" . $row["start_date"] . "</td>";
                 echo "<td class='text-center'>" . $row["duration"] . "</td>";
-                echo "<td class='text-center'><a href='./students-for-company.php?announcement_title=" . urlencode($row["announcement_title"]) ."' class='btn btn-primary ' role='button'><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-download' viewBox='0 0 16 16'><path d='M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z'/><path d='M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z'/></svg></a></td>";
+                echo "<td class='text-center'><a href='./students-for-company.php?announcement_id=" . urlencode($row["announcement_id"]) ."' class='btn btn-primary ' role='button'><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-download' viewBox='0 0 16 16'><path d='M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z'/><path d='M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z'/></svg></a></td>";
                 echo "</tr>";
             }
         } else {
@@ -95,7 +95,7 @@ $db_connection->close();
         <nav aria-label="Page navigation example">
         <ul class="pagination justify-content-center">
             <li class="page-item <?php if ($page < 2) echo "disabled"; ?>">
-                <a class="page-link" href="./active.php?page=<?php echo $page - 1; ?>&search=<?php echo $search; ?>" tabindex="-1">Previous</a>
+                <a class="page-link" href="./students-for-company.php?page=<?php echo $page - 1; ?>&search=<?php echo $search; ?>" tabindex="-1">Previous</a>
             </li>
             <?php
             for ($i = 1; $i <= $total_pages; $i++) {

@@ -1,63 +1,68 @@
 <?php
-// Db connection
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "internship_portal";
+// Load the database configuration file
 
+include "../../connect/connect.php";
 
-$conn = new mysqli($servername, $username, $password, $dbname);
+$id = isset($_GET['announcement_id']) ? $_GET['announcement_id'] : null;
 
+// Fetch company name from the database
+$companyNameQuery = "SELECT company_name FROM `applications` WHERE announcement_id = $id LIMIT 1";
+$companyNameResult = mysqli_query($db_connection, $companyNameQuery);
+$companyName = "company-name"; // Default company name if not found in the database
 
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+if ($companyNameResult && mysqli_num_rows($companyNameResult) > 0) {
+    $companyData = mysqli_fetch_assoc($companyNameResult);
+    $companyName = $companyData['company_name'];
 }
 
-// Retrieving company name 
-$companyName = isset($_GET["announcement_title"]) ? $_GET["announcement_title"] : '';
+// Fetch records from the database
+$data_search = "SELECT id, student_name, company_name, admission_no, contact_no, student_location, action FROM `applications` WHERE announcement_id = $id";
+$query = mysqli_query($db_connection, $data_search);
 
-//inner join
-$sql = "SELECT student_name, admission_no , contact_no
-        FROM applications
-        
-        WHERE company_name = '$companyName' ";
+// Check if the query executed successfully
+if ($query) {
+    // HTML content to create the Excel file
+    $html = '<table>';
+    $html .= '<tr><th>ID</th><th>Applicant Name</th><th>Admission No</th><th>Contact No</th><th>Location</th><th>Company Name</th><th>Action</th></tr>';
 
-$result = $conn->query($sql);
+    if (mysqli_num_rows($query) > 0) {
+        // Output each row of the data
+        while ($row = mysqli_fetch_assoc($query)) {
+            $id = $row['id'];
+            $studentName = $row['student_name'];
+            $companyName = $row['company_name'];
+            $admissionNo = $row['admission_no'];
+            $contactNo = $row['contact_no'];
+            $location = isset($row['location']) ? $row['location'] : '';
+            $action = $row['action'];
 
-
-if ($result === false) {
-    die("Error executing the query: " . $conn->error);
-}
-
-//csv
-$filename = $companyName.'_students.csv';
-$file = fopen($filename, 'w');
-
-
-fputcsv($file, array('Student Name','Admission No', 'Contact No'));
-
-
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        fputcsv($file, $row);
+            // Append the data to the HTML table
+            $html .= '<tr>';
+            $html .= '<td>' . $id . '</td>';
+            $html .= '<td>' . $studentName . '</td>';
+            $html .= '<td>' . $admissionNo . '</td>';
+            $html .= '<td>' . $contactNo . '</td>';
+            $html .= '<td>' . $location . '</td>';
+            $html .= '<td>' . $companyName . '</td>';
+            $html .= '<td>' . $action . '</td>';
+            $html .= '</tr>';
+        }
+    } else {
+        // If no data found, show a message
+        $html .= '<tr><td colspan="7">No records found...</td></tr>';
     }
+
+    $html .= '</table>';
+
+    // Set headers to force download
+    header('Content-Type: application/vnd.ms-excel');
+    header('Content-Disposition: attachment; filename="' . $companyName . 'applicants' . date('Y-m-d') . '.xls"');
+    header('Pragma: no-cache');
+    header('Expires: 0');
+
+    // Render HTML content as Excel file
+    echo $html;
+} else {
+    echo "Query execution failed.";
 }
-
-
-fclose($file);
-
-
-header('Content-Type: text/csv');
-header('Content-Disposition: attachment; filename=' . $filename);
-header('Pragma: no-cache');
-header('Expires: 0');
-
-
-readfile($filename);
-
-
-unlink($filename);
-
-
-$conn->close();
 ?>
