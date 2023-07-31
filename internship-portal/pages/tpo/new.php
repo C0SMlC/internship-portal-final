@@ -26,28 +26,39 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
     }
 
     // Prepare the SQL statement
-    $query = "INSERT INTO new_annoucement (announcement_title, description, skills_required, location, start_date, duration, branch, work_type, stipend_type, stipend, work_location, perks) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    // $query = "INSERT INTO new_annoucement (announcement_title, description, skills_required, location, start_date, duration, branch, work_type, stipend_type, stipend, work_location, perks) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $query = "INSERT INTO new_annoucement (announcement_title, description, skills_required, location, start_date, duration, branch, work_type, stipend_type, stipend, work_location, perks, user_id, email) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     // Prepare the statement
     $statement = mysqli_prepare($db_connection, $query);
 
-    // Get the user ID and email from session variables
-    $user_id = $_SESSION["id"];
-    $user_email = $_SESSION["email"];
+if (!$statement) {
+    // Handle the error
+    die("Error in SQL query: " . mysqli_error($db_connection));
+}
 
-    // Bind the parameters
-    $branch_string = implode(", ", $branch);
-    mysqli_stmt_bind_param($statement, "ssssssssssssss", $announcement_title, $description, $skills_required, $location, $start_date, $duration, $branch_string, $work_type, $stipend_type, $stipend, $work_location, $perks, $user_id, $user_email);
+// Get the user ID and email from session variables
+$user_id = $_SESSION["id"];
+$user_email = $_SESSION["email"];
 
-    // Execute the statement
-    if (mysqli_stmt_execute($statement)) {
-        mysqli_stmt_close($statement);
-        mysqli_close($db_connection);
-        header("Location: anouncementsuccess.php");
-        exit();
-    } else {
-        echo "Error: " . mysqli_stmt_error($statement);
-    }
+// Bind the parameters
+$branch_string = implode(", ", $branch);
+mysqli_stmt_bind_param($statement, "ssssssssssssss", $announcement_title, $description, $skills_required, $location, $start_date, $duration, $branch_string, $work_type, $stipend_type, $stipend, $work_location, $perks, $user_id, $user_email);
+
+// Execute the statement
+if (mysqli_stmt_execute($statement)) {
+    mysqli_stmt_close($statement);
+    mysqli_close($db_connection);
+    header("Location: anouncementsuccess.php");
+    exit();
+} else {
+    echo "Error: " . mysqli_stmt_error($statement);
+}
+
+
+
+
+
 }
 ?>
 

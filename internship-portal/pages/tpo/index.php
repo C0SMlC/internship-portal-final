@@ -6,6 +6,12 @@ include_once("../../components/head.php");
 session_start();
 
 $id = isset($_GET["user_id"]) ? $_GET["user_id"] : "";
+
+if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
+    echo "<script>window.location.href='./Login-System-master/login.php'</script>";
+    exit;
+}
+
 ?>
 
 <body>
