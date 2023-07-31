@@ -6,7 +6,6 @@ include_once("../../components/head.php");
 require "../../connect/connect.php";
 
 //pagination part
-
 if (isset($_GET["page"])) {
     $page = $_GET["page"];
 } else {

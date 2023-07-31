@@ -14,15 +14,9 @@ if (isset($_GET["page"])) {
 $id = isset($_GET['id']) ? $_GET['id'] : 1;
 $per_page_record = 10; // limit
 $start_from = ($page - 1) * $per_page_record;
-// $data_search = "SELECT * FROM applications where announcement_id = $id LIMIT $start_from, $per_page_record";
-// $query = mysqli_query($db_connection, $data_search);
-$data_search = "SELECT * FROM applications WHERE id = $id LIMIT $start_from, $per_page_record";
+$data_search = "SELECT * FROM applications where announcement_id = $id LIMIT $start_from, $per_page_record";
 $query = mysqli_query($db_connection, $data_search);
 
-if (!$query) {
-    // Query execution failed, print the error message for debugging
-    die("Error in SQL query: " . mysqli_error($db_connection));
-}
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     foreach ($_POST as $key => $value) {
         if (strpos($key, 'action_') === 0) {

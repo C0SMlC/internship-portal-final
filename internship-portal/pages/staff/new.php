@@ -29,8 +29,7 @@ if ($result) {
 } else {
     echo "Error: " . mysqli_error($db_connection); 
 }
-// var_dump($fac_id);
-// var_dump($fac_email);
+
 
 if ($_SERVER['REQUEST_METHOD'] == "POST" && !empty($_POST['announcement_title']) && !empty($_POST['description']) && !empty($_POST['skills_required']) && !empty($_POST['location']) && !empty($_POST['start_date']) && !empty($_POST['duration']) && !empty($_POST['branch']) && !empty($_POST['work_type']) && !empty($_POST['stipend_type']) && !empty($_POST['work_location']) && !empty($_POST['perks'])) {
     $announcement_title = $_POST['announcement_title'];

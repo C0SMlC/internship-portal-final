@@ -26,21 +26,7 @@ if(isset($_SESSION['id'
 }else{
     header("Location:./login.php");
 }
-//$fac_id = 16;
-// $sql = "select * from faculty_panel where fac_id = $fac_id";
-// $result = mysqli_query($db_connection, $sql);
 
-// if ($result) {
-//     // Fetch the data as an associative array
-//     $row = mysqli_fetch_assoc($result);
-
-//     // Access the 'fac_name' field from the fetched row
-//     $fac_name = $row['fac_name'];
-// } else {
-//     // Handle the case where the query failed
-//     // For example, display an error message or log the error
-//     $fac_name = " ";
-// }
 ?>
 <!-- Auth -->
 
