@@ -62,6 +62,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
       $email_err = "Please enter a valid email address.";
     } else {
+      // Check if the email contains either @student.mes.ac.in or @mes.ac.in domain
+      $allowed_domains = array('@mes.ac.in');
+      $valid_domain = false;
+      foreach ($allowed_domains as $domain) {
+        if (strpos($email, $domain) !== false) {
+        $valid_domain = true;
+        break;
+      }
+    }
+
+    if (!$valid_domain) {
+      $email_err = "Invalid email domain. Please use an mes id";
+    } else {
+
       # Prepare a select statement
       $sql = "SELECT fac_id FROM faculty_panel WHERE fac_email = ?";
 
@@ -90,6 +104,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       }
     }
   }
+}
 
   # Validate password
   if (empty(trim($_POST["password"]))) {
