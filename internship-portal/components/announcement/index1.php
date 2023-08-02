@@ -1,6 +1,6 @@
 <?php
 //db connection
-$dbhost = "localhost:4306";
+$dbhost = "localhost";
 $dbuser = "root";
 $dbpassword = "";
 $dbname = "internship_portal";
