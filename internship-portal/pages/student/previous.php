@@ -41,8 +41,6 @@ mysqli_close($connection);
 
 // Define the directory path where the letters are stored
 $lettersDirectory = "C:/xampp/htdocs/internship-portal-final/internship-portal/pages/student/letters/"; // Adjust the path to the actual directory where the letters are stored
-
-
 ?>
 
 <!DOCTYPE html>
@@ -63,6 +61,11 @@ $lettersDirectory = "C:/xampp/htdocs/internship-portal-final/internship-portal/p
         .status-rejected {
             color: red;
         }
+
+        .uploaded {
+            color: green;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -76,11 +79,15 @@ $lettersDirectory = "C:/xampp/htdocs/internship-portal-final/internship-portal/p
             </div>
         </form>
 
-        <?php if (isset($_GET['success']) && $_GET['success'] == 1): ?>
-            <div class="alert alert-success">
-                <strong>Success!</strong> Letter uploaded successfully.
-            </div>
-        <?php endif; ?>
+       <?php if (isset($_GET['success'])) {
+    $successCode = $_GET['success'];
+    if ($successCode == 1) {
+        echo '<div class="alert alert-success">Letter uploaded successfully.</div>';
+    } elseif ($successCode == 2) {
+        echo '<div class="alert alert-success">Certificate uploaded successfully.</div>';
+    }
+} ?>
+        
 
         <div class="bg-light rounded">
             <table class="table table-striped">
@@ -91,6 +98,7 @@ $lettersDirectory = "C:/xampp/htdocs/internship-portal-final/internship-portal/p
                         <th>Date</th>
                         <th>Status</th>
                         <th>Letter</th>
+                        <th>Upload Certificate</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -122,6 +130,26 @@ $lettersDirectory = "C:/xampp/htdocs/internship-portal-final/internship-portal/p
         } else {
             echo '<a href="group_letter.php?ID=' . $application['ID'] . '" target="_blank">View Letter</a>';
         }
+    }
+    ?>
+</td>
+ <td>
+    <?php
+    if ($status === 'approved') {
+        // Check if certificate is uploaded
+        if (!empty($application['CertificatePath'])) {
+            echo '<span class="uploaded">Uploaded</span>';
+        } else {
+            echo '
+            <form action="upload_certificate.php" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="application_id" value="' . $application['ID'] . '">
+                <input type="file" name="certificate_file" required>
+                <button type="submit">Upload</button>
+            </form>
+            ';
+        }
+    } else {
+        echo '---';
     }
     ?>
 </td>
