@@ -1,6 +1,6 @@
 <?php
 // Replace with your database credentials
-$hostname = "localhost";
+$hostname = "localhost:4306";
 $username = "root";
 $password = "";
 $database = "internship_portal";
