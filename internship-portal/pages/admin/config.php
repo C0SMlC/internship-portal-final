@@ -1,5 +1,5 @@
 <?php
-$con=mysqli_connect("localhost","root","","internship_portal");
+$con=mysqli_connect("localhost:4306","root","","internship_portal");
 if($con){
     echo "";
 }else{

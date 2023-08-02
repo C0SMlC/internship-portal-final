@@ -46,12 +46,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   }
 
   # Validate email 
-  if (empty(trim($_POST["email"]))) {
-    $email_err = "Please enter an email address";
+# Validate email 
+if (empty(trim($_POST["email"]))) {
+  $email_err = "Please enter an email address";
+} else {
+  $email = filter_var($_POST["email"], FILTER_SANITIZE_EMAIL);
+  if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    $email_err = "Please enter a valid email address.";
   } else {
-    $email = filter_var($_POST["email"], FILTER_SANITIZE_EMAIL);
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-      $email_err = "Please enter a valid email address.";
+    // Check if the email contains either @student.mes.ac.in or @mes.ac.in domain
+    $allowed_domains = array('@student.mes.ac.in', '@mes.ac.in');
+    $valid_domain = false;
+    foreach ($allowed_domains as $domain) {
+      if (strpos($email, $domain) !== false) {
+        $valid_domain = true;
+        break;
+      }
+    }
+
+    if (!$valid_domain) {
+      $email_err = "Invalid email domain. Please use an mes id";
     } else {
       # Prepare a select statement
       $sql = "SELECT id FROM users WHERE email = ?";
@@ -81,6 +95,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       }
     }
   }
+}
+
 
   # Validate password
   if (empty(trim($_POST["password"]))) {

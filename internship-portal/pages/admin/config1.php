@@ -1,5 +1,5 @@
 <?php
-define("DB_SERVER", "localhost");
+define("DB_SERVER", "localhost:4306");
 define("DB_USERNAME", "root");
 define("DB_PASSWORD", "");
 define("DB_NAME", "internship_portal");

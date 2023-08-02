@@ -37,7 +37,7 @@ if ($query) {
             $action = $row['action'];
 
             // Generate the resume link using the actual URL to the resume file
-            $resumeLink ="http://localhost/23-07/internship-portal-final/internship-portal/pages/student/CV_Uploads/" . $filename; // Replace this with the actual URL
+            $resumeLink ="http://localhost/2-08/internship-portal-final/internship-portal/pages/student/CV_Uploads/" . $filename; // Replace this with the actual URL
 
             // Create a clickable hyperlink for the resume link
             $resumeLinkHtml = '<a href="' . $resumeLink . '" target="_blank">View Resume</a>';
