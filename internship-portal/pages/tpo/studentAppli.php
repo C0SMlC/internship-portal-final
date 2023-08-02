@@ -63,6 +63,9 @@ $end = $start + $per_page_record;
                 <button class="btn btn-primary btn-download-excel">Download Excel</button>
                 <!--<button class="btn btn-primary btn-download-pdf">Download PDF</button>-->
              </div>
+             <div class="col text-end">
+            <a href="index.php" class="btn btn-primary mb-3">Back</a> <!-- Add the back button -->
+            </div>
         </form>
     </div>
     <div class="container mt-2 table-responsive-sm">

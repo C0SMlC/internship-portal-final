@@ -54,6 +54,9 @@ $db_connection->close();
             <div class="col-auto">
                 <button type="submit" class="btn btn-primary mb-3">Search</button>
             </div>
+            <div class="col text-end">
+            <a href="index.php" class="btn btn-primary mb-3">Back</a> <!-- Add the back button -->
+            </div>
         </form>
     </div>
     <div class="container mt-2 table-responsive-sm">

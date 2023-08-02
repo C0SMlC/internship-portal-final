@@ -17,7 +17,7 @@ $boxColor = ($action === '') ? 'green' : 'red';
         <div class="response-box <?php echo $boxColor; ?>">
             <div style="text-align: center;">
                 <h2 style="margin-bottom: 7vh;">Announcement added successfully.</h2>
-                <a href="./index.php" class="btn btn-primary btn-sm col-md-2 p-sm-4" role="button">Go Back</a>
+                <a href="./index.php" class="btn btn-primary btn-sm col-md-2 p-sm-4" role="button">Back</a>
             </div>
         </div>
     </div>
