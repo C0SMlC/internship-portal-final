@@ -15,14 +15,14 @@ if ($companyNameResult && mysqli_num_rows($companyNameResult) > 0) {
 }
 
 // Fetch records from the database
-$data_search = "SELECT id, student_name, company_name, admission_no, contact_no, student_location, action, cv_file, resume FROM `applications` WHERE announcement_id = $id";
+$data_search = "SELECT id, student_name, company_name, admission_no, contact_no, student_location, action, cv_file, resume, email FROM `applications` WHERE announcement_id = $id";
 $query = mysqli_query($db_connection, $data_search);
 
 // Check if the query executed successfully
 if ($query) {
     // HTML content to create the Excel file
     $html = '<table>';
-    $html .= '<tr><th>ID</th><th>Applicant Name</th><th>Admission No</th><th>Contact No</th><th>Location</th><th>Resume Link</th><th>Company Name</th><th>Action</th></tr>';
+    $html .= '<tr><th>ID</th><th>Applicant Name</th><th>Admission No</th><th>Contact No</th><th>Location</th><th>Resume Link</th><th>Company Name</th><th>Action</th><th>Student Email</th></tr>';
 
     if (mysqli_num_rows($query) > 0) {
         // Output each row of the data
@@ -32,9 +32,10 @@ if ($query) {
             $companyName = $row['company_name'];
             $admissionNo = $row['admission_no'];
             $contactNo = $row['contact_no'];
-            $location = isset($row['location']) ? $row['location'] : '';
+            $location = isset($row['student_location']) ? $row['student_location'] : '';
             $filename = $row['cv_file'];
             $action = $row['action'];
+            $user_email = $row['email'];
 
             // Generate the resume link using the actual URL to the resume file
             $resumeLink ="http://localhost/internship-portal-final/internship-portal/pages/student/CV_Uploads/" . $filename; // Replace this with the actual URL
@@ -52,6 +53,7 @@ if ($query) {
             $html .= '<td>' . $resumeLinkHtml . '</td>';
             $html .= '<td>' . $companyName . '</td>';
             $html .= '<td>' . $action . '</td>';
+            $html .= '<td>' . $user_email. '</td>';
             $html .= '</tr>';
         }
     } else {
