@@ -76,8 +76,11 @@ if (mysqli_stmt_execute($statement)) {
     <?php include_once("../../components/navbar/index.php"); ?>
     <div class="container my-2 greet">
         <p>New Announcement</p>
+        
     </div>
+    
     <div class="container my-3" id="content">
+        
         <div class="bg-light p-5 rounded">
             <form class="row g-3" action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>" method="POST"
                 onsubmit="return validateForm();">

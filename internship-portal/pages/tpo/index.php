@@ -59,6 +59,9 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
             <div class="col-6 mt-3">
                 <a href="./new.php?user_id=<?php echo urlencode($id) ?>" class="btn btn-warning btn-lg col-md-12 p-sm-4" role="button">New Annoucement</a>
             </div>
+            <div class="col-6 mt-3">
+                <a href="./previous.php?user_id=<?php echo urlencode($id) ?>" class="btn btn-info btn-lg col-md-12 p-sm-4" role="button">Previous Annoucement</a>
+            </div>
         </div>
     </div>
     <br>
