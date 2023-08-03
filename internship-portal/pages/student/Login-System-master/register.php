@@ -1,191 +1,197 @@
 <?php
+# Enable error reporting
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 # Include connection
 require_once "./login_config.php";
-// include_once("../../../components/navbar/index.php"); 
 
 # Define variables and initialize with empty values
 $fullname_err = $username_err = $email_err = $password_err = $address_err = $age_err = $mobile_err = "";
 $fullname = $username = $email = $password = $address = $age = $mobile = "";
 
 # Processing form data when form is submitted
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-  # Validate Full Name
-  if (empty(trim($_POST["fullname"]))) {
-    $fullname_err = "Please enter your full name.";
-  } else {
-    $fullname = trim($_POST["fullname"]);
-  }
-
-  # Validate username
-  if (empty(trim($_POST["username"]))) {
-    $username_err = "Please enter a username.";
-  } else {
-    $username = trim($_POST["username"]);
-    if (!ctype_alnum(str_replace(array("@", "-", "_"), "", $username))) {
-      $username_err = "Username can only contain letters, numbers and symbols like '@', '_', or '-'.";
+    # Validate Full Name
+    if (empty(trim($_POST["fullname"]))) {
+        $fullname_err = "Please enter your full name.";
     } else {
-      # Prepare a select statement
-      $sql = "SELECT id FROM users WHERE username = ?";
-
-      if ($stmt = mysqli_prepare($link, $sql)) {
-        # Bind variables to the statement as parameters
-        mysqli_stmt_bind_param($stmt, "s", $param_username);
-
-        # Set parameters
-        $param_username = $username;
-
-        # Execute the prepared statement 
-        if (mysqli_stmt_execute($stmt)) {
-          # Store result
-          mysqli_stmt_store_result($stmt);
-
-          # Check if username is already registered
-          if (mysqli_stmt_num_rows($stmt) == 1) {
-            $username_err = "This username is already registered.";
-          }
-        } else {
-          echo "<script>" . "alert('Oops! Something went wrong. Please try again later.')" . "</script>";
-        }
-
-        # Close statement 
-        mysqli_stmt_close($stmt);
-      }
+        $fullname = trim($_POST["fullname"]);
     }
-  }
 
-  # Validate email 
-  if (empty(trim($_POST["email"]))) {
-    $email_err = "Please enter an email address";
-  } else {
-    $email = filter_var($_POST["email"], FILTER_SANITIZE_EMAIL);
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-      $email_err = "Please enter a valid email address.";
+    # Validate username
+    if (empty(trim($_POST["username"]))) {
+        $username_err = "Please enter a username.";
     } else {
-      # Prepare a select statement
-      $sql = "SELECT id FROM users WHERE email = ?";
-
-      if ($stmt = mysqli_prepare($link, $sql)) {
-        # Bind variables to the statement as parameters
-        mysqli_stmt_bind_param($stmt, "s", $param_email);
-
-        # Set parameters
-        $param_email = $email;
-
-        # Execute the prepared statement 
-        if (mysqli_stmt_execute($stmt)) {
-          # Store result
-          mysqli_stmt_store_result($stmt);
-
-          # Check if email is already registered
-          if (mysqli_stmt_num_rows($stmt) == 1) {
-            $email_err = "This email is already registered.";
-          }
+        $username = trim($_POST["username"]);
+        if (!ctype_alnum(str_replace(array("@", "-", "_"), "", $username))) {
+            $username_err = "Username can only contain letters, numbers, and symbols like '@', '_', or '-'.";
         } else {
-          echo "<script>" . "alert('Oops! Something went wrong. Please try again later.');" . "</script>";
+            # Prepare a select statement
+            $sql = "SELECT id FROM users WHERE username = ?";
+
+            if ($stmt = mysqli_prepare($link, $sql)) {
+                # Bind variables to the statement as parameters
+                mysqli_stmt_bind_param($stmt, "s", $param_username);
+
+                # Set parameters
+                $param_username = $username;
+
+                # Execute the prepared statement
+                if (mysqli_stmt_execute($stmt)) {
+                    # Store result
+                    mysqli_stmt_store_result($stmt);
+
+                    # Check if username is already registered
+                    if (mysqli_stmt_num_rows($stmt) == 1) {
+                        $username_err = "This username is already registered.";
+                    }
+                } else {
+                    die("Oops! Something went wrong. Please try again later.");
+                }
+
+                # Close statement
+                mysqli_stmt_close($stmt);
+            }
         }
-
-        # Close statement
-        mysqli_stmt_close($stmt);
-      }
     }
-  }
 
-  # Validate password
-  if (empty(trim($_POST["password"]))) {
-    $password_err = "Please enter a password.";
-  } else {
-    $password = trim($_POST["password"]);
-    if (strlen($password) < 8) {
-      $password_err = "Password must contain at least 8 or more characters.";
+    # Validate email
+    if (empty(trim($_POST["email"]))) {
+        $email_err = "Please enter an email address.";
+    } else {
+        $email = filter_var($_POST["email"], FILTER_SANITIZE_EMAIL);
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $email_err = "Please enter a valid email address.";
+        } else {
+            # Prepare a select statement
+            $sql = "SELECT id FROM users WHERE email = ?";
+
+            if ($stmt = mysqli_prepare($link, $sql)) {
+                # Bind variables to the statement as parameters
+                mysqli_stmt_bind_param($stmt, "s", $param_email);
+
+                # Set parameters
+                $param_email = $email;
+
+                # Execute the prepared statement
+                if (mysqli_stmt_execute($stmt)) {
+                    # Store result
+                    mysqli_stmt_store_result($stmt);
+
+                    # Check if email is already registered
+                    if (mysqli_stmt_num_rows($stmt) == 1) {
+                        $email_err = "This email is already registered.";
+                    }
+                } else {
+                    die("Oops! Something went wrong. Please try again later.");
+                }
+
+                # Close statement
+                mysqli_stmt_close($stmt);
+            }
+        }
     }
-  }
+
+    # Validate password
+    if (empty(trim($_POST["password"]))) {
+        $password_err = "Please enter a password.";
+    } else {
+        $password = trim($_POST["password"]);
+        if (strlen($password) < 8) {
+            $password_err = "Password must contain at least 8 or more characters.";
+        }
+    }
 
     if (empty(trim($_POST["address"]))) {
-    $address_err = "Please enter your address.";
-  } else {
-    $address = trim($_POST["address"]);
-  }
-
-  # Validate Age
-  if (empty(trim($_POST["age"]))) {
-    $age_err = "Please enter your age.";
-  } else {
-    $age = trim($_POST["age"]);
-    if (!ctype_digit($age) || $age < 0) {
-      $age_err = "Please enter a valid age.";
-    }
-  }
-
-  # Validate Mobile Number
-  if (empty(trim($_POST["mobile"]))) {
-    $mobile_err = "Please enter your mobile number.";
-  } else {
-    $mobile = trim($_POST["mobile"]);
-    if (!ctype_digit($mobile) || strlen($mobile) !== 10) {
-      $mobile_err = "Please enter a valid 10-digit mobile number.";
-    }
-  }
-
-# Check input errors before inserting data into the database
-if (empty($fullname_err) && empty($username_err) && empty($email_err) && empty($password_err) && empty($address_err) && empty($age_err) && empty($mobile_err)) {
-  # Prepare an insert statement
-  $sql = "INSERT INTO users (fullname, username, email, password) VALUES (?, ?, ?, ?)";
-
-  if ($stmt = mysqli_prepare($link, $sql)) {
-    # Bind variables to the prepared statement as parameters
-    mysqli_stmt_bind_param($stmt, "ssss", $param_fullname, $param_username, $param_email, $param_password);
-
-    # Set parameters
-    $param_fullname = $fullname;
-    $param_username = $username;
-    $param_email = $email;
-    $param_password = password_hash($password, PASSWORD_DEFAULT);
-
-    # Execute the prepared statement
-    if (mysqli_stmt_execute($stmt)) {
-      # Get the last inserted id from the 'users' table
-      $user_id = mysqli_insert_id($link);
-
-      # Insert data into the 'student' table using the same id
-      $sql_student = "INSERT INTO student (s_id, s_name, s_email, s_age, s_mobile, s_address) VALUES (?, ?, ?, ?, ?, ?)";
-
-      if ($stmt_student = mysqli_prepare($link, $sql_student)) {
-        # Bind variables to the prepared statement as parameters
-        mysqli_stmt_bind_param($stmt_student, "isssis", $param_s_id, $param_s_name, $param_s_email, $param_s_age, $param_s_mobile, $param_s_address);
-
-        # Set parameters
-        $param_s_id = $user_id;
-        $param_s_name = $fullname;
-        $param_s_email = $email;
-        $param_s_age = $age;
-        $param_s_mobile = $mobile;
-        $param_s_address = $address;
-
-        # Execute the prepared statement for the 'student' table
-        if (mysqli_stmt_execute($stmt_student)) {
-          echo "<script>alert('Registration completed successfully. Login to continue.');</script>";
-          echo "<script>window.location.href='./login.php';</script>";
-          exit;
-        } else {
-          echo "<script>alert('Oops! Something went wrong. Please try again later.');</script>";
-        }
-
-        # Close 'student' statement
-        mysqli_stmt_close($stmt_student);
-      }
+        $address_err = "Please enter your address.";
     } else {
-      echo "<script>alert('Oops! Something went wrong. Please try again later.');</script>";
+        $address = trim($_POST["address"]);
     }
 
-    # Close 'users' statement
-    mysqli_stmt_close($stmt);
-  }
-}
+    # Validate Age
+    if (empty(trim($_POST["age"]))) {
+        $age_err = "Please enter your age.";
+    } else {
+        $age = trim($_POST["age"]);
+        if (!ctype_digit($age) || $age < 0) {
+            $age_err = "Please enter a valid age.";
+        }
+    }
 
-# Close connection
-mysqli_close($link);
+    # Validate Mobile Number
+    if (empty(trim($_POST["mobile"]))) {
+        $mobile_err = "Please enter your mobile number.";
+    } else {
+        $mobile = trim($_POST["mobile"]);
+        if (!ctype_digit($mobile) || strlen($mobile) !== 10) {
+            $mobile_err = "Please enter a valid 10-digit mobile number.";
+        }
+    }
+
+    # Check input errors before inserting data into the database
+    if (empty($fullname_err) && empty($username_err) && empty($email_err) && empty($password_err) && empty($address_err) && empty($age_err) && empty($mobile_err)) {
+        # Prepare an insert statement
+        $sql = "INSERT INTO users (fullname, username, email, password) VALUES (?, ?, ?, ?)";
+
+        if ($stmt = mysqli_prepare($link, $sql)) {
+            # Bind variables to the prepared statement as parameters
+            mysqli_stmt_bind_param($stmt, "ssss", $param_fullname, $param_username, $param_email, $param_password);
+
+            # Set parameters
+            $param_fullname = $fullname;
+            $param_username = $username;
+            $param_email = $email;
+            $param_password = password_hash($password, PASSWORD_DEFAULT);
+
+            # Execute the prepared statement
+            if (mysqli_stmt_execute($stmt)) {
+                # Get the last inserted id from the 'users' table
+                $user_id = mysqli_insert_id($link);
+
+                # Insert data into the 'student' table using the same id
+                $sql_student = "INSERT INTO student (s_id, s_name, s_email, s_age, s_mobile, s_address) VALUES (?, ?, ?, ?, ?, ?)";
+
+                if ($stmt_student = mysqli_prepare($link, $sql_student)) {
+                    # Bind variables to the prepared statement as parameters
+                    mysqli_stmt_bind_param($stmt_student, "isssis", $param_s_id, $param_s_name, $param_s_email, $param_s_age, $param_s_mobile, $param_s_address);
+
+                    # Set parameters
+                    $param_s_id = $user_id;
+                    $param_s_name = $fullname;
+                    $param_s_email = $email;
+                    $param_s_age = $age;
+                    $param_s_mobile = $mobile;
+                    $param_s_address = $address;
+
+                    # Execute the prepared statement for the 'student' table
+                    if (mysqli_stmt_execute($stmt_student)) {
+                        echo "<script>alert('Registration completed successfully. Login to continue.');</script>";
+                        echo "<script>window.location.href='./login.php';</script>";
+                        exit;
+                    } else {
+                        die("Oops! Something went wrong while inserting data into the 'student' table.");
+                    }
+
+                    # Close 'student' statement
+                    mysqli_stmt_close($stmt_student);
+                } else {
+                    die("Oops! Something went wrong while preparing the 'student' statement.");
+                }
+            } else {
+                die("Oops! Something went wrong while inserting data into the 'users' table.");
+            }
+
+            # Close 'users' statement
+            mysqli_stmt_close($stmt);
+        } else {
+            die("Oops! Something went wrong while preparing the 'users' statement.");
+        }
+    }
+
+    # Close connection
+    mysqli_close($link);
 }
 ?>
 

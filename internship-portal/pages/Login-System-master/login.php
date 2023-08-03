@@ -1,6 +1,6 @@
 <?php
 # Initialize session
-// session_start();
+session_start();
 
 # Check if user is already logged in, If yes then redirect him to index page
 if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
@@ -9,7 +9,7 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
 }
 
 # Include connection
-require_once "./connect.php";
+require_once "./config.php";
 
 # Define variables and initialize with empty values
 $user_login_err = $user_password_err = $login_err = "";
@@ -34,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         # Prepare a select statement
         $sql = "SELECT id, username, email, password FROM users WHERE username = ? OR email = ?";
 
-        if ($stmt = mysqli_prepare($db_connection, $sql)) {
+        if ($stmt = mysqli_prepare($link, $sql)) {
             # Bind variables to the statement as parameters
             mysqli_stmt_bind_param($stmt, "ss", $param_user_login, $param_user_login);
 
@@ -62,11 +62,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                             // Check if the user is "tpo" or has email "tpo@mes.ac.in"
                             if ($username === "tpo" || $email === "tpo@mes.ac.in") {
-                                echo "<script>window.location.href='../index.php?user_id=$id'</script>";
+                                echo "<script>window.location.href='../tpo/index.php?user_id=$id'</script>";
                                 exit;
                             } else {
                                 // Redirect other users to the index page with their user ID in the URL
-                                echo "<script>window.location.href='../index.php?user_id=$id'</script>";
+                                echo "<script>window.location.href='../tpo/index.php?user_id=$id'</script>";
                                 exit;
                             }
                         } else {

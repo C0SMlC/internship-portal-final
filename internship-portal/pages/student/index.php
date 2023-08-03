@@ -12,7 +12,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
 }
 
 // Database connection setup - Replace with your database credentials
-$servername = "localhost";
+$servername = "localhost:4306";
 $username = "root";
 $password = "";
 $dbname = "internship_portal";

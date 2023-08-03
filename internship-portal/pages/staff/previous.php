@@ -15,10 +15,13 @@ $per_page_record = 10; // limit
 $start_from = ($page - 1) * $per_page_record;
 if(isset($_GET['search'])){
     $search = $_GET['search'];
-    $data_search = "Select announcement_id, announcement_title, status, published_on from new_annoucement where announcement_id = '$search' OR announcement_title LIKE '%$search%' LIMIT $start_from, $per_page_record ";
+    $email_filter = "@mes.ac.in";
+    $data_search = "Select announcement_id, announcement_title, status, published_on from new_annoucement where (announcement_id = '$search' OR announcement_title LIKE '%$search%') and email like '%$email_filter%'  LIMIT $start_from, $per_page_record ";
 
 }else{
-    $data_search = "Select announcement_id, announcement_title, status, published_on from new_annoucement LIMIT $start_from, $per_page_record";
+    $email_filter = "@mes.ac.in";
+    $data_search = "Select announcement_id, announcement_title, status, published_on from new_annoucement WHERE email LIKE '%$email_filter%' 
+    LIMIT $start_from, $per_page_record";
 }
 $query = mysqli_query($db_connection, $data_search);
 
