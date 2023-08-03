@@ -249,14 +249,14 @@ $resultApplications = mysqli_query($con, $queryApplications);
             // Apply the bold class to the first card's input box
             // and a regular class for other cards' input boxes
           ?>
-      <input type="text" class="<?php echo $inputClass; ?>" id="position-<?php echo $name; ?>" placeholder="Enter your position in your internship..." value="<?php echo $update['s_name']; ?>">
-      <button class="btn btn-primary" onclick="saveText('position-<?php echo $name; ?>')">Save</button>
-    </div>
+          <input type="text" class="<?php echo $inputClass; ?>" placeholder="Enter your position in your internship...">
+          <button class="btn btn-primary" onclick="saveText(this)">Save</button>
+        </div>
         <!-- Replace the fixed text with an input box and Save button -->
         <div class="input-group mb-3">
-        <input type="text" class="form-control" id="description-<?php echo $name; ?>" placeholder="Enter description about your internship...">
-      <button class="btn btn-primary" onclick="saveText('description-<?php echo $name; ?>')">Save</button>
-    </div>
+          <input type="text" class="form-control" placeholder="Enter description about your internship...">
+          <button class="btn btn-primary" onclick="saveText(this)">Save</button>
+        </div>
         <div class="d-flex">
   <p>Status from Announcement:</p>
   <!-- Add the "rejected" class if the status is "Rejected" -->
@@ -529,57 +529,6 @@ function openForm() {
 function closeForm() {
   document.getElementById('editProfileForm').classList.add('d-none');
 }
-
-function saveText(inputId) {
-  const inputBox = document.getElementById(inputId);
-  const savedText = inputBox.value.trim();
-  const announcementTitle = inputId.split('-')[1]; // Get the announcement title from the inputId
-
-  // Here you can implement the code to save the 'savedText' to your database
-  // using AJAX or other methods.
-
-  if (savedText !== "") {
-    // Update the card-text with the saved text
-    const cardText = document.createElement("p");
-    cardText.classList.add("card-text");
-
-    // Make the saved text bold for the first card
-    if (inputBox.classList.contains("font-weight-bold")) {
-      const boldText = document.createElement("strong");
-      boldText.textContent = savedText;
-      cardText.appendChild(boldText);
-    } else {
-      cardText.textContent = savedText;
-    }
-
-    const cardBody = inputBox.parentElement;
-    cardBody.appendChild(cardText);
-  }
-
-  // Remove the input box and Save button
-  const saveButton = inputBox.nextElementSibling;
-  const cardBody = inputBox.parentElement;
-  cardBody.removeChild(inputBox);
-  cardBody.removeChild(saveButton);
-
-  // Send the data to the backend using AJAX
-  const xhr = new XMLHttpRequest();
-  xhr.onreadystatechange = function () {
-    if (xhr.readyState === XMLHttpRequest.DONE) {
-      if (xhr.status === 200) {
-        // Optionally, you can provide some visual feedback to the user, like displaying a success message.
-        alert("Text saved successfully!");
-      } else {
-        alert("Failed to save text. Please try again.");
-      }
-    }
-  };
-
-  xhr.open("POST", "save_internship_details.php", true);
-  xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-  xhr.send(`announcement_title=${encodeURIComponent(announcementTitle)}&position=${encodeURIComponent(savedText)}`);
-}
-
 </script>
 
 <style>
